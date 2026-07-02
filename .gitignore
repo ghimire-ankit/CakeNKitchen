@@ -1,0 +1,51 @@
+# ============================================
+# NODE MODULES
+# ============================================
+**/node_modules/
+node_modules/
+cakenkitchen-backend/node_modules/
+cakenkitchen-frontend/node_modules/
+
+# ============================================
+# ENVIRONMENT VARIABLES
+# ============================================
+.env
+.env.local
+.env.production
+cakenkitchen-backend/.env
+cakenkitchen-frontend/.env
+
+# ============================================
+# BUILD FILES
+# ============================================
+dist/
+build/
+*.log
+
+# ============================================
+# OS FILES
+# ============================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================
+# IDE FILES
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ============================================
+# PACKAGE LOCK FILES
+# ============================================
+package-lock.json
+yarn.lock
+
+# ============================================
+# DATABASE BACKUPS
+# ============================================
+*.sql.backup
+*.sqlite
+*.db
