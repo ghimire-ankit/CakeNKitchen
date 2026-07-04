@@ -7,6 +7,12 @@ import './App.css';
 const getImageUrl = (url) => {
   if (!url) return 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500';
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
+
+  // Map category baseline relative names to illustrative Unsplash pictures
+  if (url === 'wedding_category.jpg') return 'https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=500&auto=format&fit=crop&q=60';
+  if (url === 'chocolate_category.jpg') return 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=60';
+  if (url === 'fruit_category.jpg') return 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&auto=format&fit=crop&q=60';
+
   return `http://localhost:3000/uploads/${url}`;
 };
 
@@ -400,7 +406,7 @@ function Home() {
                 onClick={() => selectCategory(cat.cat_id)}
                 id={`cat-filter-${cat.cat_id}`}
               >
-                <img src={cat.image_url} alt={cat.name} />
+                <img src={getImageUrl(cat.image_url)} alt={cat.name} />
                 <h3>{cat.name}</h3>
                 <p>{cat.description}</p>
               </div>
