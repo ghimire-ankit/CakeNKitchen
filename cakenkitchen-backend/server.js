@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // 2. Main API Routing Modules
 app.use('/api/auth', require('./src/routes/authRoutes'));
+app.use('/api', require('./src/routes/catalogRoutes'));
 
 // 3. Operational System Baseline Health Check Route
 app.get('/', (req, res) => {

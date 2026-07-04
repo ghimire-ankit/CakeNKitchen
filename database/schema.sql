@@ -34,3 +34,30 @@ CREATE TABLE cakes (
     FOREIGN KEY (cat_id) REFERENCES categories(cat_id) ON DELETE RESTRICT,
     CONSTRAINT chk_positive_price CHECK (base_price > 0.00)
 ) ENGINE=InnoDB;
+
+-- 4. Order Records
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    status ENUM('Pending', 'Preparing', 'Ready', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+    total DECIMAL(10, 2) NOT NULL,
+    delivery_date DATE NOT NULL,
+    delivery_address TEXT NOT NULL,
+    delivery_time VARCHAR(50) NOT NULL,
+    notes TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- 5. Order Detail Attributes
+CREATE TABLE order_items (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    cake_id INT NOT NULL,
+    qty INT NOT NULL,
+    weight_lbs INT NOT NULL,
+    purchase_price DECIMAL(10, 2) NOT NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (cake_id) REFERENCES cakes(cake_id) ON DELETE RESTRICT
+) ENGINE=InnoDB;
