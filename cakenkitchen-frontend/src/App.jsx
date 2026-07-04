@@ -3,6 +3,13 @@ import { useState, useEffect } from 'react';
 import { loginUser, registerUser, fetchCategories, fetchCakes, fetchCakeById } from './services/api';
 import './App.css';
 
+// Helper to resolve absolute or relative image paths (WhatsApp/Admin/Unsplash)
+const getImageUrl = (url) => {
+  if (!url) return 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `http://localhost:3000/uploads/${url}`;
+};
+
 // ============ MAIN APP ============
 function App() {
   const [user, setUser] = useState(null);
@@ -422,7 +429,7 @@ function Home() {
             {cakes.map((cake) => (
               <div className="cake-card" key={cake.cake_id} id={`cake-card-${cake.cake_id}`}>
                 <div className="cake-image-container">
-                  <img src={cake.image_url} alt={cake.name} />
+                  <img src={getImageUrl(cake.image_url)} alt={cake.name} />
                   <span className="cake-badge">Premium</span>
                 </div>
                 <div className="cake-card-body">
@@ -499,7 +506,7 @@ function CakeDetail({ addToCart }) {
     <div className="detail-container" id="cake-detail-view">
       <div className="detail-gallery">
         <div className="cake-preview-container">
-          <img src={cake.image_url} alt={cake.name} className="cake-preview-image" />
+          <img src={getImageUrl(cake.image_url)} alt={cake.name} className="cake-preview-image" />
           {message.trim() && (
             <svg viewBox="0 0 400 400" className="cake-text-overlay-svg" id="cake-preview-text-svg">
               <defs>
@@ -1498,7 +1505,7 @@ function AdminDashboard() {
             <div style={{ maxHeight: '420px', overflowY: 'auto', paddingRight: '0.3rem' }}>
               {cakes.map((cake) => (
                 <div key={cake.cake_id} style={{ display: 'flex', gap: '0.8rem', padding: '0.6rem 0', borderBottom: '1px solid var(--border-light)', alignItems: 'center' }}>
-                  <img src={cake.image_url} alt={cake.name} style={{ width: '45px', height: '45px', objectFit: 'cover' }} />
+                  <img src={getImageUrl(cake.image_url)} alt={cake.name} style={{ width: '45px', height: '45px', objectFit: 'cover' }} />
                   <div style={{ flex: 1 }}>
                     <h5 style={{ fontSize: '0.85rem', fontWeight: 800, margin: 0 }}>{cake.name}</h5>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-light)' }}>NPR {cake.base_price}</span>
