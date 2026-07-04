@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +13,9 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static uploads for cake image assets
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // 2. Main API Routing Modules
 app.use('/api/auth', require('./src/routes/authRoutes'));
