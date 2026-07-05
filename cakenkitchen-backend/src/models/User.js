@@ -11,6 +11,11 @@ class User {
         return rows[0];
     }
 
+    static async findByPhone(phone) {
+        const [rows] = await pool.query('SELECT * FROM users WHERE phone = ?', [phone]);
+        return rows[0];
+    }
+
     static async create({ name, email, phone, password_hash }) {
         const [result] = await pool.query('INSERT INTO users (name, email, phone, password_hash) VALUES (?, ?, ?, ?)', [name, email, phone, password_hash]);
         return result.insertId;
