@@ -204,11 +204,22 @@ function App() {
 // ============ NAVBAR ============
 function Navbar({ user, logout, cartCount }) {
   const navigate = useNavigate();
+  const [logoFailed, setLogoFailed] = useState(false);
+
   return (
     <header className="navbar-container">
       <div className="navbar-content">
-        <Link to="/" className="brand-logo" id="nav-brand">
-          Cake & Kitchen
+        <Link to="/" className="brand-logo" id="nav-brand" style={{ display: 'flex', alignItems: 'center' }}>
+          {!logoFailed ? (
+            <img
+              src="/logo.png"
+              alt="Logo"
+              onError={() => setLogoFailed(true)}
+              style={{ height: '38px', width: 'auto', display: 'block', objectFit: 'contain' }}
+            />
+          ) : (
+            <span>Cake & Kitchen</span>
+          )}
         </Link>
         <nav className="nav-links">
           <Link to="/" className="nav-link" id="nav-home">Home</Link>
