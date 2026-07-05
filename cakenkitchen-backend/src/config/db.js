@@ -1,15 +1,23 @@
 ﻿const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const pool = mysql.createPool({
+const poolConfig = {
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
+    port: process.env.MYSQL_PORT || 3306,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
-});
+};
+
+// Auto-inject SSL settings if connecting to Aiven/Cloud (e.g. port changes or SSL explicitly requested)
+if (process.env.MYSQL_PORT || process.env.MYSQL_SSL === 'true') {
+    poolConfig.ssl = { rejectUnauthorized: false };
+}
+
+const pool = mysql.createPool(poolConfig);
 
 const testConnection = async () => {
     try {
