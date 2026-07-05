@@ -24,9 +24,88 @@ const testConnection = async () => {
         const conn = await pool.getConnection();
         console.log('✅ Database connected successfully!');
         conn.release();
+        await initializeDatabaseSchema();
         await seedCakesIfEmptyOrOld();
     } catch (err) {
         console.error('❌ Database connection failed:', err.message);
+    }
+};
+
+const initializeDatabaseSchema = async () => {
+    try {
+        console.log('🔄 Checking/initializing database table schemas on Aiven Cloud...');
+
+        // 1. Create Users Table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(100) NOT NULL UNIQUE,
+                phone VARCHAR(15) NOT NULL UNIQUE,
+                password_hash VARCHAR(255) NOT NULL,
+                role ENUM('customer', 'admin') DEFAULT 'customer',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB
+        `);
+
+        // 2. Create Categories Table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS categories (
+                cat_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(50) NOT NULL UNIQUE,
+                description TEXT NULL,
+                image_url VARCHAR(255) NULL
+            ) ENGINE=InnoDB
+        `);
+
+        // 3. Create Cakes Table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS cakes (
+                cake_id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                description TEXT NULL,
+                base_price DECIMAL(10, 2) NOT NULL,
+                cat_id INT NOT NULL,
+                image_url VARCHAR(255) NULL,
+                is_available BOOLEAN DEFAULT TRUE,
+                FOREIGN KEY (cat_id) REFERENCES categories(cat_id) ON DELETE RESTRICT
+            ) ENGINE=InnoDB
+        `);
+
+        // 4. Create Orders Table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS orders (
+                order_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NULL,
+                status ENUM('Pending', 'Preparing', 'Ready', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+                total DECIMAL(10, 2) NOT NULL,
+                delivery_date DATE NOT NULL,
+                delivery_address TEXT NOT NULL,
+                delivery_time VARCHAR(50) NOT NULL,
+                notes TEXT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE SET NULL
+            ) ENGINE=InnoDB
+        `);
+
+        // 5. Create Order Items Table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS order_items (
+                item_id INT AUTO_INCREMENT PRIMARY KEY,
+                order_id INT NOT NULL,
+                cake_id INT NOT NULL,
+                qty INT NOT NULL,
+                weight_lbs INT NOT NULL,
+                purchase_price DECIMAL(10, 2) NOT NULL,
+                subtotal DECIMAL(10, 2) NOT NULL,
+                FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+                FOREIGN KEY (cake_id) REFERENCES cakes(cake_id) ON DELETE RESTRICT
+            ) ENGINE=InnoDB
+        `);
+
+        console.log('✅ Database tables verified and created successfully!');
+    } catch (error) {
+        console.error('⚠️ Database schema initialization failed:', error.message);
     }
 };
 
