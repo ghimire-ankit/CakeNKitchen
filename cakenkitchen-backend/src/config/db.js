@@ -124,7 +124,7 @@ const seedCakesIfEmptyOrOld = async () => {
         }
 
         // Check if cakes already has the new 10 jpeg images
-        const [rows] = await pool.query('SELECT COUNT(*) as count FROM cakes WHERE image_url LIKE "%.jpeg"');
+        const [rows] = await pool.query("SELECT COUNT(*) as count FROM cakes WHERE image_url LIKE '%.jpeg'");
         const count = rows[0].count;
         if (count < 10) {
             console.log('🔄 Auto-seeding database tables with 10 real WhatsApp cake images...');
