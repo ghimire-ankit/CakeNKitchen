@@ -383,8 +383,8 @@ function Home() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-text">
-          <h1>Express Yourself in <span>Sweetness</span></h1>
-          <p>We craft stunning, delicious customized cakes ready for your special occasions and midnight surprises. Baked freshly on order.</p>
+          <h1>Freshly Baked for Your <span>Best Days</span></h1>
+          <p>From grand milestones to unforgettable midnight surprises. We bake happiness for your happiest moments.</p>
           <a href="#shop-menu" className="btn-primary" id="hero-cta-btn">Order Online</a>
         </div>
         <div className="hero-image-wrapper">
