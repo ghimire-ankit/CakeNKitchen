@@ -214,8 +214,8 @@ function Navbar({ user, logout, cartCount }) {
             <img
               src="/logo.png"
               alt="Logo"
+              className="brand-logo-img"
               onError={() => setLogoFailed(true)}
-              style={{ height: '38px', width: 'auto', display: 'block', objectFit: 'contain' }}
             />
           ) : (
             <span>Cake & Kitchen</span>
