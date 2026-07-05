@@ -182,7 +182,7 @@ function App() {
           />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin" element={<AdminDashboard user={user} />} />
         </Routes>
       </main>
       <Footer />
@@ -223,7 +223,9 @@ function Navbar({ user, logout, cartCount }) {
         </Link>
         <nav className="nav-links">
           <Link to="/" className="nav-link" id="nav-home">Home</Link>
-          <Link to="/admin" className="nav-link" id="nav-admin">Admin Portal</Link>
+          {user && user.role === 'admin' && (
+            <Link to="/admin" className="nav-link" id="nav-admin">Admin Portal</Link>
+          )}
           <Link to="/cart" className="nav-link" id="nav-cart">
             <span className="cart-icon-wrapper">
               Cart
@@ -1165,7 +1167,18 @@ function Register() {
 }
 
 // ============ ADMIN DASHBOARD ============
-function AdminDashboard() {
+function AdminDashboard({ user }) {
+  // Security guard check
+  if (!user || user.role !== 'admin') {
+    return (
+      <div style={{ maxWidth: '600px', margin: '4rem auto', textAlign: 'center', padding: '3rem 2rem', border: '1.5px solid var(--border)', background: 'var(--bg-card)' }}>
+        <h2 style={{ fontFamily: 'var(--serif)', fontSize: '2rem', marginBottom: '1rem', color: 'var(--error)', fontWeight: 400 }}>Access Denied</h2>
+        <p style={{ color: 'var(--text-light)', marginBottom: '2rem', fontSize: '0.9rem' }}>You do not have administrative privileges to access the Bakery Control Center.</p>
+        <Link to="/login" className="btn-primary" style={{ padding: '0.6rem 1.5rem', textDecoration: 'none', fontSize: '0.75rem', fontWeight: 800 }}>Return to Login</Link>
+      </div>
+    );
+  }
+
   const [orders, setOrders] = useState([]);
   const [cakes, setCakes] = useState([]);
   const [categories, setCategories] = useState([]);

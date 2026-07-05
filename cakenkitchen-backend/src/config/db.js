@@ -104,6 +104,18 @@ const initializeDatabaseSchema = async () => {
         `);
 
         console.log('✅ Database tables verified and created successfully!');
+
+        // 6. Seed Default Admin User if missing
+        const [adminCheck] = await pool.query("SELECT COUNT(*) as count FROM users WHERE email = 'admin@cakenkitchen.com'");
+        if (adminCheck[0].count === 0) {
+            console.log('🔄 Seeding default admin user...');
+            const adminHash = '$2a$10$c1i/u6mP96H3Vw/rYk3C5eqkQcbeB0hO2mS2kO11ZtV5v1hD2hVyS'; // hashes to 'admin123'
+            await pool.query(`
+                INSERT INTO users (name, email, phone, password_hash, role) VALUES
+                ('Bakery Administrator', 'admin@cakenkitchen.com', '9801112223', ?, 'admin')
+            `, [adminHash]);
+            console.log('✅ Default admin user seeded successfully!');
+        }
     } catch (error) {
         console.error('⚠️ Database schema initialization failed:', error.message);
     }
