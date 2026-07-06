@@ -4,18 +4,18 @@ CREATE DATABASE IF NOT EXISTS cakenk;
 USE cakenk;
 
 -- 1. Identity Subsystem
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    phone VARCHAR(15) NOT NULL UNIQUE,
+    phone VARCHAR(15) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('customer', 'admin') DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 -- 2. Catalog Structural Groups
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
     cat_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT NULL,
@@ -23,20 +23,20 @@ CREATE TABLE categories (
 ) ENGINE=InnoDB;
 
 -- 3. Core Product Inventory
-CREATE TABLE cakes (
+CREATE TABLE IF NOT EXISTS cakes (
     cake_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT NULL,
     base_price DECIMAL(10, 2) NOT NULL,
     cat_id INT NOT NULL,
-    image_url VARCHAR(255) NULL,
+    image_url LONGTEXT NULL,
     is_available BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (cat_id) REFERENCES categories(cat_id) ON DELETE RESTRICT,
     CONSTRAINT chk_positive_price CHECK (base_price > 0.00)
 ) ENGINE=InnoDB;
 
 -- 4. Order Records
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
     status ENUM('Pending', 'Preparing', 'Ready', 'Delivered', 'Cancelled') DEFAULT 'Pending',
@@ -50,7 +50,7 @@ CREATE TABLE orders (
 ) ENGINE=InnoDB;
 
 -- 5. Order Detail Attributes
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
     item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
     cake_id INT NOT NULL,
@@ -58,6 +58,7 @@ CREATE TABLE order_items (
     weight_lbs INT NOT NULL,
     purchase_price DECIMAL(10, 2) NOT NULL,
     subtotal DECIMAL(10, 2) NOT NULL,
+    message VARCHAR(255) NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (cake_id) REFERENCES cakes(cake_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;

@@ -40,6 +40,40 @@ class Cake {
         }
     }
 
+    static async getAdminAll() {
+        try {
+            const [rows] = await pool.query('SELECT * FROM cakes ORDER BY cake_id DESC');
+            return rows;
+        } catch (err) {
+            console.error('Error fetching admin cakes:', err);
+            return [];
+        }
+    }
+
+    static async create(cake) {
+        const { name, description, base_price, cat_id, image_url, is_available } = cake;
+        try {
+            const [result] = await pool.query(
+                'INSERT INTO cakes (name, description, base_price, cat_id, image_url, is_available) VALUES (?, ?, ?, ?, ?, ?)',
+                [name, description, base_price, cat_id, image_url, is_available ? 1 : 0]
+            );
+            return result.insertId;
+        } catch (err) {
+            console.error('Error creating cake:', err);
+            throw err;
+        }
+    }
+
+    static async toggleAvailability(id) {
+        try {
+            const [result] = await pool.query('UPDATE cakes SET is_available = NOT is_available WHERE cake_id = ?', [id]);
+            return result.affectedRows > 0;
+        } catch (err) {
+            console.error('Error toggling availability:', err);
+            throw err;
+        }
+    }
+
     static getMockCakes() {
         return [
             { cake_id: 1, name: 'Classic Rose Anniversary', description: 'Double-tiered red velvet sponge with elegant white buttercream piping.', base_price: 1200.00, cat_id: 1, image_url: 'Anniversary.jpeg', is_available: true },

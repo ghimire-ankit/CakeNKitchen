@@ -21,4 +21,4 @@ INSERT INTO cakes (name, description, base_price, cat_id, image_url, is_availabl
 ('Blueberry Cream Birthday Bliss', 'Zesty blueberry puree sponge layered with creamy heavy frosting toppings.', 950.00, 2, 'Blueberry_birthday.jpeg', TRUE),
 ('Cricket Pitch Birthday Special', 'Green velvet grass-textured cake themed for cricket fans with fondant wickets.', 1100.00, 2, 'Cricket_birthday_cake.jpeg', TRUE),
 ('Royal Baby Shower Dream', 'Light and fluffy strawberry card layers decorated with blue/pink cloud frosting.', 1350.00, 3, 'Baby_shower.jpeg', TRUE),
-('Artisanal Mother\'s Day Fondant', 'Heart-shaped strawberry cream cake dedicated with fondant calligraphy greetings.', 1000.00, 3, 'Mothers_day.jpeg', TRUE);
+('Artisanal Mother Day Fondant', 'Heart-shaped strawberry cream cake dedicated with fondant calligraphy greetings.', 1000.00, 3, 'Mothers_day.jpeg', TRUE);

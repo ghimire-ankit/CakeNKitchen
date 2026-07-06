@@ -1,0 +1,84 @@
+/* ADMIN DASHBOARD */
+.admin-layout {
+  display: flex;
+  min-height: 80vh;
+  background: var(--bg-main);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border-light);
+  margin-top: 1rem;
+}
+.admin-sidebar {
+  width: 260px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border-light);
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-logo {
+  padding: 0 2rem 2rem;
+  border-bottom: 1px dashed var(--border-light);
+  margin-bottom: 1rem;
+}
+.sidebar-logo h2 { font-family: var(--serif); font-size: 1.5rem; color: var(--primary); }
+
+.sidebar-link {
+  padding: 1.2rem 2rem;
+  font-weight: 800;
+  color: var(--text-light);
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: all 0.2s;
+  text-align: left;
+  background: none;
+  font-size: 0.95rem;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+.sidebar-link:hover { background: var(--bg-light); color: var(--accent); }
+.sidebar-link.active { border-left-color: var(--accent); color: var(--primary); background: var(--bg-light); }
+
+.admin-main {
+  flex: 1;
+  padding: 2.5rem 3.5rem;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+/* Stats Cards */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+.stat-card { background: var(--bg-card); padding: 1.8rem; border-radius: var(--radius-card); box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); }
+.stat-card-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-bottom: 0.5rem; font-weight: 800;}
+.stat-card-value { font-size: 2.4rem; font-family: var(--serif); color: var(--primary); font-weight: 800;}
+.stat-trend { font-size: 0.85rem; color: #2e7d32; font-weight: 700; display: block; margin-top: 0.5rem; }
+
+/* Section Headers */
+.admin-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.admin-section-title { font-family: var(--serif); font-size: 1.8rem; color: var(--primary); }
+
+/* Tables */
+.admin-table-container { background: var(--bg-card); border-radius: var(--radius-card); box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); overflow-x: auto; margin-bottom: 3rem;}
+.admin-table { width: 100%; border-collapse: collapse; text-align: left; }
+.admin-table th { background: var(--bg-light); padding: 1.2rem 1.5rem; font-size: 0.8rem; text-transform: uppercase; color: var(--primary); font-weight: 800; border-bottom: 1px solid var(--border-light); white-space: nowrap;}
+.admin-table td { padding: 1.2rem 1.5rem; font-size: 0.9rem; border-bottom: 1px solid var(--border-light); color: var(--text-dark); }
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background-color: #fafafa; }
+
+.status-badge { padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
+.status-Pending { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+.status-Preparing { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
+.status-Ready { background: #f3e5f5; color: #6a1b9a; border: 1px solid #e1bee7; }
+.status-Delivered { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.status-Cancelled { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+.action-select { padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem; font-weight: 800; cursor: pointer; background: var(--bg-main); color: var(--primary); }
+
+/* Search Box */
+.admin-search-box { display: flex; align-items: center; background: var(--bg-card); border: 1px solid var(--border); border-radius: 30px; padding: 0.4rem 1.2rem; min-width: 300px; }
+.admin-search-box input { border: none; outline: none; padding: 0.4rem; font-size: 0.9rem; width: 100%; background: transparent; }
+
+/* Grid Forms */
+.admin-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }

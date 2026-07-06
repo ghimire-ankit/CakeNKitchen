@@ -1,0 +1,43 @@
+/* CATALOG SEARCH */
+.catalog-toolbar-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  background-color: transparent;
+}
+.search-input-box {
+  position: relative;
+  flex-grow: 1;
+  max-width: 500px;
+}
+.search-field {
+  width: 100%;
+  padding: 0.9rem 1.5rem 0.9rem 3rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  border-radius: 30px;
+  background-color: var(--bg-card);
+  color: var(--primary);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+.search-field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 5px rgba(229, 91, 126, 0.1);
+  outline: none;
+}
+.search-field::placeholder { color: var(--text-light); opacity: 0.6; }
+.search-icon-svg {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  fill: var(--accent);
+  pointer-events: none;
+  width: 18px;
+  height: 18px;
+}

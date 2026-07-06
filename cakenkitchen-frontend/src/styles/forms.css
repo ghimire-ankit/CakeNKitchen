@@ -1,0 +1,59 @@
+/* FORMS */
+.form-card {
+  max-width: 440px;
+  margin: 3rem auto;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-card);
+  padding: 3rem;
+  box-shadow: var(--shadow-hover);
+  border: 1px solid var(--border-light);
+}
+.form-title {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.form-group { margin-bottom: 1.5rem; }
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+.form-input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg-main);
+  color: var(--primary);
+  outline: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.form-input:focus {
+  background-color: var(--bg-card);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(229, 91, 126, 0.15);
+}
+.form-input::placeholder { color: var(--text-light); opacity: 0.6; }
+.form-link-row {
+  margin-top: 1.8rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-weight: 600;
+}
+.form-link-row a { color: var(--accent); text-decoration: none; font-weight: 800; transition: color 0.2s; }
+.form-link-row a:hover { color: var(--accent-hover); text-decoration: underline; }
+.form-message { padding: 1rem; border-radius: 12px; font-size: 0.85rem; margin-bottom: 1.5rem; font-weight: 700; text-align: center; }
+.form-message.success { background-color: #f1f8e9; color: var(--success); border: 1px solid #c5e1a5; }
+.form-message.error { background-color: #ffebee; color: var(--error); border: 1px solid #ef9a9a; }

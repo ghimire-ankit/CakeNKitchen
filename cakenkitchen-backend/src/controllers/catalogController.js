@@ -1,5 +1,6 @@
 const Category = require('../models/Category');
 const Cake = require('../models/Cake');
+const Order = require('../models/Order');
 
 const getCategories = async (req, res) => {
     try {
@@ -27,6 +28,33 @@ const getCakes = async (req, res) => {
     }
 };
 
+const getAdminCakes = async (req, res) => {
+    try {
+        const cakes = await Cake.getAdminAll();
+        res.json({ success: true, count: cakes.length, data: cakes });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Failed to retrieve admin cakes' });
+    }
+};
+
+const createCake = async (req, res) => {
+    try {
+        const id = await Cake.create(req.body);
+        res.json({ success: true, cake_id: id });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Failed to create cake' });
+    }
+};
+
+const toggleCake = async (req, res) => {
+    try {
+        const success = await Cake.toggleAvailability(req.params.id);
+        res.json({ success });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Failed to toggle cake' });
+    }
+};
+
 const getCakeById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -41,4 +69,33 @@ const getCakeById = async (req, res) => {
     }
 };
 
-module.exports = { getCategories, getCakes, getCakeById };
+const createOrder = async (req, res) => {
+    try {
+        const order = await Order.create(req.body);
+        res.json({ success: true, data: order });
+    } catch (err) {
+        console.error('Error creating order:', err);
+        res.status(500).json({ success: false, error: 'Failed to place order' });
+    }
+};
+
+const getAdminOrders = async (req, res) => {
+    try {
+        const orders = await Order.getAllAdmin();
+        res.json({ success: true, data: orders });
+    } catch (err) {
+        console.error('Error fetching admin orders:', err);
+        res.status(500).json({ success: false, error: 'Failed to retrieve admin orders' });
+    }
+};
+
+const updateOrderStatus = async (req, res) => {
+    try {
+        const success = await Order.updateStatus(req.params.id, req.body.status);
+        res.json({ success });
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'Failed to update order status' });
+    }
+};
+
+module.exports = { getCategories, getCakes, getAdminCakes, createCake, toggleCake, getCakeById, createOrder, getAdminOrders, updateOrderStatus };

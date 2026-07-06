@@ -1,0 +1,70 @@
+/* CATEGORY SEGMENT */
+.category-title-section {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.category-title-section h2 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  display: inline-block;
+  position: relative;
+}
+.category-title-section h2::after {
+  content: '';
+  position: absolute;
+  width: 60%;
+  height: 4px;
+  background: var(--accent);
+  bottom: -10px;
+  left: 20%;
+  border-radius: 4px;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.category-card {
+  background-color: var(--bg-card);
+  padding: 1.2rem 2rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 2px solid transparent;
+}
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(92, 58, 56, 0.08);
+}
+.category-card.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+}
+.category-card.active h3, .category-card.active p { color: var(--text-white); }
+
+.category-card img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 2px solid var(--text-white);
+}
+
+.category-card-text { display: flex; flex-direction: column; }
+.category-card h3 {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+.category-card p { display: none; } /* Hide descriptions on categories to make it clean pills */

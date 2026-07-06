@@ -20,6 +20,12 @@ const register = async (req, res) => {
         if (existingUser) {
             return res.status(409).json({ success: false, error: 'Email already registered' });
         }
+        if (phone) {
+            const existingPhone = await User.findByPhone(phone);
+            if (existingPhone) {
+                return res.status(409).json({ success: false, error: 'Phone number already registered' });
+            }
+        }
         const password_hash = await bcrypt.hash(password, 10);
         const userId = await User.create({ name, email, phone, password_hash });
         const token = generateToken({ user_id: userId, email, role: 'customer' });

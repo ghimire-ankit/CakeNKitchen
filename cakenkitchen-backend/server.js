@@ -7,8 +7,26 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 1. Global Middleware Security & Data Parsing Pipelines
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:3000',
+    'https://cake-n-kitchen.vercel.app'
+];
+
+if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || origin.startsWith('http://localhost:')) {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS access blocked for origin: ' + origin));
+        }
+    },
     credentials: true
 }));
 app.use(express.json());
