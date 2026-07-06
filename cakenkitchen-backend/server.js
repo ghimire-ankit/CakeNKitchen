@@ -36,6 +36,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // 2. Main API Routing Modules
+app.get('/api/diagnose-db', async (req, res) => {
+    try {
+        const pool = require('./src/config/db');
+        const [rows] = await pool.query('SHOW CREATE TABLE users');
+        res.json({ success: true, table: rows[0]['Create Table'] });
+    } catch (e) {
+        res.json({ success: false, error: e.message });
+    }
+});
+
 app.use('/api/auth', require('./src/routes/authRoutes'));
 app.use('/api', require('./src/routes/catalogRoutes'));
 
