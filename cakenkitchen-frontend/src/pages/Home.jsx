@@ -60,7 +60,7 @@ function Home() {
         <div className="hero-text">
           <h1>Freshly Baked for Your <span>Best Days</span></h1>
           <p>From grand milestones to unforgettable midnight surprises. We bake happiness for your happiest moments in Nepal.</p>
-          <div style={{display: 'flex', gap: '1rem'}}>
+          <div style={{ display: 'flex', gap: '1rem' }}>
             <a href="#shop-menu" className="btn-primary" id="hero-cta-btn">View Menu</a>
             <a href="#shop-menu" className="btn-outline">Order Eggless</a>
           </div>
@@ -72,7 +72,7 @@ function Home() {
 
       {/* Value Propositions Strip */}
       <div className="value-props-strip">
-        <div className="prop-item">🚚 <span>Same Day Delivery in KTM</span></div>
+        <div className="prop-item">🚚 <span>Instant Delivery within Hour inside Dhangadhi</span></div>
         <div className="prop-item">🌱 <span>100% Eggless Options</span></div>
         <div className="prop-item">✨ <span>Premium Ingredients</span></div>
         <div className="prop-item">🎂 <span>Customized Designs</span></div>
@@ -80,15 +80,15 @@ function Home() {
 
       {/* Toolbar / Search */}
       <section className="catalog-toolbar-panel" id="shop-menu">
-        <div className="category-title-section" style={{marginBottom: 0, textAlign: 'left'}}>
-          <h2 style={{fontSize: '1.8rem'}}>Explore Menu</h2>
+        <div className="category-title-section" style={{ marginBottom: 0, textAlign: 'left' }}>
+          <h2 style={{ fontSize: '1.8rem' }}>Explore Menu</h2>
         </div>
         <div className="search-input-box">
-          <svg className="search-icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          <input 
-            type="text" 
-            className="search-field" 
-            placeholder="Search for Chocolate, Red Velvet, etc..." 
+          <svg className="search-icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" /></svg>
+          <input
+            type="text"
+            className="search-field"
+            placeholder="Search for Chocolate, Red Velvet, etc..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -146,25 +146,26 @@ function Home() {
               let badge = 'Premium';
               if (index === 0 || index === 4) badge = 'Bestseller 🔥';
               if (index === 2) badge = 'Chef Special ⭐';
-              
+
               return (
-              <div className="cake-card" key={cake.cake_id} id={`cake-card-${cake.cake_id}`}>
-                <div className="cake-image-container">
-                  <img src={getImageUrl(cake.image_url)} alt={cake.name} />
-                  <span className={`cake-badge ${badge.includes('Bestseller') ? 'badge-hot' : ''}`}>{badge}</span>
-                </div>
-                <div className="cake-card-body">
-                  <h3 className="cake-title">{cake.name}</h3>
-                  <p className="cake-desc">{cake.description}</p>
-                  <div className="cake-footer">
-                    <span className="cake-price">NPR {cake.base_price}</span>
-                    <Link to={`/cake/${cake.cake_id}`} className="btn-primary" style={{ padding: '0.6rem 1.4rem', fontSize: '0.75rem' }} id={`btn-view-${cake.cake_id}`}>
-                      Customize
-                    </Link>
+                <div className="cake-card" key={cake.cake_id} id={`cake-card-${cake.cake_id}`}>
+                  <div className="cake-image-container">
+                    <img src={getImageUrl(cake.image_url)} alt={cake.name} />
+                    <span className={`cake-badge ${badge.includes('Bestseller') ? 'badge-hot' : ''}`}>{badge}</span>
+                  </div>
+                  <div className="cake-card-body">
+                    <h3 className="cake-title">{cake.name}</h3>
+                    <p className="cake-desc">{cake.description}</p>
+                    <div className="cake-footer">
+                      <span className="cake-price">NPR {cake.base_price}</span>
+                      <Link to={`/cake/${cake.cake_id}`} className="btn-primary" style={{ padding: '0.6rem 1.4rem', fontSize: '0.75rem' }} id={`btn-view-${cake.cake_id}`}>
+                        Customize
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )})}
+              )
+            })}
           </div>
         )}
       </section>
