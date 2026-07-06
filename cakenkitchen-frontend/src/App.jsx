@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 
+
 function App() {
   const [user, setUser] = useState(() => {
     const token = localStorage.getItem('token');
