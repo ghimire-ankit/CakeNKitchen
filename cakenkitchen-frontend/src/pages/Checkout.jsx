@@ -39,6 +39,19 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Advanced Validation
+    const cleanedPhone = form.phone.replace(/\D/g, '');
+    if (cleanedPhone.length < 10) {
+      alert("Please enter a valid phone number (minimum 10 digits).");
+      return;
+    }
+
+    if (deliveryType !== 'pickup' && form.address.trim().length < 10) {
+      alert("Please provide a more detailed delivery address (House No, Street, Ward) so our drivers can find you.");
+      return;
+    }
+
     setSubmitting(true);
 
     const orderRecord = {
