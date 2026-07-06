@@ -6,7 +6,10 @@ function Footer() {
       <div className="footer-content">
         <div className="footer-section">
           <h3>Cake & Kitchen</h3>
-          <p style={{ marginTop: '0.5rem' }}>Indulge in artisanal cakes crafted with fresh gourmet ingredients. Add sweetness to your celebrations.</p>
+          <p style={{ marginTop: '0.5rem' }}>
+            Dhangadhi’s finest, baked fresh.<br />
+            Add sweetness to your celebrations
+          </p>
         </div>
         <div className="footer-section">
           <h3>Quick Links</h3>
