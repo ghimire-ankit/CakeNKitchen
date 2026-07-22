@@ -4,30 +4,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 :root {
-  --primary: #5c3a38;
-  --accent: #E55B7E;
-  --accent-hover: #D04568;
-  --bg-main: #FFF8F8; 
-  --bg-card: #FFFFFF;
-  --bg-footer: #4A2E2C;
-  --bg-light: #FFEDED; 
+  --primary: #4a2e2b;
+  --accent: #d25a81;
+  --accent-hover: #b94268;
+  --bg-main: #fcf9f9; 
+  --bg-card: #ffffff;
+  --bg-footer: #2b1716;
+  --bg-light: #fdeded; 
   
-  --text-dark: #3E2726;
-  --text-light: #8C7877;
+  --text-dark: #2c1a19;
+  --text-light: #7b6564;
   --text-white: #ffffff;
   
-  --border: #F2D5D5;
-  --border-light: #F9E6E6;
-  --success: #4CAF50;
-  --error: #FF5252;
+  --border: #f0dbdb;
+  --border-light: #f7eded;
+  --success: #388e3c;
+  --error: #d32f2f;
   
-  --sans: 'Nunito', 'Quicksand', system-ui, sans-serif;
+  --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   --serif: 'Playfair Display', Georgia, serif;
   
-  --shadow-soft: 0 12px 36px rgba(92, 58, 56, 0.06);
-  --shadow-hover: 0 16px 48px rgba(229, 91, 126, 0.15);
-  --radius-card: 16px;
-  --radius-btn: 30px;
+  --shadow-soft: 0 10px 30px rgba(92, 58, 56, 0.04);
+  --shadow-hover: 0 15px 40px rgba(210, 90, 129, 0.12);
+  --radius-card: 20px;
+  --radius-btn: 50px;
 }
 
 html {
