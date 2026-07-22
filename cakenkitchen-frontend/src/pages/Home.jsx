@@ -58,6 +58,7 @@ function Home() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-text">
+          <div className="hero-badge">✨ Dhangadhi's Finest Artisanal Bakery</div>
           <h1>Freshly Baked for Your <span>Best Days</span></h1>
           <p>From grand milestones to unforgettable midnight surprises. We bake happiness for your happiest moments in Nepal.</p>
           <div style={{ display: 'flex', gap: '1rem' }}>
@@ -66,7 +67,7 @@ function Home() {
           </div>
         </div>
         <div className="hero-image-wrapper">
-          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80" alt="Special Chocolate Fudge Cake decoration" />
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1000&auto=format&fit=crop&q=80" alt="Special Chocolate Fudge Cake decoration" />
         </div>
       </section>
 
