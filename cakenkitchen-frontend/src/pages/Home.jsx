@@ -55,42 +55,19 @@ function Home() {
         <span>🎉 Special Offer: Use code <strong>CAKE10</strong> for 10% off your entire order!</span>
       </div>
 
-      {/* Premium Cake Bakery Hero Section */}
-      <section className="premium-hero-section">
-        {/* Pattern overlay and floating elements */}
-        <div className="premium-pattern-overlay"></div>
-        <div className="floating-cherry cherry-1">🍒</div>
-        <div className="floating-cherry cherry-2">🧁</div>
-        <div className="floating-cherry cherry-3">✨</div>
-
-        <div className="premium-hero-container">
-          <div className="premium-hero-content">
-            <span className="premium-hero-badge">✨ Baked with love, delivered with joy.</span>
-            <h1>
-              Pick your <br />
-              <span className="highlight-coral-text">perfect slice</span>
-            </h1>
-            <p>
-              Indulge in our connection of dreamlike, handcrafted gourmet cakes built with premium ingredients. Comfort, celebration, and luxury in every single bite inside Dhangadhi.
-            </p>
-            <div className="premium-hero-actions">
-              <a href="#shop-menu" className="btn-premium-order" id="hero-cta-btn">
-                <span>Order Now</span>
-                <svg viewBox="0 0 24 24" className="btn-premium-arrow-icon" style={{ width: '18px', height: '18px' }}>
-                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                </svg>
-              </a>
-              <a href="#shop-menu" className="btn-premium-secondary">Explore Menu</a>
-            </div>
+      {/* Clean Premium Artisanal Hero Section */}
+      <section className="hero-section">
+        <div className="hero-text">
+          <div className="hero-badge">✨ Dhangadhi's Finest Artisanal Bakery</div>
+          <h1>Freshly Baked for Your <span>Best Days</span></h1>
+          <p>From grand milestones to unforgettable midnight surprises. We bake happiness for your happiest moments in Nepal.</p>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn">View Menu</a>
+            <a href="#shop-menu" className="btn-outline">Order Eggless</a>
           </div>
-
-          <div className="premium-hero-media">
-            <div className="premium-media-glow"></div>
-            <div className="premium-glass-card">
-              <div className="premium-ribbon-tag">🎂 100% Homemade</div>
-              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80" alt="Premium Special Custom Cake" className="premium-cake-showcase" />
-            </div>
-          </div>
+        </div>
+        <div className="hero-image-wrapper">
+          <img src={getImageUrl('cake_demo.jpeg')} alt="Special Chocolate Fudge Cake decoration" />
         </div>
       </section>
 
