@@ -62,11 +62,33 @@ function Home({ addToCart }) {
       <section className="hero-section">
         <div className="hero-text">
           <div className="hero-badge">✨ Dhangadhi's Finest Artisanal Bakery</div>
-          <h1>Freshly Baked for Your <span>Best Days</span></h1>
-          <p>From grand milestones to unforgettable midnight surprises. We bake happiness for your happiest moments in Dhangadhi.</p>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn">View Menu</a>
-            <a href="#shop-menu" className="btn-outline">Order Eggless</a>
+          <h1>Bespoke Cakes for <span>Every Celebration</span></h1>
+          <p style={{ marginBottom: '1.8rem' }}>Handcrafted wedding, birthday, and celebration cakes designed to make your special moments unforgettable.</p>
+
+          <div className="hero-checklist">
+            <div className="check-item">
+              <svg className="check-icon" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" stroke="currentColor" fill="none" strokeWidth="2.5" />
+              </svg>
+              <span>Custom Designs</span>
+            </div>
+            <div className="check-item">
+              <svg className="check-icon" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" stroke="currentColor" fill="none" strokeWidth="2.5" />
+              </svg>
+              <span>Premium Ingredients</span>
+            </div>
+            <div className="check-item">
+              <svg className="check-icon" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" stroke="currentColor" fill="none" strokeWidth="2.5" />
+              </svg>
+              <span>Made to Order</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '1.2rem' }}>
+            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn" style={{ padding: '0.85rem 2.2rem' }}>Order Now</a>
+            <a href="#shop-menu" className="btn-outline" style={{ padding: '0.85rem 2.2rem' }}>Explore Menu</a>
           </div>
         </div>
         <div className="hero-image-wrapper">
