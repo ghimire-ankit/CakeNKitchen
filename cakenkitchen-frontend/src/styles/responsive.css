@@ -1,19 +1,78 @@
 /* RESPONSIVE MEDIA QUERIES */
 @media (max-width: 992px) {
-  .hero-section { flex-direction: column-reverse; }
-  .hero-text { padding: 3rem 2rem; text-align: center; align-items: center; }
-  .hero-text h1 { font-size: 2.5rem; }
-  .detail-container { grid-template-columns: 1fr; gap: 2.5rem; padding: 2rem; }
-  .cart-layout, .checkout-layout { grid-template-columns: 1fr; }
-  .category-grid { padding: 0 1rem; }
+  .hero-section {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-image-wrapper {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    min-height: 380px;
+  }
+
+  .hero-text {
+    padding: 3rem 2rem;
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .detail-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2rem;
+  }
+
+  .cart-layout,
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .category-grid {
+    padding: 0 1rem;
+  }
 }
+
 @media (max-width: 768px) {
-  .navbar-content { flex-direction: column; gap: 1.5rem; }
-  .nav-links { flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
-  .catalog-toolbar-panel { flex-direction: column; }
-  .checkout-grid { grid-template-columns: 1fr; }
-  .checkout-grid .span-2 { grid-column: span 1; }
-  .cart-item { flex-direction: column; text-align: center; }
-  .cart-item-image { width: 120px; height: 120px; }
-  .cart-item-right { width: 100%; justify-content: space-between; margin-top: 1rem; }
+  .navbar-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .catalog-toolbar-panel {
+    flex-direction: column;
+  }
+
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-grid .span-2 {
+    grid-column: span 1;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cart-item-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .cart-item-right {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
 }
