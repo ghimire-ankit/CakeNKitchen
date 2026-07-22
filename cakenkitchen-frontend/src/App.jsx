@@ -144,7 +144,7 @@ function App() {
       <Navbar user={user} logout={handleLogout} cartCount={cartCount} />
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home addToCart={addToCart} />} />
           <Route path="/cake/:id" element={<CakeDetail addToCart={addToCart} />} />
           <Route
             path="/cart"

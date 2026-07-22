@@ -4,89 +4,90 @@
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 2rem;
-  border-bottom: 2px dashed var(--border);
+  border-bottom: 2px dashed var(--border-light);
   padding-bottom: 0.8rem;
 }
 
 .cakes-section-header h2 {
   font-family: var(--serif);
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--text-dark);
 }
 
 .cakes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2.2rem;
   margin-bottom: 4rem;
 }
 
+/* Glassmorphism Product Card */
 .cake-card {
-  background-color: var(--bg-card);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 32px rgba(61, 44, 42, 0.06);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-soft);
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: visible;
   position: relative;
-  border: 1px solid transparent;
+  padding: 1rem;
 }
 
 .cake-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--border-light);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(61, 44, 42, 0.12);
+  border-color: var(--primary);
 }
 
 .cake-image-container {
-  height: 240px;
+  height: 220px;
   overflow: hidden;
-  border-radius: calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0 0;
+  border-radius: 18px;
   position: relative;
+  box-shadow: 0 4px 15px rgba(61, 44, 42, 0.04);
 }
 
 .cake-image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cake-card:hover .cake-image-container img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
-/* Beautiful ribbon badge */
+/* Overlapping ribbon badge top-left */
 .cake-badge {
   position: absolute;
-  top: 12px;
-  left: -8px;
+  top: 22px;
+  left: 22px;
   background-color: var(--accent);
   color: var(--text-white);
-  font-size: 0.65rem;
-  font-weight: 800;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px 10px 10px 4px;
-  box-shadow: 0 4px 10px rgba(229, 91, 126, 0.4);
+  letter-spacing: 0.5px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(212, 165, 165, 0.3);
+  z-index: 3;
 }
 
-/* Ribbon tail */
-.cake-badge::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  border-width: 3px 4px;
-  border-style: solid;
-  border-color: var(--accent-hover) var(--accent-hover) transparent transparent;
+.cake-badge.badge-hot {
+  background-color: var(--highlight);
+  color: var(--text-dark);
+  box-shadow: 0 4px 12px rgba(251, 209, 75, 0.35);
 }
 
 .cake-card-body {
-  padding: 1.5rem;
+  padding: 1.25rem 0.5rem 0.5rem 0.5rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -94,17 +95,17 @@
 
 .cake-title {
   font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--primary);
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.6rem;
+  line-height: 1.25;
 }
 
 .cake-desc {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--text-light);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
   line-height: 1.6;
   flex-grow: 1;
 }
@@ -114,13 +115,31 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  border-top: 2px dotted var(--border-light);
+  border-top: 1px dotted var(--border-light);
   padding-top: 1rem;
+  gap: 0.8rem;
 }
 
 .cake-price {
   font-family: var(--sans);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: var(--accent);
+  color: var(--text-dark);
+}
+
+/* Micro-interaction animation bounce on cart add */
+@keyframes cardBounce {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.96);
+  }
+}
+
+.cake-card.adding {
+  animation: cardBounce 0.4s ease-in-out;
 }

@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { getImageUrl } from '../utils/imageUtils';
 import { fetchCategories, fetchCakes } from '../services/api';
 
-function Home() {
+function Home({ addToCart }) {
   const [categories, setCategories] = useState([]);
   const [cakes, setCakes] = useState([]);
   const [selectedCat, setSelectedCat] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [addingId, setAddingId] = useState(null);
 
   useEffect(() => {
     const loadCatalog = async () => {
@@ -42,15 +43,17 @@ function Home() {
       result = result.filter(cake => cake.cat_id === selectedCat);
     }
     if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(cake => cake.name.toLowerCase().includes(q) || cake.description.toLowerCase().includes(q));
+      result = result.filter(cake =>
+        cake.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        cake.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
     return result;
   }, [cakes, selectedCat, searchQuery]);
 
   return (
-    <div>
-      {/* Promo Announcement Banner */}
+    <div className="home-container">
+      {/* Top Banner Promotional Strip */}
       <div className="promo-banner">
         <span>🎉 Special Offer: Use code <strong>CAKE10</strong> for 10% off your entire order!</span>
       </div>
@@ -76,7 +79,7 @@ function Home() {
         <div className="prop-item">🚚 <span>Instant Delivery within Hour inside Dhangadhi</span></div>
         <div className="prop-item">🌱 <span>100% Eggless Options</span></div>
         <div className="prop-item">✨ <span>Premium Ingredients</span></div>
-        <div className="prop-item">🎂 <span>Customized Designs</span></div>
+        <div className="prop-item">🎂 <span>Bring Your Vision to Life</span></div>
       </div>
 
       {/* Toolbar / Search */}
@@ -108,7 +111,7 @@ function Home() {
               id="cat-filter-all"
             >
               <img src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=150&auto=format&fit=crop&q=60" alt="All categories" />
-              <h3>All Flavors</h3>
+              <h3>Explore Our Signature Flavors</h3>
             </div>
             {categories.map((cat) => (
               <div
@@ -130,7 +133,7 @@ function Home() {
         <div className="cakes-section-header">
           <h2>{searchQuery ? `Search Results for "${searchQuery}"` : selectedCat === null ? 'Featured Collection' : getCategoryName(selectedCat)}</h2>
           <span style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            {filteredCakes.length} cakes available
+            Our Curated Collection of {filteredCakes.length} Delights
           </span>
         </div>
 
@@ -147,9 +150,10 @@ function Home() {
               let badge = 'Premium';
               if (index === 0 || index === 4) badge = 'Bestseller 🔥';
               if (index === 2) badge = 'Chef Special ⭐';
+              const isAdding = addingId === cake.cake_id;
 
               return (
-                <div className="cake-card" key={cake.cake_id} id={`cake-card-${cake.cake_id}`}>
+                <div className={`cake-card ${isAdding ? 'adding' : ''}`} key={cake.cake_id} id={`cake-card-${cake.cake_id}`}>
                   <div className="cake-image-container">
                     <img src={getImageUrl(cake.image_url)} alt={cake.name} />
                     <span className={`cake-badge ${badge.includes('Bestseller') ? 'badge-hot' : ''}`}>{badge}</span>
@@ -159,13 +163,27 @@ function Home() {
                     <p className="cake-desc">{cake.description}</p>
                     <div className="cake-footer">
                       <span className="cake-price">NPR {cake.base_price}</span>
-                      <Link to={`/cake/${cake.cake_id}`} className="btn-primary" style={{ padding: '0.6rem 1.4rem', fontSize: '0.75rem' }} id={`btn-view-${cake.cake_id}`}>
-                        Customize
-                      </Link>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button
+                          onClick={() => {
+                            if (addToCart) addToCart(cake, 1, '1 lb', '');
+                            setAddingId(cake.cake_id);
+                            setTimeout(() => setAddingId(null), 400);
+                          }}
+                          className="btn-primary"
+                          style={{ padding: '0.6rem 1rem', fontSize: '0.75rem' }}
+                          id={`btn-add-${cake.cake_id}`}
+                        >
+                          Add to Cart
+                        </button>
+                        <Link to={`/cake/${cake.cake_id}`} className="btn-outline" style={{ padding: '0.6rem 1rem', fontSize: '0.75rem' }} id={`btn-view-${cake.cake_id}`}>
+                          Customize
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         )}
