@@ -21,6 +21,25 @@ const pool = mysql.createPool(poolConfig);
 
 const testConnection = async () => {
     try {
+        // Self-Healing DB: Try to create database if it doesn't exist (primarily for clean local XAMPP run setup)
+        try {
+            const tempPoolConfig = { ...poolConfig };
+            delete tempPoolConfig.database;
+            
+            // Check if ssl required for temp connection
+            if (process.env.MYSQL_SSL === 'true') {
+                tempPoolConfig.ssl = { rejectUnauthorized: false };
+            }
+            
+            const tempConn = await mysql.createConnection(tempPoolConfig);
+            await tempConn.query(`CREATE DATABASE IF NOT EXISTS \`${poolConfig.database}\``);
+            await tempConn.end();
+            console.log(`ℹ️ Verified or created database: ${poolConfig.database}`);
+        } catch (dbErr) {
+            // Bypass permission warnings on managed servers (Aiven, Clever Cloud) where database is pre-allocated
+            console.log('ℹ️ Skipped database auto-creation profile check:', dbErr.message);
+        }
+
         const conn = await pool.getConnection();
         console.log('✅ Database connected successfully!');
         conn.release();
