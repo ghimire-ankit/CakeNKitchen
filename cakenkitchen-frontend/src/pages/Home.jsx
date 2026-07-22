@@ -55,30 +55,42 @@ function Home() {
         <span>🎉 Special Offer: Use code <strong>CAKE10</strong> for 10% off your entire order!</span>
       </div>
 
-      {/* Scalloped Confectionery Hero Section */}
-      <div className="hero-scalloped-divider">
-        <svg viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,48 C15,48 30,36 45,36 C60,36 75,48 90,48 C105,48 120,36 135,36 C150,36 165,48 180,48 C195,48 210,36 225,36 C240,36 255,48 270,48 C285,48 300,36 315,36 C330,36 345,48 360,48 C375,48 390,36 405,36 C420,36 435,48 450,48 C465,48 480,36 495,36 C510,36 525,48 540,48 C555,48 570,36 585,36 C600,36 615,48 630,48 C645,48 660,36 675,36 C690,36 705,48 720,48 C735,48 750,36 765,36 C780,36 795,48 810,48 C825,48 840,36 855,36 C870,36 885,48 900,48 C915,48 930,36 945,36 C960,36 975,48 990,48 C1005,48 1020,36 1035,36 C1050,36 1065,48 1080,48 C1095,48 1110,36 1125,36 C1140,36 1155,48 1170,48 C1185,48 1200,36 1215,36 C1230,36 1245,48 1260,48 C1275,48 1290,36 1305,36 C1320,36 1335,48 1350,48 C1365,48 1380,36 1395,36 C1410,36 1425,48 1440,48 L1440,0 L0,0 Z" fill="#ffffff" />
-        </svg>
-      </div>
+      {/* Premium Cake Bakery Hero Section */}
+      <section className="premium-hero-section">
+        {/* Pattern overlay and floating elements */}
+        <div className="premium-pattern-overlay"></div>
+        <div className="floating-cherry cherry-1">🍒</div>
+        <div className="floating-cherry cherry-2">🧁</div>
+        <div className="floating-cherry cherry-3">✨</div>
 
-      <section className="confectionery-hero-section">
-        {/* Left visually rich side */}
-        <div className="confectionery-visual">
-          <div className="floating-price-tag">
-            <span>NPR</span>
-            <strong>250</strong>
+        <div className="premium-hero-container">
+          <div className="premium-hero-content">
+            <span className="premium-hero-badge">✨ Baked with love, delivered with joy.</span>
+            <h1>
+              Pick your <br />
+              <span className="highlight-coral-text">perfect slice</span>
+            </h1>
+            <p>
+              Indulge in our connection of dreamlike, handcrafted gourmet cakes built with premium ingredients. Comfort, celebration, and luxury in every single bite inside Dhangadhi.
+            </p>
+            <div className="premium-hero-actions">
+              <a href="#shop-menu" className="btn-premium-order" id="hero-cta-btn">
+                <span>Order Now</span>
+                <svg viewBox="0 0 24 24" className="btn-premium-arrow-icon" style={{ width: '18px', height: '18px' }}>
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                </svg>
+              </a>
+              <a href="#shop-menu" className="btn-premium-secondary">Explore Menu</a>
+            </div>
           </div>
-          <div className="cutout-image-wrapper">
-            <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=600&auto=format&fit=crop&q=80" alt="Gourmet Confectionery Pink Rose Cupcake" className="confectionery-cupcake" />
-          </div>
-        </div>
 
-        {/* Right content side */}
-        <div className="confectionery-content">
-          <h1>Dessert Shop with Quality Cakes ...</h1>
-          <p>Affordable and delicious treats by CakeNKitchen is a family-owned dessert shop in Dhangadhi. We are passionate about creating delicious and affordable desserts that will make your taste buds sing.</p>
-          <a href="#shop-menu" className="btn-confectionery-purchase" id="hero-cta-btn">Purchase now</a>
+          <div className="premium-hero-media">
+            <div className="premium-media-glow"></div>
+            <div className="premium-glass-card">
+              <div className="premium-ribbon-tag">🎂 100% Homemade</div>
+              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80" alt="Premium Special Custom Cake" className="premium-cake-showcase" />
+            </div>
+          </div>
         </div>
       </section>
 

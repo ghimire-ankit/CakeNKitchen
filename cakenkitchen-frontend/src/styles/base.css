@@ -1,32 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap');
-
-
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary: #4a2e2b;
-  --accent: #d25a81;
-  --accent-hover: #b94268;
-  --bg-main: #fcf9f9; 
+  --primary: #F9A8A4;
+  /* Soft Coral */
+  --secondary: #FDE8E0;
+  /* Blush Cream */
+  --accent: #D4A5A5;
+  /* Dusty Rose */
+  --dark: #3D2C2A;
+  /* Espresso */
+  --highlight: #FBD14B;
+  /* Buttercream Yellow */
+  --bg-main: #FFF8F5;
+  /* Warm White */
+
+  /* Semantic helper mapping */
+  --accent-hover: #e88d89;
   --bg-card: #ffffff;
-  --bg-footer: #2b1716;
-  --bg-light: #fdeded; 
-  
-  --text-dark: #2c1a19;
-  --text-light: #7b6564;
+  --bg-footer: #3D2C2A;
+  --bg-light: #FDE8E0;
+
+  --text-dark: #3D2C2A;
+  --text-light: #7c6260;
   --text-white: #ffffff;
-  
-  --border: #f0dbdb;
-  --border-light: #f7eded;
-  --success: #388e3c;
+
+  --border: rgba(212, 165, 165, 0.4);
+  --border-light: rgba(253, 232, 224, 0.5);
+  --success: #4CAF50;
   --error: #d32f2f;
-  
-  --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  --sans: 'Quicksand', system-ui, sans-serif;
   --serif: 'Playfair Display', Georgia, serif;
-  
-  --shadow-soft: 0 10px 30px rgba(92, 58, 56, 0.04);
-  --shadow-hover: 0 15px 40px rgba(210, 90, 129, 0.12);
-  --radius-card: 20px;
+
+  --shadow-soft: 0 8px 32px rgba(61, 44, 42, 0.08);
+  --shadow-hover: 0 16px 48px rgba(61, 44, 42, 0.15);
+  --radius-card: 24px;
   --radius-btn: 50px;
 }
 
