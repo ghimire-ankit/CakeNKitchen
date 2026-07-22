@@ -2,29 +2,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --primary: #4a2e2b;
-  --accent: #d25a81;
-  --accent-hover: #b94268;
-  --bg-main: #fcf9f9;
+  --primary: #B87C4C;
+  /* Roasted Caramel */
+  --accent: #d4956a;
+  /* Soft Honey */
+  --accent-hover: #a1643c;
+  /* Dark Bronze */
+  --bg-main: #FDFBF7;
+  /* Luminous Ivory */
   --bg-card: #ffffff;
-  --bg-footer: #2b1716;
-  --bg-light: #fdeded;
+  --bg-footer: #2B1B19;
+  /* Deep Cacao */
+  --bg-light: #F5ECE1;
+  /* Creamy Custard Warmth */
 
-  --text-dark: #2c1a19;
-  --text-light: #7b6564;
+  --text-dark: #2B1B19;
+  /* Velvety Cocoa */
+  --text-light: #6E5B59;
+  /* Soft Cinnamon Smoke */
   --text-white: #ffffff;
 
-  --border: #f0dbdb;
-  --border-light: #f7eded;
-  --success: #388e3c;
-  --error: #d32f2f;
+  --border: #E8DFD5;
+  --border-light: #F2EAE0;
+  --success: #6E8E75;
+  --error: #C36A6A;
 
   --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   --serif: 'Playfair Display', Georgia, serif;
 
-  --shadow-soft: 0 10px 30px rgba(92, 58, 56, 0.04);
-  --shadow-hover: 0 15px 40px rgba(210, 90, 129, 0.12);
-  --radius-card: 20px;
+  --shadow-soft: 0 10px 40px rgba(43, 27, 25, 0.03);
+  --shadow-hover: 0 20px 50px rgba(184, 124, 76, 0.12);
+  --radius-card: 28px;
   --radius-btn: 50px;
 }
 
