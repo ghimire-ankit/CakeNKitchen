@@ -8,6 +8,7 @@
     border-left: none;
     border-top: 1px solid var(--border);
     min-height: 380px;
+    padding: 2rem 1.5rem;
   }
 
   .hero-text {

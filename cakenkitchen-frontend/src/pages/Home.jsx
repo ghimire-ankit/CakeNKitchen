@@ -92,7 +92,7 @@ function Home({ addToCart }) {
           </div>
         </div>
         <div className="hero-image-wrapper">
-          <img src="/hands_holdingcake.jpg" alt="Hands holding a beautifully decorated artisanal dessert cake" />
+          <img src="/hero_cake.jpg" alt="Bespoke luxury celebration wedding cake with delicate summer flowers" />
         </div>
       </section>
 
