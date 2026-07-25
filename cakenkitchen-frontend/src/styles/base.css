@@ -57,6 +57,9 @@ body {
   line-height: 1.6;
   font-size: 0.9rem;
   -webkit-font-smoothing: antialiased;
+  border: 18px solid #EAD8B1;
+  /* Warm Gold Page Border Frame */
+  min-height: 100vh;
 }
 
 #root {

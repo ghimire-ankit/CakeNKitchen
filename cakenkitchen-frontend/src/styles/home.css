@@ -1,155 +1,170 @@
-/* HERO SECTION */
+/* HERO BANNER SECTION (Full Bleed Overlay) */
 .hero-section {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  align-items: stretch;
-  background: #E5EAE4;
-  /* Premium Pale Olive Sage */
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(46, 79, 67, 0.05);
-  margin-bottom: 5.5rem;
-  border: 1px solid rgba(46, 79, 67, 0.08);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  width: 100%;
+  background-image: linear-gradient(rgba(28, 46, 38, 0.52), rgba(28, 46, 38, 0.52)), url("/hero_cake.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-align: center;
+  margin-bottom: 0;
+  border: none;
+  border-radius: 0 !important;
 }
 
 .hero-text {
-  padding: 5rem 4rem;
+  max-width: 800px;
+  padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   z-index: 2;
-  background: transparent;
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  align-self: flex-start;
   gap: 0.5rem;
-  background: var(--bg-light);
-  border: 1px solid var(--border);
-  color: var(--text-dark);
-  padding: 0.55rem 1.3rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--accent);
+  color: var(--dark);
+  padding: 0.55rem 1.4rem;
   border-radius: 30px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 2.2rem;
+  margin-bottom: 2rem;
 }
 
 .hero-text h1 {
   font-family: var(--serif);
-  font-size: 3.8rem;
-  font-weight: 800;
-  color: var(--text-dark);
+  font-size: 4.8rem;
+  font-weight: 700;
+  color: #ffffff;
   line-height: 1.15;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   letter-spacing: -0.5px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hero-text h1 span {
-  color: var(--primary);
   font-style: italic;
-  position: relative;
-  display: inline-block;
+  font-weight: 600;
+  color: var(--highlight);
+  /* Gold color highlight! */
 }
 
+/* Eliminate line lines under text in centered mode */
 .hero-text h1 span::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0px;
-  width: 100%;
-  height: 4px;
-  background: var(--primary);
-  border-radius: 2px;
-  opacity: 0.7;
+  display: none;
 }
 
 .hero-text p {
-  color: var(--text-light);
-  font-size: 1.15rem;
-  margin-bottom: 3.2rem;
-  line-height: 1.85;
-  max-width: 520px;
-  font-weight: 500;
+  color: #FAF9F6;
+  font-size: 1.25rem;
+  margin-bottom: 2.8rem;
+  line-height: 1.8;
+  max-width: 620px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  font-weight: 400;
 }
 
-.hero-image-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 480px;
+/* Hero Action Button Overrides */
+.hero-actions {
   display: flex;
+  gap: 1.2rem;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+}
+
+.hero-actions .btn-primary {
+  background: var(--accent);
+  /* Elegant gold orange color */
+  color: var(--text-white) !important;
+  box-shadow: 0 4px 15px rgba(198, 139, 89, 0.3);
+}
+
+.hero-actions .btn-primary:hover {
+  background: #b57a4a;
+  transform: translateY(-2px);
+}
+
+.hero-actions .btn-outline {
+  border: 2px solid #ffffff;
+  color: #ffffff !important;
   background: transparent;
-  padding: 3.5rem 2.8rem;
 }
 
-.hero-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 240px 240px 28px 28px;
-  border: 4px solid var(--secondary);
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+.hero-actions .btn-outline:hover {
+  background: #ffffff;
+  color: var(--primary) !important;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
 }
 
-.hero-image-wrapper:hover img {
-  transform: scale(1.03);
-}
-
-/* Promo Banner */
+/* Promo Banner (Announcement strip at the very top) */
 .promo-banner {
   background: var(--dark);
-  /* Espresso Base Coffee */
   color: var(--secondary);
-  /* Blush Cream text */
   text-align: center;
-  padding: 0.95rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  border-radius: var(--radius-btn);
-  margin-bottom: 2.5rem;
-  box-shadow: 0 4px 15px rgba(61, 44, 42, 0.08);
+  padding: 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 0;
+  margin-bottom: 0;
+  box-shadow: none;
   letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
 }
 
 .promo-banner strong {
   color: var(--highlight);
-  /* Buttercream Yellow */
-  font-weight: 800;
+  font-weight: 700;
 }
 
-/* Value Props Strip */
+/* Value Props Strip (Horizontal Ticker directly in bottom of hero) */
 .value-props-strip {
   display: flex;
-  justify-content: space-between;
-  background: var(--bg-card);
-  padding: 1.5rem 2.5rem;
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-soft);
-  margin-bottom: 4rem;
-  border: 1px dashed var(--border-light);
+  justify-content: space-around;
+  align-items: center;
+  background: #FAF8F5;
+  border-top: 1px solid rgba(46, 79, 67, 0.12);
+  border-bottom: 1px solid rgba(46, 79, 67, 0.12);
+  padding: 1.2rem 2.5rem;
+  margin-bottom: 5.5rem;
+  border-radius: 0;
+  box-shadow: none;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .prop-item {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-weight: 800;
-  font-size: 0.85rem;
+  font-weight: 600;
+  font-size: 0.92rem;
   color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none;
+  letter-spacing: 0px;
+}
+
+/* Restrict Catalog layouts since main padding was removed */
+.catalog-toolbar-panel,
+.cakes-catalog-grid,
+.about-history-block,
+.footer-container {
+  max-width: 1150px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .badge-hot {
@@ -158,37 +173,4 @@
 
 .badge-hot::after {
   border-color: #e64a19 #e64a19 transparent transparent !important;
-}
-
-/* Checklist layout elements */
-.hero-checklist {
-  display: flex;
-  flex-direction: column;
-  gap: 0.95rem;
-  margin-bottom: 2.5rem;
-  margin-top: 0.5rem;
-  align-self: flex-start;
-}
-
-.check-item {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  font-size: 1rem;
-  color: var(--text-light);
-  font-weight: 500;
-}
-
-.check-icon {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: #ffffff;
-  stroke-width: 3;
-  background: var(--dark);
-  border-radius: 50%;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

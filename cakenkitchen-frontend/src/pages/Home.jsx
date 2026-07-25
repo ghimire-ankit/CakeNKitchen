@@ -58,50 +58,25 @@ function Home({ addToCart }) {
         <span>🎉 Special Offer: Use code <strong>CAKE10</strong> for 10% off your entire order!</span>
       </div>
 
-      {/* Clean Premium Artisanal Hero Section */}
+      {/* Centered Overlay Hero Section */}
       <section className="hero-section">
         <div className="hero-text">
-          <div className="hero-badge">✨ Dhangadhi's Finest Artisanal Bakery</div>
-          <h1>Bespoke Cakes for <span>Every Celebration</span></h1>
-          <p style={{ marginBottom: '1.8rem' }}>Handcrafted wedding, birthday, and celebration cakes designed to make your special moments unforgettable.</p>
-
-          <div className="hero-checklist">
-            <div className="check-item">
-              <svg className="check-icon" viewBox="0 0 24 24">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" stroke="currentColor" fill="none" strokeWidth="2.5" />
-              </svg>
-              <span>Custom Designs</span>
-            </div>
-            <div className="check-item">
-              <svg className="check-icon" viewBox="0 0 24 24">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" stroke="currentColor" fill="none" strokeWidth="2.5" />
-              </svg>
-              <span>Premium Ingredients</span>
-            </div>
-            <div className="check-item">
-              <svg className="check-icon" viewBox="0 0 24 24">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" stroke="currentColor" fill="none" strokeWidth="2.5" />
-              </svg>
-              <span>Made to Order</span>
-            </div>
+          <div className="hero-badge">Est. 2024 · Dhangadhi's Finest</div>
+          <h1>Happiness in <span>Every Slice</span></h1>
+          <p>Handcrafted pastries, custom celebration cakes, and delicious desserts baked from scratch daily in Dhangadhi.</p>
+          <div className="hero-actions">
+            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn" style={{ padding: '0.85rem 2.2rem' }}>Explore Menu</a>
+            <a href="#shop-menu" className="btn-outline" style={{ padding: '0.85rem 2.2rem' }}>Custom Orders</a>
           </div>
-
-          <div style={{ display: 'flex', gap: '1.2rem' }}>
-            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn" style={{ padding: '0.85rem 2.2rem' }}>Order Now</a>
-            <a href="#shop-menu" className="btn-outline" style={{ padding: '0.85rem 2.2rem' }}>Explore Menu</a>
-          </div>
-        </div>
-        <div className="hero-image-wrapper">
-          <img src="/hero_cake.jpg" alt="Bespoke luxury celebration wedding cake with delicate summer flowers" />
         </div>
       </section>
 
-      {/* Value Propositions Strip */}
+      {/* Value Propositions Ticker Ribbon */}
       <div className="value-props-strip">
-        <div className="prop-item">🚚 <span>Instant Delivery within Hour inside Dhangadhi</span></div>
-        <div className="prop-item">🌱 <span>100% Eggless Options</span></div>
-        <div className="prop-item">✨ <span>Premium Ingredients</span></div>
-        <div className="prop-item">🎂 <span>Bring Your Vision to Life</span></div>
+        <div className="prop-item">🥐 <span>Fresh Baked Cookies - 7AM Daily</span></div>
+        <div className="prop-item">🎂 <span>Premium Custom Designs - order 24h ahead</span></div>
+        <div className="prop-item">🌱 <span>100% Eggless Variants Available</span></div>
+        <div className="prop-item">🚚 <span>Instant Delivery inside Dhangadhi</span></div>
       </div>
 
       {/* Toolbar / Search */}
