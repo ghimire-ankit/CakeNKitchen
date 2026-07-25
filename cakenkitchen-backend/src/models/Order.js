@@ -6,9 +6,9 @@ class Order {
         try {
             await conn.beginTransaction();
 
-            const { 
-                customer_name, email, phone, address, delivery_date, 
-                delivery_time, notes, payment_method, delivery_type, total, items 
+            const {
+                customer_name, email, phone, address, delivery_date,
+                delivery_time, notes, payment_method, delivery_type, items
             } = orderData;
 
             // 1. Check if user exists by email, if not create a stub user
@@ -24,36 +24,67 @@ class Order {
                 user_id = userRes.insertId;
             }
 
-            // 2. Insert Order
-            // Wait, our DB schema doesn't have customer_name, email, phone, payment_method, delivery_type on the orders table directly?
-            // Let's check schema.sql or db.js.
-            // In db.js: user_id, status, total, delivery_date, delivery_address, delivery_time, notes
-            // I should alter the table if payment_method and delivery_type are missing, or store them in notes for now to avoid schema changes.
-            // Actually, we can alter the table right here or in db.js. Let's just add them if they don't exist, or safely ignore and put in notes.
-            // Let's put payment_method and delivery_type in notes for simplicity without breaking schema.
-            const enhancedNotes = `Payment: ${payment_method} | Type: ${delivery_type} | ${notes || ''}`;
+            // 2. Perform zero-trust server-side price validation
+            let calculatedTotal = 0;
+            const itemsWithPrices = [];
 
+            for (let item of items) {
+                const cake_id = item.cake_id || 1;
+                const qty = parseInt(item.qty) || 1;
+                const weight = parseInt(item.size) || 1;
+
+                // Query database directly to secure prices config
+                const [cakeRows] = await conn.query(
+                    'SELECT base_price FROM cakes WHERE cake_id = ?',
+                    [cake_id]
+                );
+
+                if (cakeRows.length === 0) {
+                    throw new Error(`Product not found: ${cake_id}`);
+                }
+
+                // NPR Cake pricing = base price * weight factor (assuming 1 NPR base pricing multiplier per lbs)
+                const authoritativePrice = parseFloat(cakeRows[0].base_price);
+                const itemPrice = authoritativePrice * weight;
+                const itemSubtotal = itemPrice * qty;
+
+                calculatedTotal += itemSubtotal;
+                itemsWithPrices.push({
+                    cake_id,
+                    qty,
+                    weight_lbs: weight,
+                    purchase_price: itemPrice,
+                    subtotal: itemSubtotal,
+                    message: item.message || null
+                });
+            }
+
+            // 3. Insert Order Record utilizing calculated totals only
+            const enhancedNotes = `Payment: ${payment_method} | Type: ${delivery_type} | ${notes || ''}`;
             const [orderRes] = await conn.query(
                 'INSERT INTO orders (user_id, status, total, delivery_date, delivery_address, delivery_time, notes) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                [user_id, 'Pending', total, delivery_date, address, delivery_time, enhancedNotes]
+                [user_id, 'Pending', calculatedTotal, delivery_date, address, delivery_time, enhancedNotes]
             );
             const order_id = orderRes.insertId;
 
-            // 3. Insert Items
-            for (let item of items) {
-                // schema: order_id, cake_id, qty, weight_lbs, purchase_price, subtotal, message
-                const cake_id = item.cake_id || 1; // fallback if not provided
-                const weight = parseInt(item.size) || 1;
+            // 4. Write verified items to DB
+            for (let validatedItem of itemsWithPrices) {
                 await conn.query(
                     'INSERT INTO order_items (order_id, cake_id, qty, weight_lbs, purchase_price, subtotal, message) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                    [order_id, cake_id, item.qty, weight, item.price, item.price * item.qty, item.message || null]
+                    [
+                        order_id,
+                        validatedItem.cake_id,
+                        validatedItem.qty,
+                        validatedItem.weight_lbs,
+                        validatedItem.purchase_price,
+                        validatedItem.subtotal,
+                        validatedItem.message
+                    ]
                 );
             }
 
             await conn.commit();
-            
-            // Re-fetch the fully formed order for the frontend
-            return { order_id, status: 'Pending', total, created_at: new Date().toISOString() };
+            return { order_id, status: 'Pending', total: calculatedTotal, created_at: new Date().toISOString() };
         } catch (err) {
             await conn.rollback();
             throw err;
@@ -71,7 +102,7 @@ class Order {
                 LEFT JOIN users u ON o.user_id = u.user_id 
                 ORDER BY o.order_id DESC
             `);
-            
+
             // Fetch items for each
             for (let order of rows) {
                 const [items] = await pool.query(`

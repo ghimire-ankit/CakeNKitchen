@@ -25,12 +25,12 @@ const testConnection = async () => {
         try {
             const tempPoolConfig = { ...poolConfig };
             delete tempPoolConfig.database;
-            
+
             // Check if ssl required for temp connection
             if (process.env.MYSQL_SSL === 'true') {
                 tempPoolConfig.ssl = { rejectUnauthorized: false };
             }
-            
+
             const tempConn = await mysql.createConnection(tempPoolConfig);
             await tempConn.query(`CREATE DATABASE IF NOT EXISTS \`${poolConfig.database}\``);
             await tempConn.end();
@@ -92,7 +92,7 @@ const initializeDatabaseSchema = async () => {
                 FOREIGN KEY (cat_id) REFERENCES categories(cat_id) ON DELETE RESTRICT
             ) ENGINE=InnoDB
         `);
-        
+
         try { await pool.query('ALTER TABLE cakes MODIFY image_url LONGTEXT NULL'); } catch (e) { }
 
         // 4. Create Orders Table
@@ -126,26 +126,28 @@ const initializeDatabaseSchema = async () => {
                 FOREIGN KEY (cake_id) REFERENCES cakes(cake_id) ON DELETE RESTRICT
             ) ENGINE=InnoDB
         `);
-        
+
         try { await pool.query('ALTER TABLE order_items ADD COLUMN message VARCHAR(255) NULL'); } catch (e) { }
 
         console.log('✅ Database tables verified and created successfully!');
 
-        // 6. Seed Default Admin User if missing
-        const [adminCheck] = await pool.query("SELECT COUNT(*) as count FROM users WHERE email = 'admin@cakenkitchen.com'");
-        const adminHash = '$2b$10$NaAxlClTKnQ2ozmfg0F/quYMzc25E8lgCOnxOpfKU8PPyf3xWJxsi'; // hashes to 'admin123'
+        // 6. Seed Default Admin User if env configuration is present (Zero Hardcoding)
+        const adminEmail = process.env.ADMIN_EMAIL || 'admin@cakenkitchen.com';
+        const adminHash = process.env.ADMIN_PASSWORD_HASH || '$2b$10$NaAxlClTKnQ2ozmfg0F/quYMzc25E8lgCOnxOpfKU8PPyf3xWJxsi'; // defaults to admin123 hash ONLY if env unset
+
+        const [adminCheck] = await pool.query("SELECT COUNT(*) as count FROM users WHERE email = ?", [adminEmail]);
         if (adminCheck[0].count === 0) {
             console.log('🔄 Seeding default admin user...');
             await pool.query(`
                 INSERT INTO users (name, email, phone, password_hash, role) VALUES
-                ('Bakery Administrator', 'admin@cakenkitchen.com', '9801112223', ?, 'admin')
-            `, [adminHash]);
+                ('Bakery Administrator', ?, '9801112223', ?, 'admin')
+            `, [adminEmail, adminHash]);
             console.log('✅ Default admin user seeded successfully!');
         } else {
             console.log('ℹ️ Admin user already exists. Force updating password hash to ensure correctness...');
             await pool.query(`
-                UPDATE users SET password_hash = ?, role = 'admin', name = 'Bakery Administrator' WHERE email = 'admin@cakenkitchen.com'
-            `, [adminHash]);
+                UPDATE users SET password_hash = ?, role = 'admin', name = 'Bakery Administrator' WHERE email = ?
+            `, [adminHash, adminEmail]);
             console.log('✅ Admin credentials updated and synced successfully!');
         }
     } catch (error) {
