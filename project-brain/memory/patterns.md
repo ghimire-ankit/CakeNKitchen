@@ -1,13 +1,15 @@
 # Memory Domain - Design Patterns & Guidelines
 
 ## Color Palette Tokens (`base.css`)
-*   `--primary`: `#F9A8A4` (Soft Coral / main brand highlight)
-*   `--secondary`: `#FDE8E0` (Blush Cream / soft background elements)
-*   `--accent`: `#D4A5A5` (Dusty Red / muted rose highlights)
-*   `--dark`: `#3D2C2A` (Espresso / high-readability text contrast)
-*   `--highlight`: `#FBD14B` (Buttercream / badge highlights)
-*   `--bg-main`: `#FFF8F5` (Warm Cream background backdrop)
-*   `--bg-card`: `rgba(255, 255, 255, 0.35)` (Glassmorphic cards)
+*   `--primary`: `#2E4F43` (Forest Olive Sage / main brand highlight)
+*   `--secondary`: `#F5F2EB` (Warm Linen Cream / soft background elements)
+*   `--accent`: `#C68B59` (Champagne Caramel / soft brown highlights)
+*   `--dark`: `#2C1B18` (Espresso Truffle / high-readability text contrast)
+*   `--highlight`: `#E1B15B` (Artisanal Buttercream Gold)
+*   `--bg-main`: `#FAF9F6` (Minimal Linen Off-white)
+*   `--bg-card`: `rgba(255, 255, 255, 0.75)` (Glassmorphic cards)
+*   `--bg-footer`: `#1C2E26` (Deep Forest Silt)
+*   `--bg-light`: `#F0ECE1` (Earthy Soft Clay)
 
 ## Typography
 *   Premium Headings: **Playfair Display** (Serif) for high-end boutique editorial feel.

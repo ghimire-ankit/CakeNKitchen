@@ -21,15 +21,15 @@
 
 /* BUTTONS (Plush, Pill-shaped, Gorgeous) */
 .btn-primary {
-  background: linear-gradient(135deg, #F9A8A4, #FDE8E0);
-  color: var(--dark) !important;
+  background: var(--primary);
+  color: var(--text-white) !important;
   border: none;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(249, 168, 164, 0.45);
+  box-shadow: 0 8px 25px rgba(46, 79, 67, 0.25);
 }
 
 .btn-secondary {
@@ -41,30 +41,30 @@
 .btn-secondary:hover {
   background-color: var(--bg-main);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(92, 58, 56, 0.1);
+  box-shadow: 0 8px 25px rgba(46, 79, 67, 0.1);
 }
 
 .btn-accent {
-  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-  color: var(--text-white);
+  background: var(--accent);
+  color: var(--text-white) !important;
   border: none;
 }
 
 .btn-accent:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 8px 25px rgba(198, 139, 89, 0.25);
 }
 
 .btn-outline {
   background: transparent;
-  color: var(--accent);
-  border: 2px solid var(--accent);
+  color: var(--primary);
+  border: 2px solid var(--primary);
 }
 
 .btn-outline:hover {
-  background: var(--accent);
-  color: var(--text-white);
-  box-shadow: var(--shadow-hover);
+  background: var(--primary);
+  color: var(--text-white) !important;
+  box-shadow: 0 8px 25px rgba(46, 79, 67, 0.25);
 }
 
 .btn-block {
