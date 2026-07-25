@@ -68,7 +68,7 @@
   position: absolute;
   top: 22px;
   left: 22px;
-  background-color: var(--accent);
+  background-color: var(--tag-accent);
   color: var(--text-white);
   font-size: 0.7rem;
   font-weight: 700;
@@ -76,14 +76,14 @@
   letter-spacing: 0.5px;
   padding: 0.45rem 0.9rem;
   border-radius: 30px;
-  box-shadow: 0 4px 12px rgba(212, 165, 165, 0.3);
+  box-shadow: 0 4px 12px rgba(140, 47, 57, 0.3);
   z-index: 3;
 }
 
 .cake-badge.badge-hot {
-  background-color: var(--highlight);
-  color: var(--text-dark);
-  box-shadow: 0 4px 12px rgba(251, 209, 75, 0.35);
+  background-color: var(--tag-accent);
+  color: var(--text-white);
+  box-shadow: 0 4px 12px rgba(140, 47, 57, 0.3);
 }
 
 .cake-card-body {

@@ -1,7 +1,6 @@
-/* FOOTER */
 footer.footer-container {
   background-color: var(--bg-footer);
-  color: #EEDCDC;
+  color: var(--secondary);
   padding: 4rem 2rem 2rem;
   position: relative;
   margin-top: 4rem;
@@ -38,7 +37,7 @@ footer.footer-container::before {
 .footer-section p {
   font-size: 0.85rem;
   line-height: 1.8;
-  color: #D3B9B9;
+  color: var(--text-light);
 }
 
 .footer-section ul {
@@ -50,7 +49,7 @@ footer.footer-container::before {
 }
 
 .footer-section ul li a {
-  color: #D3B9B9;
+  color: var(--text-light);
   text-decoration: none;
   font-size: 0.85rem;
   transition: color 0.2s, padding-left 0.2s;
@@ -70,7 +69,7 @@ footer.footer-container::before {
   text-align: center;
   font-size: 0.8rem;
   letter-spacing: 0.5px;
-  color: #A68B8B;
+  color: var(--text-light);
 }
 
 /* Interactive Pastel Newsletter Signup in Footer */
@@ -93,7 +92,7 @@ footer.footer-container::before {
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  color: var(--text-white);
   font-family: var(--sans);
   font-size: 0.85rem;
   outline: none;

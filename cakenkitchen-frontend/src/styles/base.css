@@ -1,40 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary: #2E4F43;
-  /* Forest Olive Sage */
-  --secondary: #F5F2EB;
-  /* Warm Linen Cream */
-  --accent: #C68B59;
-  /* Champagne Caramel */
-  --dark: #2C1B18;
-  /* Espresso Truffle */
-  --highlight: #E1B15B;
-  /* Buttercream Gold */
-  --bg-main: #FAF9F6;
-  /* Minimal Linen Off-white */
+  --primary: #2B1B14;
+  /* Espresso Brown - nav, footer, headings */
+  --secondary: #FBF6EF;
+  /* Warm Ivory - main background */
+  --accent: #C68B3F;
+  /* Caramel Gold - buttons, CTAs, links */
+  --highlight: #E3B04B;
+  /* Buttercream Gold - hover states, small accents */
+  --dark: #2B1B14;
+  /* same as primary, body text */
+  --bg-main: #FBF6EF;
+  --bg-footer: #2B1B14;
+  --text-dark: #2B1B14;
+  --text-light: #6B5B52;
+  /* Warm Taupe - secondary/muted text */
+  --text-white: #FFFFFF;
+  --tag-accent: #8C2F39;
+  /* Deep Berry Wine */
 
   /* Semantic helper mapping */
   --bg-card: rgba(255, 255, 255, 0.75);
-  --bg-footer: #1C2E26;
-  /* Deep Forest Silt */
-  --bg-light: #F0ECE1;
-  /* Earthy Soft Clay */
+  --bg-light: #FBF6EF;
 
-  --text-dark: #2C1B18;
-  --text-light: #5C4D4A;
-  --text-white: #ffffff;
-
-  --border: rgba(46, 79, 67, 0.1);
-  --border-light: rgba(46, 79, 67, 0.06);
+  --border: rgba(43, 27, 20, 0.1);
+  --border-light: rgba(43, 27, 20, 0.06);
   --success: #6E8E75;
   --error: #C36A6A;
 
   --sans: 'Quicksand', system-ui, sans-serif;
   --serif: 'Playfair Display', Georgia, serif;
 
-  --shadow-soft: 0 8px 32px rgba(61, 44, 42, 0.08);
-  --shadow-hover: 0 16px 48px rgba(61, 44, 42, 0.15);
+  --shadow-soft: 0 8px 32px rgba(43, 27, 20, 0.08);
+  --shadow-hover: 0 16px 48px rgba(43, 27, 20, 0.15);
   --radius-card: 24px;
   --radius-btn: 50px;
 }

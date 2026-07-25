@@ -196,9 +196,9 @@
 }
 
 .badge-hot {
-  background-color: #ff5722 !important;
+  background-color: var(--tag-accent) !important;
 }
 
 .badge-hot::after {
-  border-color: #e64a19 #e64a19 transparent transparent !important;
+  border-color: var(--tag-accent) var(--tag-accent) transparent transparent !important;
 }
