@@ -1,0 +1,17 @@
+[
+    {
+        "from": "apiClient",
+        "to": "server",
+        "rel": "HTTP_API_CALL"
+    },
+    {
+        "from": "server",
+        "to": "authMiddleware",
+        "rel": "MIDDLEWARE_USE"
+    },
+    {
+        "from": "catalogController",
+        "to": "db",
+        "rel": "DB_QUERY"
+    }
+]

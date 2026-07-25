@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    { "id": "server", "label": "Express API Server Endpoint", "type": "backend" },
+    { "id": "db", "label": "MySQL Connection Pool PoolConfig", "type": "database" },
+    { "id": "authMiddleware", "label": "JWT Authorize Guards", "type": "middleware" },
+    { "id": "catalogController", "label": "Catalog CatalogController Operations", "type": "controller" },
+    { "id": "apiClient", "label": "Axios Auth Interceptors", "type": "frontend-api" },
+    { "id": "homePage", "label": "Home Section UI Views", "type": "frontend-page" }
+  ],
+  "edges": [
+    { "source": "server", "target": "authMiddleware" },
+    { "source": "server", "target": "catalogController" },
+    { "source": "catalogController", "target": "db" },
+    { "source": "apiClient", "target": "server" },
+    { "source": "homePage", "target": "apiClient" }
+  ]
+}

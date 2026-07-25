@@ -1,0 +1,26 @@
+[
+    {
+        "id": "server",
+        "path": "cakenkitchen-backend/server.js"
+    },
+    {
+        "id": "db",
+        "path": "cakenkitchen-backend/src/config/db.js"
+    },
+    {
+        "id": "authMiddleware",
+        "path": "cakenkitchen-backend/src/middleware/auth.js"
+    },
+    {
+        "id": "catalogController",
+        "path": "cakenkitchen-backend/src/controllers/catalogController.js"
+    },
+    {
+        "id": "apiClient",
+        "path": "cakenkitchen-frontend/src/services/api.js"
+    },
+    {
+        "id": "homePage",
+        "path": "cakenkitchen-frontend/src/pages/Home.jsx"
+    }
+]
