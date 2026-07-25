@@ -1,9 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Navbar({ user, logout, cartCount }) {
   const navigate = useNavigate();
   const [logoFailed, setLogoFailed] = useState(false);
+  const [timeStr, setTimeStr] = useState('');
+
+  useEffect(() => {
+    const updateClock = () => {
+      try {
+        const options = {
+          timeZone: 'Asia/Kathmandu',
+          weekday: 'long',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        setTimeStr(formatter.format(new Date()));
+      } catch (e) {
+        // Fallback if client lacks Intl TZ database
+        setTimeStr(new Date().toLocaleTimeString());
+      }
+    };
+
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header className="navbar-container">
@@ -48,6 +73,11 @@ function Navbar({ user, logout, cartCount }) {
               <Link to="/register" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.75rem' }} id="nav-signup">Sign Up</Link>
             </>
           )}
+
+          {/* Real-time green Nepal clock */}
+          <div className="nepal-clock" id="nepal-time-clock" style={{ marginLeft: '0.5rem' }}>
+            🟢 {timeStr}
+          </div>
         </nav>
       </div>
     </header>
