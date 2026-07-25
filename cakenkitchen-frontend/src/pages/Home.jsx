@@ -23,7 +23,17 @@ function Home({ addToCart }) {
           setCakes(cakeRes.data || []);
         }
       } catch (err) {
-        console.error('Error fetching catalog data:', err);
+        console.error('Error fetching catalog data, using local fallback:', err);
+        setCategories([
+          { cat_id: 1, name: 'Tiered Wedding Cakes', description: 'Multi-layered custom elegant structures for weddings.', image_url: 'Anniversary.jpeg' },
+          { cat_id: 2, name: 'Premium Chocolate Series', description: 'Rich, deep Dutch-process cocoa variants and ganache.', image_url: 'snow_birthday_cake.jpeg' },
+          { cat_id: 3, name: 'Fresh Fruit Delights', description: 'Light sponge blocks layered with organic seasonal fruits.', image_url: 'Baby_shower.jpeg' }
+        ]);
+        setCakes([
+          { cake_id: 1, name: 'Classic Rose Anniversary', description: 'Double-tiered red velvet sponge with elegant white buttercream piping.', base_price: 1200.00, cat_id: 1, image_url: 'Anniversary.jpeg', is_available: true },
+          { cake_id: 5, name: 'Midnight Snow Birthday Cake', description: 'Rich chocolate cake with white snowflake frosting highlights.', base_price: 900.00, cat_id: 2, image_url: 'snow_birthday_cake.jpeg', is_available: true },
+          { cake_id: 9, name: 'Royal Baby Shower Dream', description: 'Light and fluffy strawberry card layers decorated with blue/pink cloud frosting.', base_price: 1350.00, cat_id: 3, image_url: 'Baby_shower.jpeg', is_available: true }
+        ]);
       } finally {
         setLoading(false);
       }

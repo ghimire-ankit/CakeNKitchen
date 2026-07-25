@@ -50,15 +50,8 @@ export const fetchCategories = async () => {
     const response = await api.get('/categories');
     return response.data;
   } catch (error) {
-    console.warn('API error fetching categories, using fallback mock data:', error);
-    return {
-      success: true,
-      data: [
-        { cat_id: 1, name: 'Tiered Wedding Cakes', description: 'Multi-layered custom elegant structures for weddings.', image_url: 'https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=500&auto=format&fit=crop&q=60' },
-        { cat_id: 2, name: 'Premium Chocolate Series', description: 'Rich, deep Dutch-process cocoa variants and ganache.', image_url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=60' },
-        { cat_id: 3, name: 'Fresh Fruit Delights', description: 'Light sponge blocks layered with organic seasonal fruits.', image_url: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&auto=format&fit=crop&q=60' }
-      ]
-    };
+    console.error('API error fetching categories:', error);
+    throw error;
   }
 };
 
@@ -68,11 +61,8 @@ export const fetchCakes = async (catId = null) => {
     const response = await api.get(url);
     return response.data;
   } catch (error) {
-    console.warn('API error fetching cakes, using fallback mock data:', error);
-    if (catId) {
-      return { success: false, data: [] };
-    }
-    return { success: false, data: [] };
+    console.error('API error fetching cakes:', error);
+    throw error;
   }
 };
 
@@ -81,8 +71,8 @@ export const fetchCakeById = async (id) => {
     const response = await api.get(`/cakes/${id}`);
     return response.data;
   } catch (error) {
-    console.warn('API error fetching cake by ID:', error);
-    return { success: false, data: null };
+    console.error('API error fetching cake by ID:', error);
+    throw error;
   }
 };
 
