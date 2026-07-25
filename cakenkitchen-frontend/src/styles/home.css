@@ -1,27 +1,26 @@
-/* HERO BANNER SECTION (Full Bleed Overlay) */
+/* HERO SECTION (Dual Column Split Layout with Leaf-Shape Image) */
 .hero-section {
-  position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  width: 100%;
-  background-image: linear-gradient(rgba(28, 46, 38, 0.52), rgba(28, 46, 38, 0.52)), url("/hero_cake.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  text-align: center;
-  margin-bottom: 0;
+  background: transparent;
+  margin-bottom: 3.5rem;
   border: none;
-  border-radius: 0 !important;
+  max-width: 1150px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 3.5rem;
+  padding: 3rem 0;
+  position: relative;
 }
 
 .hero-text {
-  max-width: 800px;
-  padding: 4rem 2rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  text-align: left;
   justify-content: center;
   z-index: 2;
 }
@@ -30,81 +29,108 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid var(--accent);
-  color: var(--dark);
+  background: rgba(46, 79, 67, 0.06);
+  border: 1px solid rgba(46, 79, 67, 0.15);
+  color: var(--primary);
   padding: 0.55rem 1.4rem;
   border-radius: 30px;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
+  align-self: flex-start;
 }
 
 .hero-text h1 {
   font-family: var(--serif);
-  font-size: 4.8rem;
+  font-size: 4rem;
   font-weight: 700;
-  color: #ffffff;
-  line-height: 1.15;
+  color: var(--dark);
+  line-height: 1.12;
   margin-bottom: 1.5rem;
   letter-spacing: -0.5px;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hero-text h1 span {
-  font-style: italic;
-  font-weight: 600;
-  color: var(--highlight);
-  /* Gold color highlight! */
-}
-
-/* Eliminate line lines under text in centered mode */
-.hero-text h1 span::after {
-  display: none;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--accent);
+  /* Champagne Caramel Gold highlight! */
 }
 
 .hero-text p {
-  color: #FAF9F6;
-  font-size: 1.25rem;
-  margin-bottom: 2.8rem;
-  line-height: 1.8;
-  max-width: 620px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  font-weight: 400;
+  color: var(--text-light);
+  font-size: 1.15rem;
+  margin-bottom: 2.6rem;
+  line-height: 1.75;
+  max-width: 520px;
+  font-weight: 500;
 }
 
 /* Hero Action Button Overrides */
 .hero-actions {
   display: flex;
   gap: 1.2rem;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  width: 100%;
 }
 
 .hero-actions .btn-primary {
-  background: var(--accent);
-  /* Elegant gold orange color */
+  background: var(--dark);
+  /* Premium Truffle Espresso */
   color: var(--text-white) !important;
-  box-shadow: 0 4px 15px rgba(198, 139, 89, 0.3);
+  box-shadow: 0 8px 25px rgba(44, 27, 24, 0.2);
 }
 
 .hero-actions .btn-primary:hover {
-  background: #b57a4a;
+  background: var(--primary);
   transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(46, 79, 67, 0.25);
 }
 
 .hero-actions .btn-outline {
-  border: 2px solid #ffffff;
-  color: #ffffff !important;
+  border: 2px solid var(--primary);
+  color: var(--primary) !important;
   background: transparent;
 }
 
 .hero-actions .btn-outline:hover {
-  background: #ffffff;
-  color: var(--primary) !important;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  background: var(--primary);
+  color: var(--text-white) !important;
+  box-shadow: 0 8px 25px rgba(46, 79, 67, 0.25);
+}
+
+/* Asymmetric Leaf Shaped Image Wrapper */
+.hero-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: transparent;
+}
+
+.hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 260px 24px 260px 24px;
+  /* Organic leaf-shape backdrop */
+  border: 1px solid rgba(46, 79, 67, 0.12);
+  box-shadow: var(--shadow-hover);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-image-wrapper:hover img {
+  transform: scale(1.02);
+  border-radius: 24px 260px 24px 260px;
+  /* Interactive hover shape morphing! */
 }
 
 /* Promo Banner (Announcement strip at the very top) */
@@ -128,21 +154,23 @@
   font-weight: 700;
 }
 
-/* Value Props Strip (Horizontal Ticker directly in bottom of hero) */
+/* Value Props Strip (Horizontal Ticker Ribbon) */
 .value-props-strip {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  background: #FAF8F5;
-  border-top: 1px solid rgba(46, 79, 67, 0.12);
-  border-bottom: 1px solid rgba(46, 79, 67, 0.12);
-  padding: 1.2rem 2.5rem;
-  margin-bottom: 5.5rem;
-  border-radius: 0;
-  box-shadow: none;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 1.5rem 2.5rem;
+  margin-bottom: 4.5rem;
+  box-shadow: var(--shadow-soft);
   flex-wrap: wrap;
   gap: 1.5rem;
-  width: 100%;
+  max-width: 1150px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .prop-item {

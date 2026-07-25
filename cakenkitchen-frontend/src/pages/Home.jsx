@@ -58,16 +58,19 @@ function Home({ addToCart }) {
         <span>🎉 Special Offer: Use code <strong>CAKE10</strong> for 10% off your entire order!</span>
       </div>
 
-      {/* Centered Overlay Hero Section */}
+      {/* Organic Leaf-Backdrop Hero Section */}
       <section className="hero-section">
         <div className="hero-text">
           <div className="hero-badge">Est. 2024 · Dhangadhi's Finest</div>
           <h1>Happiness in <span>Every Slice</span></h1>
           <p>Handcrafted pastries, custom celebration cakes, and delicious desserts baked from scratch daily in Dhangadhi.</p>
           <div className="hero-actions">
-            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn" style={{ padding: '0.85rem 2.2rem' }}>Explore Menu</a>
-            <a href="#shop-menu" className="btn-outline" style={{ padding: '0.85rem 2.2rem' }}>Custom Orders</a>
+            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn" style={{ padding: '0.85rem 2.2rem' }}>Order Now</a>
+            <a href="#shop-menu" className="btn-outline" style={{ padding: '0.85rem 2.2rem' }}>Explore Menu</a>
           </div>
+        </div>
+        <div className="hero-image-wrapper">
+          <img src="/hero_cake.jpg" alt="Exquisite layered celebration cake decorated with gold leaf accents and roses" />
         </div>
       </section>
 

@@ -1,15 +1,31 @@
-/* RESPONSIVE MEDIA QUERIES */
 @media (max-width: 992px) {
   .hero-section {
-    min-height: 65vh;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2rem 0;
+    text-align: center;
   }
 
   .hero-text {
-    padding: 4rem 1.5rem;
+    align-items: center;
+    text-align: center;
   }
 
   .hero-text h1 {
     font-size: 3.2rem;
+    text-align: center;
+  }
+
+  .hero-text p {
+    text-align: center;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-image-wrapper {
+    min-height: 380px;
   }
 
   .detail-container {
