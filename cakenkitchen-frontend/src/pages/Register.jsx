@@ -1,12 +1,51 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/api';
+import { registerUser, loginGoogle } from '../services/api';
 
-function Register() {
+function Register({ onLogin }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '' });
   const [msg, setMsg] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const initGoogle = () => {
+      if (!active) return;
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.initialize({
+          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || "1019688537554-mockclientid123.apps.googleusercontent.com",
+          callback: handleGoogleSuccess,
+        });
+        window.google.accounts.id.renderButton(
+          document.getElementById("google-signup-btn"),
+          { theme: "outline", size: "large", width: 376, text: "signup_with" }
+        );
+      } else {
+        setTimeout(initGoogle, 200);
+      }
+    };
+    initGoogle();
+    return () => { active = false; };
+  }, []);
+
+  const handleGoogleSuccess = async (response) => {
+    setMsg({ text: '', type: '' });
+    setLoading(true);
+    try {
+      const res = await loginGoogle({ token: response.credential });
+      setMsg({ text: 'Registered and logged in with Google successfully!', type: 'success' });
+      if (onLogin) {
+        onLogin(res.data);
+      }
+      setTimeout(() => navigate('/'), 1000);
+    } catch (err) {
+      const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' || err.message === 'Network Error' ? 'Backend server is offline. Please run the server to register.' : err.message) || 'Google SignUp failed.';
+      setMsg({ text: errorText, type: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +76,14 @@ function Register() {
           {msg.text}
         </div>
       )}
+
+      {/* Google Button Container */}
+      <div className="google-auth-wrap">
+        <div id="google-signup-btn"></div>
+        <div className="auth-divider">
+          <span>or sign up with email</span>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">

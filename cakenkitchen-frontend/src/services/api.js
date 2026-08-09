@@ -45,6 +45,17 @@ export const loginUser = async (credentials) => {
   }
 };
 
+// Login/Register with Google
+export const loginGoogle = async (tokenData) => {
+  try {
+    const response = await api.post('/auth/google', tokenData);
+    return response.data;
+  } catch (error) {
+    console.error('Google auth error:', error);
+    throw error;
+  }
+};
+
 export const fetchCategories = async () => {
   try {
     const response = await api.get('/categories');
