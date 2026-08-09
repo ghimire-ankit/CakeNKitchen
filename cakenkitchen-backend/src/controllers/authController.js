@@ -75,9 +75,9 @@ const googleLogin = async (req, res) => {
         // Bypass Google external verification if it's the local mock developer token
         if (token === 'mock_google_id_token_123') {
             payload = {
-                email: 'mock_google_user@gmail.com',
-                name: 'Mock Google Explorer',
-                sub: '1019688537554mocksub123'
+                email: req.body.mockEmail || 'mock_google_user@gmail.com',
+                name: req.body.mockName || 'Mock Google Explorer',
+                sub: req.body.mockSub || '1019688537554mocksub123'
             };
         } else {
             // Verify key integrity using Google's cloud auth profile API
