@@ -8,12 +8,8 @@ function Footer() {
 
         {/* Brand Column */}
         <div className="foot-brand">
-          <Link to="/" className="foot-logo">
-            <div className="foot-logo-icon">C<span>K</span></div>
-            <div>
-              <span className="foot-logo-name">Cake & Kitchen</span>
-              <span className="foot-logo-tag">Artisan Patisserie · Dhangadhi</span>
-            </div>
+          <Link to="/" className="foot-logo" style={{ display: 'inline-block', margin: '0' }}>
+            <img src="/logo.png" alt="Cake & Kitchen Logo" style={{ height: '56px', objectFit: 'contain', filter: 'brightness(0) invert(1) opacity(0.85)' }} />
           </Link>
           <p className="foot-desc">
             Handcrafted cakes and pastries made fresh every morning from organic, locally-sourced ingredients. Your celebration deserves nothing less.

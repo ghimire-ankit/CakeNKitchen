@@ -1,0 +1,3 @@
+This folder holds real cake image JPG/PNG assets provided by the bakery owner.
+You can place your (.jpg / .png / .webp) cake images here, and then reference them in the application database or Admin portal using:
+http://localhost:3000/uploads/your_cake_image.jpg

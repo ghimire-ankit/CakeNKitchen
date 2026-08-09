@@ -49,11 +49,7 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
 
           {/* Logo */}
           <Link to="/" className="nav-logo" id="nav-logo">
-            <div className="logo-icon">C<span>K</span></div>
-            <div className="logo-text">
-              <span className="logo-main">Cake & Kitchen</span>
-              <span className="logo-sub">Artisan Patisserie</span>
-            </div>
+            <img src="/logo.png" alt="Cake & Kitchen" style={{ height: '50px', objectFit: 'contain' }} />
           </Link>
 
           {/* Desktop links */}
