@@ -19,8 +19,9 @@ function Login({ onLogin }) {
       onLogin(res.data);
       setTimeout(() => navigate('/'), 1000);
     } catch (err) {
+      const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' || err.message === 'Network Error' ? 'Backend server is offline. Please run the server to login.' : err.message) || 'Login failed.';
       setMsg({
-        text: err.response?.data?.error || 'Invalid credentials. Please attempt again.',
+        text: errorText,
         type: 'error'
       });
     } finally {

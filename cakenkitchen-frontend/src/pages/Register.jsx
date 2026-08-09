@@ -18,8 +18,9 @@ function Register() {
       setForm({ name: '', email: '', phone: '', password: '' });
       setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
+      const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' || err.message === 'Network Error' ? 'Backend server is offline. Please run the server to register.' : err.message) || 'Registration failed.';
       setMsg({
-        text: err.response?.data?.error || 'Registration failed. Check parameters and try again.',
+        text: errorText,
         type: 'error'
       });
     } finally {

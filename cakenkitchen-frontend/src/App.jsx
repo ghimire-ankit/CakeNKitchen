@@ -136,48 +136,74 @@ function App() {
     setCouponCode('');
   };
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCat, setSelectedCat] = useState(null);
+
   // Cart total items helper
   const cartCount = cart.reduce((acc, item) => acc + item.qty, 0);
 
   return (
     <Router>
-      <Navbar user={user} logout={handleLogout} cartCount={cartCount} />
-      <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Home addToCart={addToCart} />} />
-          <Route path="/cake/:id" element={<CakeDetail addToCart={addToCart} />} />
-          <Route
-            path="/cart"
-            element={
-              <Cart
-                cart={cart}
-                updateCartQty={updateCartQty}
-                removeFromCart={removeFromCart}
-                discountPercent={discountPercent}
-                couponCode={couponCode}
-                applyCoupon={applyCoupon}
-                removeCoupon={removeCoupon}
-              />
-            }
-          />
-          <Route
-            path="/checkout"
-            element={
-              <Checkout
-                cart={cart}
-                clearCart={clearCart}
-                user={user}
-                discountPercent={discountPercent}
-                couponCode={couponCode}
-              />
-            }
-          />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/admin" element={<AdminDashboard user={user} />} />
-        </Routes>
-      </main>
-      <Footer />
+      <div className="deli-app-layout">
+        <Navbar
+          user={user}
+          logout={handleLogout}
+          cartCount={cartCount}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          selectedCat={selectedCat}
+          setSelectedCat={setSelectedCat}
+        />
+
+        <main className="main-content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home
+                  addToCart={addToCart}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  selectedCat={selectedCat}
+                  setSelectedCat={setSelectedCat}
+                />
+              }
+            />
+            <Route path="/cake/:id" element={<CakeDetail addToCart={addToCart} />} />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  cart={cart}
+                  updateCartQty={updateCartQty}
+                  removeFromCart={removeFromCart}
+                  discountPercent={discountPercent}
+                  couponCode={couponCode}
+                  applyCoupon={applyCoupon}
+                  removeCoupon={removeCoupon}
+                />
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <Checkout
+                  cart={cart}
+                  clearCart={clearCart}
+                  user={user}
+                  discountPercent={discountPercent}
+                  couponCode={couponCode}
+                />
+              }
+            />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/admin" element={<AdminDashboard user={user} />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
 
       {/* Floating Toast Notification */}
       {toast.visible && (

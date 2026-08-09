@@ -13,11 +13,12 @@ app.set('trust proxy', 1);
 
 // 1. Global Middleware Security & Data Parsing Pipelines
 app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
             connectSrc: ["'self'", "http://localhost:*", "https://*.vercel.app"],
-            imgSrc: ["'self'", "data:", "https://*"],
+            imgSrc: ["'self'", "data:", "https://*", "http://localhost:*"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"]
         }
