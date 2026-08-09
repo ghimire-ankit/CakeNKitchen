@@ -4,6 +4,8 @@ const API_BASE = typeof window !== 'undefined' && (window.location.hostname === 
   ? 'http://localhost:3000/api'
   : (import.meta.env.VITE_API_URL || 'http://localhost:3000/api');
 
+console.log('📡 CakeNKitchen API Routing target:', API_BASE);
+
 const api = axios.create({
   baseURL: API_BASE,
   headers: {
