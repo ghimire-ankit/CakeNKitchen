@@ -86,6 +86,23 @@ app.get('/', (req, res) => {
     });
 });
 
+app.get('/api/health', async (req, res) => {
+    try {
+        const dbPool = require('./src/config/db');
+        const [rows] = await dbPool.query('SELECT 1 + 1 AS solution');
+        res.json({
+            success: true,
+            database: 'Connected successfully',
+            solution: rows[0].solution
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            error: 'Database connection failed: ' + err.message
+        });
+    }
+});
+
 // 4. Global 404 Route Fallback Exception Interceptor
 app.use((req, res) => {
     res.status(404).json({
