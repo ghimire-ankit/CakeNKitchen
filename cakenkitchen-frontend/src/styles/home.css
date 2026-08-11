@@ -842,8 +842,6 @@
   overflow: hidden;
   height: 420px;
   box-shadow: var(--sh-lg);
-  background-color: #ffffff;
-  /* soft background to blend image edges */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -852,8 +850,11 @@
 .hours-img img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  /* preserves the full body of the cake */
+  object-fit: cover;
+  /* covers the full box, removing all white spaces */
+  transform: rotate(-90deg) scale(1.35);
+  /* tilts the cake sideways (lying on left) and scales it to fit the box edges */
+  transition: transform 0.3s ease;
 }
 
 .hours-copy {
