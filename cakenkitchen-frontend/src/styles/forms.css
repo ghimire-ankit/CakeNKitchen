@@ -288,3 +288,225 @@
     transform: scale(1);
   }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   MODERN BLUE HIGH-FIDELITY AUTH STYLING
+   ────────────────────────────────────────────────────────────── */
+
+.modern-auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 120px);
+  padding: 3rem 1rem;
+}
+
+.modern-auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 3rem 2.2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+}
+
+.modern-auth-title {
+  font-family: var(--f-body);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: left;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  letter-spacing: -0.8px;
+}
+
+/* Floating label/outline input group */
+.modern-input-group {
+  position: relative;
+  margin-bottom: 1.4rem;
+  width: 100%;
+}
+
+.modern-input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  font-family: var(--f-body);
+  font-size: 0.95rem;
+  color: #1f2937;
+  background-color: #ffffff;
+  border: 1.5px solid #d1d5db;
+  /* thin clean border */
+  border-radius: 8px;
+  outline: none;
+  font-weight: 500;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Hide native placeholder text, we only want label */
+.modern-input::placeholder {
+  color: transparent;
+}
+
+.modern-label {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--f-body);
+  font-size: 0.92rem;
+  color: #9ca3af;
+  padding: 0 0.35rem;
+  background: #ffffff;
+  pointer-events: none;
+  transition: transform 0.2s ease, top 0.2s ease, font-size 0.2s ease, color 0.18s ease;
+}
+
+/* Float label up: when focused OR value is not empty (using :not(:placeholder-shown)) */
+.modern-input:focus~.modern-label,
+.modern-input:not(:placeholder-shown)~.modern-label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.76rem;
+  color: #9ca3af;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* Focus state border and text colors */
+.modern-input:focus {
+  border-color: #0095ff;
+  /* vibrant sky-blue */
+  box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.12);
+}
+
+.modern-input:focus~.modern-label {
+  color: #0095ff;
+}
+
+/* Eye Icon / Toggle Password style */
+.modern-password-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.modern-password-wrap .modern-input {
+  padding-right: 2.8rem;
+}
+
+.modern-password-toggle {
+  position: absolute;
+  right: 0.95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.modern-password-toggle:hover {
+  color: #4b5563;
+}
+
+/* Primary modern blue submit button */
+.modern-btn-primary {
+  width: 100%;
+  padding: 0.95rem 1.2rem;
+  font-family: var(--f-body);
+  font-size: 0.98rem;
+  font-weight: 700;
+  background-color: #0095ff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 149, 255, 0.18);
+  margin-top: 0.5rem;
+}
+
+.modern-btn-primary:hover {
+  background-color: #0084e5;
+}
+
+.modern-btn-primary:active {
+  transform: scale(0.985);
+}
+
+.modern-btn-primary:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Google Sign-in button modern styling */
+.modern-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 0.85rem;
+  background-color: #ffffff;
+  border: 1.5px solid #2d3748;
+  border-radius: 8px;
+  color: #2d3748;
+  font-family: var(--f-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.18s, border-color 0.18s;
+  box-sizing: border-box;
+}
+
+.modern-google-btn:hover {
+  background-color: #f7fafc;
+}
+
+/* Divider modern styling */
+.modern-auth-divider {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1.5px solid #e5e7eb;
+  line-height: 0.1em;
+  margin: 1.8rem 0;
+}
+
+.modern-auth-divider span {
+  background: #ffffff;
+  padding: 0 12px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  font-family: var(--f-body);
+  font-weight: 500;
+  text-transform: lowercase;
+}
+
+/* Links row */
+.modern-link-row {
+  margin-top: 1.8rem;
+  text-align: center;
+  font-size: 0.92rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.modern-link-row a {
+  color: #0095ff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.modern-link-row a:hover {
+  text-decoration: underline;
+}
