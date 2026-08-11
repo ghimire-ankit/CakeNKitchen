@@ -79,6 +79,17 @@ const createOrder = async (req, res) => {
     }
 };
 
+const getUserOrders = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const orders = await Order.getByUserId(userId);
+        res.json({ success: true, data: orders });
+    } catch (err) {
+        console.error('Error fetching user orders:', err);
+        res.status(500).json({ success: false, error: 'Failed to retrieve orders' });
+    }
+};
+
 const getAdminOrders = async (req, res) => {
     try {
         const orders = await Order.getAllAdmin();
@@ -98,4 +109,5 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
-module.exports = { getCategories, getCakes, getAdminCakes, createCake, toggleCake, getCakeById, createOrder, getAdminOrders, updateOrderStatus };
+module.exports = { getCategories, getCakes, getAdminCakes, createCake, toggleCake, getCakeById, createOrder, getUserOrders, getAdminOrders, updateOrderStatus };
+

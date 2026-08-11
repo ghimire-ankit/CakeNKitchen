@@ -134,4 +134,14 @@ export const updateOrderStatus = async (id, status) => {
   }
 };
 
+export const fetchUserOrders = async (userId) => {
+  try {
+    const response = await api.get(`/orders/user/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user orders:', error);
+    return { success: false, data: [] };
+  }
+};
+
 export default api;

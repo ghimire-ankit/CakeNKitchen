@@ -10,6 +10,8 @@ import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
+import CustomCake from './pages/CustomCake';
+import MyOrders from './pages/MyOrders';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -25,7 +27,6 @@ function App() {
   const [couponCode, setCouponCode] = useState('');
   const [toast, setToast] = useState({ visible: false, message: '', link: '' });
 
-  // Update local storage whenever cart changes
   const saveCart = (newCart) => {
     setCart(newCart);
     localStorage.setItem('cart', JSON.stringify(newCart));
@@ -53,14 +54,7 @@ function App() {
     );
 
     let updatedCart = [...cart];
-    // Calculate price based on weight/size or use override
-    let itemPrice;
-    if (customPrice !== null) {
-      itemPrice = customPrice;
-    } else {
-      const sizeMultiplier = size === '2 lbs' ? 1.8 : size === '3 lbs' ? 2.6 : 1.0;
-      itemPrice = Math.round(Number(cake.base_price) * sizeMultiplier);
-    }
+    const itemPrice = customPrice !== null ? customPrice : Math.round(Number(cake.base_price) * (size === '2 lbs' ? 1.8 : size === '3 lbs' ? 2.6 : 1.0));
 
     if (existingIndex > -1) {
       updatedCart[existingIndex].qty += qty;
@@ -78,7 +72,6 @@ function App() {
     }
     saveCart(updatedCart);
 
-    // Trigger toast notification
     setToast({
       visible: true,
       message: `${cake.name} (${size}) added to Cart`,
@@ -135,7 +128,6 @@ function App() {
     setCouponCode('');
   };
 
-  // Cart total items helper
   const cartCount = cart.reduce((acc, item) => acc + item.qty, 0);
 
   return (
@@ -172,13 +164,14 @@ function App() {
             }
           />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<Register onLogin={handleLogin} />} />
+          <Route path="/custom-cake" element={<CustomCake addToCart={addToCart} />} />
+          <Route path="/my-orders" element={<MyOrders user={user} />} />
           <Route path="/admin" element={<AdminDashboard user={user} />} />
         </Routes>
       </main>
       <Footer />
 
-      {/* Floating Toast Notification */}
       {toast.visible && (
         <div className="toast-success-banner" id="toast-notify">
           <span className="toast-message">{toast.message}</span>

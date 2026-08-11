@@ -35,7 +35,6 @@ function Home() {
     return cat ? cat.name : 'Delicious Cakes';
   };
 
-  // Filter cakes by category AND search query
   const filteredCakes = useMemo(() => {
     let result = cakes;
     if (selectedCat !== null) {
@@ -50,12 +49,9 @@ function Home() {
 
   return (
     <div>
-      {/* Promo Announcement Banner */}
       <div className="promo-banner">
         <span>🎉 Special Offer: Use code <strong>CAKE10</strong> for 10% off your entire order!</span>
       </div>
-
-      {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-text">
           <h1>Freshly Baked for Your <span>Best Days</span></h1>
@@ -69,16 +65,12 @@ function Home() {
           <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80" alt="Special Chocolate Fudge Cake decoration" />
         </div>
       </section>
-
-      {/* Value Propositions Strip */}
       <div className="value-props-strip">
         <div className="prop-item">🚚 <span>Same Day Delivery in KTM</span></div>
         <div className="prop-item">🌱 <span>100% Eggless Options</span></div>
         <div className="prop-item">✨ <span>Premium Ingredients</span></div>
         <div className="prop-item">🎂 <span>Customized Designs</span></div>
       </div>
-
-      {/* Toolbar / Search */}
       <section className="catalog-toolbar-panel" id="shop-menu">
         <div className="category-title-section" style={{marginBottom: 0, textAlign: 'left'}}>
           <h2 style={{fontSize: '1.8rem'}}>Explore Menu</h2>
@@ -94,8 +86,6 @@ function Home() {
           />
         </div>
       </section>
-
-      {/* Category Section */}
       <section style={{ marginBottom: '3.5rem' }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: '2rem' }}>Loading menu...</div>
@@ -123,8 +113,6 @@ function Home() {
           </div>
         )}
       </section>
-
-      {/* Products Cake Grid */}
       <section>
         <div className="cakes-section-header">
           <h2>{searchQuery ? `Search Results for "${searchQuery}"` : selectedCat === null ? 'Featured Collection' : getCategoryName(selectedCat)}</h2>

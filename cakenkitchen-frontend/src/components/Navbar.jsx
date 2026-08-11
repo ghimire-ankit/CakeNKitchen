@@ -21,6 +21,7 @@ function Navbar({ user, logout, cartCount }) {
         </Link>
         <nav className="nav-links">
           <Link to="/" className="nav-link" id="nav-home">Home</Link>
+          <Link to="/custom-cake" className="nav-link" id="nav-custom-cake" style={{ color: 'var(--accent)', fontWeight: 800 }}>✨ Build Your Cake</Link>
           {user && user.role === 'admin' && (
             <Link to="/admin" className="nav-link" id="nav-admin">Admin Portal</Link>
           )}
@@ -32,6 +33,7 @@ function Navbar({ user, logout, cartCount }) {
           </Link>
           {user ? (
             <>
+              <Link to="/my-orders" className="nav-link" id="nav-my-orders">My Orders</Link>
               <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Hi, <strong>{user.name}</strong></span>
               <button
                 onClick={() => { logout(); navigate('/'); }}

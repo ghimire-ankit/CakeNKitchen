@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/api';
 
-function Register() {
+function Register({ onLogin }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '' });
   const [msg, setMsg] = useState({ text: '', type: '' });
@@ -13,10 +13,16 @@ function Register() {
     setMsg({ text: '', type: '' });
     setLoading(true);
     try {
-      await registerUser(form);
-      setMsg({ text: 'Account registered successfully. Proceeding to login...', type: 'success' });
+      const res = await registerUser(form);
+      setMsg({ text: 'Account registered successfully. Logging you in...', type: 'success' });
+      
+      // Auto login the user
+      if (onLogin && res.data) {
+        onLogin(res.data);
+      }
+      
       setForm({ name: '', email: '', phone: '', password: '' });
-      setTimeout(() => navigate('/login'), 1500);
+      setTimeout(() => navigate('/'), 1500);
     } catch (err) {
       setMsg({
         text: err.response?.data?.error || 'Registration failed. Check parameters and try again.',

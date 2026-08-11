@@ -8,15 +8,11 @@ function CakeDetail({ addToCart }) {
   const navigate = useNavigate();
   const [cake, setCake] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  // Customization State
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState('1 lb');
   const [message, setMessage] = useState('');
   const [flavor, setFlavor] = useState('Black Forest');
   const [eggless, setEggless] = useState(false);
-  
-  // Feature State
   const [activeTab, setActiveTab] = useState('desc');
   const [pincode, setPincode] = useState('');
   const [pincodeStatus, setPincodeStatus] = useState(null);
@@ -40,7 +36,6 @@ function CakeDetail({ addToCart }) {
   if (loading) return <div style={{ textAlign: 'center', padding: '4rem 0', fontWeight: 800, color: 'var(--text-light)' }}>Loading artisanal profile...</div>;
   if (!cake) return <div style={{ textAlign: 'center', padding: '4rem 0' }}><h2>Cake Not Found</h2><button onClick={() => navigate('/')} className="btn-primary" style={{marginTop: '1.5rem'}}>Back to Home</button></div>;
 
-  // Pricing Engine
   const sizeMultiplier = size === '2 lbs' ? 1.8 : size === '3 lbs' ? 2.6 : 1.0;
   const flavorPrice = flavor === 'Red Velvet' ? 150 : flavor === 'Truffle' ? 200 : flavor === 'Butterscotch' ? 50 : 0;
   const egglessPrice = eggless ? 100 : 0;
@@ -48,7 +43,6 @@ function CakeDetail({ addToCart }) {
 
   const handlePincodeCheck = () => {
     if (pincode.length < 4) return setPincodeStatus('error');
-    // Mock API simulation
     setPincodeStatus('loading');
     setTimeout(() => {
       setPincodeStatus(['44600', '44700', '44601'].includes(pincode) ? 'success' : 'error');
@@ -69,8 +63,6 @@ function CakeDetail({ addToCart }) {
           {eggless && <div className="veg-badge">🌱 100% Eggless</div>}
           <img src={getImageUrl(cake.image_url)} alt={cake.name} className="cake-preview-image" />
         </div>
-        
-        {/* Quality Badges */}
         <div className="quality-badges-row">
            <span className="q-badge">✨ Freshly Baked</span>
            <span className="q-badge">🚚 Same Day Delivery</span>
@@ -81,18 +73,14 @@ function CakeDetail({ addToCart }) {
       <div className="detail-info">
         <div className="detail-header-row">
            <span className="detail-category">Artisanal Choice</span>
-           {/* Simple toggle for eggless */}
            <label className="eggless-toggle">
               <input type="checkbox" checked={eggless} onChange={(e) => setEggless(e.target.checked)} />
               <span className="slider round"></span>
               <span className="toggle-label">Make it Eggless (+NPR 100)</span>
            </label>
         </div>
-        
         <h1 className="detail-title">{cake.name}</h1>
         <div className="detail-price">NPR {currentPrice}</div>
-        
-        {/* Detail Tabs */}
         <div className="detail-tabs">
           <button className={`tab-btn ${activeTab === 'desc' ? 'active' : ''}`} onClick={() => setActiveTab('desc')}>Description</button>
           <button className={`tab-btn ${activeTab === 'ingredients' ? 'active' : ''}`} onClick={() => setActiveTab('ingredients')}>Ingredients</button>
@@ -104,8 +92,6 @@ function CakeDetail({ addToCart }) {
              <p className="detail-description">Made with pure butter, premium flour, and finest Madagascar vanilla beans. Contains dairy and gluten. {eggless ? 'Specially prepared entirely without eggs.' : 'Contains farm-fresh eggs.'}</p>
           )}
         </div>
-
-        {/* Sponge Flavor Selection */}
         <div className="option-group">
           <span className="option-label">Select Sponge Flavor:</span>
           <div className="size-select-buttons" style={{flexWrap: 'wrap'}}>
@@ -120,8 +106,6 @@ function CakeDetail({ addToCart }) {
             ))}
           </div>
         </div>
-
-        {/* Custom size weight customization */}
         <div className="option-group">
           <span className="option-label">Weight Size:</span>
           <div className="size-select-buttons">
@@ -135,8 +119,6 @@ function CakeDetail({ addToCart }) {
             </small>
           )}
         </div>
-
-        {/* Customize Cake */}
         <div className="option-group">
           <label className="option-label" htmlFor="cake-text-msg">Customize Cake:</label>
           <textarea
@@ -149,8 +131,6 @@ function CakeDetail({ addToCart }) {
           />
           <small style={{ color: 'var(--text-light)', marginTop: '0.4rem', display: 'block', fontSize: '0.8rem', fontWeight: 600 }}>Add any special instructions or text to write on the cake.</small>
         </div>
-
-        {/* Delivery Checker */}
         <div className="pincode-checker">
           <span className="option-label" style={{marginBottom: 0}}>Check Delivery Availability:</span>
           <div className="pincode-input-row">
@@ -161,8 +141,6 @@ function CakeDetail({ addToCart }) {
           {pincodeStatus === 'success' && <span className="pin-msg success">🚚 Delivery is available in your area!</span>}
           {pincodeStatus === 'error' && <span className="pin-msg error">❌ Sorry, we do not deliver to this pincode yet.</span>}
         </div>
-
-        {/* Quantity Selection and Add to Cart */}
         <div className="actions-row" style={{ alignItems: 'center' }}>
           <div className="quantity-controller" style={{ marginRight: '1rem' }}>
             <button className="quantity-btn" onClick={() => setQty(Math.max(1, qty - 1))} id="btn-qty-dec">-</button>

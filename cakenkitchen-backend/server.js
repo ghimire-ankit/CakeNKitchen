@@ -6,7 +6,6 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1. Global Middleware Security & Data Parsing Pipelines
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -32,14 +31,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static uploads for cake image assets
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-// 2. Main API Routing Modules
 app.use('/api/auth', require('./src/routes/authRoutes'));
 app.use('/api', require('./src/routes/catalogRoutes'));
 
-// 3. Operational System Baseline Health Check Route
 app.get('/', (req, res) => {
     res.json({
         success: true,
@@ -48,7 +44,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// 4. Global 404 Route Fallback Exception Interceptor
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -56,7 +51,6 @@ app.use((req, res) => {
     });
 });
 
-// 5. Centralized System Error Pipeline (Catches all unexpected runtime faults)
 app.use((err, req, res, next) => {
     console.error('❌ System Fault Captured:', err.stack);
     res.status(err.status || 500).json({
@@ -65,7 +59,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 6. Launch Application Network Server
 app.listen(PORT, () => {
     console.log(`========================================`);
     console.log(`🚀 CakeNKitchen Server Active On Port: ${PORT}`);
