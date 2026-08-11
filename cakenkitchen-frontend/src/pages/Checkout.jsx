@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { placeOrder } from '../services/api';
+import { printInvoice } from '../utils/invoice';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -41,6 +42,7 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
   const [orderId, setOrderId] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const mapRef = useRef(null);
+  const checkoutCartRef = useRef([]);
 
   useEffect(() => {
     if (cart.length === 0 && !completed) {
@@ -116,6 +118,7 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
     try {
       const res = await placeOrder(orderRecord);
       if (res && res.success) {
+        checkoutCartRef.current = [...cart];
         setOrderId(res.data.order_id || 'CKN-' + Math.floor(1000 + Math.random() * 9000));
         setCompleted(true);
         clearCart();
@@ -145,6 +148,44 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
         </div>
         <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'center' }}>
           <button onClick={() => navigate('/my-orders')} className="btn-primary" id="btn-success-orders">Track My Orders</button>
+          <button
+            onClick={() => {
+              const invoiceData = {
+                order_id: orderId,
+                items: checkoutCartRef.current.map(item => ({
+                  name: item.name,
+                  qty: item.qty,
+                  size: item.size,
+                  message: item.message || '',
+                  price: item.price
+                })),
+                total: grandTotal,
+                delivery_address: deliveryType === 'pickup' ? 'Store Pickup' : form.address,
+                delivery_date: form.deliveryDate,
+                delivery_time: form.deliveryTime,
+                delivery_type: deliveryType,
+                payment_method: paymentMethod,
+                created_at: new Date().toISOString(),
+                customer_name: form.name,
+                email: form.email,
+                phone: form.phone
+              };
+              printInvoice(invoiceData);
+            }}
+            className="btn-outline"
+            style={{
+              padding: '0.6rem 1.5rem',
+              fontWeight: 800,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              cursor: 'pointer',
+              border: '1.5px solid var(--border)'
+            }}
+            id="btn-print-invoice"
+          >
+            🧾 Print Invoice
+          </button>
           <button onClick={() => navigate('/')} className="btn-secondary" style={{ padding: '0.6rem 1.5rem' }} id="btn-success-home">Browse More Cakes</button>
         </div>
       </div>

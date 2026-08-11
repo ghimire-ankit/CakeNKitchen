@@ -16,8 +16,6 @@ function CakeDetail({ addToCart }) {
   const [eggless, setEggless] = useState(false);
   // Feature State
   const [activeTab, setActiveTab] = useState('desc');
-  const [pincode, setPincode] = useState('');
-  const [pincodeStatus, setPincodeStatus] = useState(null);
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -57,13 +55,6 @@ function CakeDetail({ addToCart }) {
   const egglessPrice = eggless ? 100 : 0;
   const currentPrice = Math.round((Number(cake.base_price) * sizeMultiplier) + flavorPrice + egglessPrice);
 
-  const handlePincodeCheck = () => {
-    if (pincode.length < 4) return setPincodeStatus('error');
-    setPincodeStatus('loading');
-    setTimeout(() => {
-      setPincodeStatus(['44600', '44700', '44601'].includes(pincode) ? 'success' : 'error');
-    }, 800);
-  };
 
   const handleAddToCart = () => {
     const fullMessage = `[${flavor}${eggless ? ' | Eggless' : ''}] ${message.trim() || 'No Text'}`;
@@ -146,16 +137,7 @@ function CakeDetail({ addToCart }) {
             onChange={(e) => setMessage(e.target.value)}
           />
           <small style={{ color: 'var(--text-light)', marginTop: '0.4rem', display: 'block', fontSize: '0.8rem', fontWeight: 600 }}>Add any special instructions or text to write on the cake.</small>
-        </div>
-        <div className="pincode-checker">
-          <span className="option-label" style={{ marginBottom: 0 }}>Check Delivery Availability:</span>
-          <div className="pincode-input-row">
-            <input type="text" className="form-input pincode-input" placeholder="Enter Pincode (e.g., 44600)" value={pincode} onChange={e => setPincode(e.target.value)} />
-            <button className="btn-outline check-btn" onClick={handlePincodeCheck}>Check</button>
-          </div>
-          {pincodeStatus === 'loading' && <span className="pin-msg">Checking delivery network...</span>}
-          {pincodeStatus === 'success' && <span className="pin-msg success">🚚 Delivery is available in your area!</span>}
-          {pincodeStatus === 'error' && <span className="pin-msg error">❌ Sorry, we do not deliver to this pincode yet.</span>}
+
         </div>
         <div className="actions-row" style={{ alignItems: 'center' }}>
           <div className="quantity-controller" style={{ marginRight: '1rem' }}>

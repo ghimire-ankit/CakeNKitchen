@@ -406,18 +406,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="cta-banner">
-        <div className="wrap cta-inner">
-          <div>
-            <h2 className="cta-title">Taste the difference</h2>
-            <p className="cta-sub">Wedding tiers, birthdays or cupcakes. We bake for every story.</p>
-          </div>
-          <button className="btn-fill-outlined" onClick={() => document.getElementById('shop-menu')?.scrollIntoView({ behavior: 'smooth' })}>
-            Order Online
-          </button>
-        </div>
-      </section>
+
 
     </div>
   );

@@ -67,8 +67,8 @@ const orderLimiter = rateLimit({
 app.use('/api/auth', authLimiter);
 app.use('/api/orders', orderLimiter);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 

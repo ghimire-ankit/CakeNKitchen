@@ -7,12 +7,8 @@ function Register({ onLogin }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', password: '' });
   const [msg, setMsg] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
-
-  // Simulated Google Chooser State
-  const [showChooser, setShowChooser] = useState(false);
-  const [showCustomInput, setShowCustomInput] = useState(false);
-  const [customUser, setCustomUser] = useState({ name: '', email: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [showChooser, setShowChooser] = useState(false);
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   const isGoogleConfigured = googleClientId && !googleClientId.includes('mock') && googleClientId !== '';
@@ -60,12 +56,6 @@ function Register({ onLogin }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleCustomMockSubmit = (e) => {
-    e.preventDefault();
-    if (!customUser.name || !customUser.email) return;
-    handleGoogleSuccess({ credential: 'mock_google_id_token_123' }, customUser.name, customUser.email);
   };
 
   const handleSubmit = async (e) => {
@@ -192,18 +182,34 @@ function Register({ onLogin }) {
 
         {/* Google Configuration Area */}
         <div className="modern-auth-divider">
-          <span>or</span>
+          <span>or sign up with google</span>
         </div>
 
-        {isGoogleConfigured && (
-          <div id="google-signup-btn" style={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '0.8rem' }}></div>
-        )}
-
-        {!isGoogleConfigured && (
+        {isGoogleConfigured ? (
+          <div id="google-signup-btn" style={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '0.8rem', minHeight: '44px' }}></div>
+        ) : (
           <button
             type="button"
             className="modern-google-btn"
             onClick={() => setShowChooser(true)}
+            id="google-signup-btn-mock"
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              padding: '0.75rem',
+              borderRadius: '8px',
+              border: '1.5px solid var(--border)',
+              background: '#fff',
+              color: '#3c4043',
+              fontWeight: 800,
+              cursor: 'pointer',
+              fontSize: '0.9rem',
+              boxShadow: 'var(--shadow-soft)',
+              marginBottom: '0.8rem'
+            }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -211,100 +217,119 @@ function Register({ onLogin }) {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
             </svg>
-            Sign up with Google
+            Continue with Google
           </button>
-        )}
-
-        {/* Account Chooser Dialog Overlay */}
-        {showChooser && (
-          <div className="g-modal-overlay">
-            <div className="g-modal-card">
-              <button className="g-modal-close" onClick={() => { setShowChooser(false); setShowCustomInput(false); }} aria-label="Close Sandbox Chooser">&times;</button>
-              <div className="g-modal-logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
-                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
-                </svg>
-              </div>
-              <h3 className="g-modal-title">Sign in with Google</h3>
-              <p className="g-modal-subtitle">to continue to CakeNKitchen Sandbox</p>
-
-              <div className="g-modal-sandbox-warning">
-                <strong>Simulated Testing Sandbox</strong>
-                Real Google credentials ID is not set in your local .env configuration. These testing profiles are simulated for development layout preview only.
-              </div>
-
-              {!showCustomInput ? (
-                <div className="g-accounts-list">
-                  <button
-                    type="button"
-                    className="g-account-item"
-                    onClick={() => handleGoogleSuccess({ credential: 'mock_google_id_token_123' }, 'Ankit Ghimire', 'ankitghimire2004@gmail.com')}
-                  >
-                    <div className="g-account-avatar">A</div>
-                    <div className="g-account-info">
-                      <span className="g-account-name">Ankit Ghimire</span>
-                      <span className="g-account-email">ankitghimire2004@gmail.com</span>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="g-account-item"
-                    onClick={() => handleGoogleSuccess({ credential: 'mock_google_id_token_123' }, 'John Doe', 'johnuser@gmail.com')}
-                  >
-                    <div className="g-account-avatar" style={{ backgroundColor: '#0f9d58' }}>J</div>
-                    <div className="g-account-info">
-                      <span className="g-account-name">John Doe</span>
-                      <span className="g-account-email">johnuser@gmail.com</span>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="g-account-item"
-                    onClick={() => setShowCustomInput(true)}
-                    style={{ justifyContent: 'center', color: '#1a73e8', fontWeight: '500' }}
-                  >
-                    ➕ Use another testing account
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleCustomMockSubmit} className="g-custom-form">
-                  <input
-                    type="text"
-                    placeholder="Testing Account Full Name"
-                    className="g-custom-input"
-                    value={customUser.name}
-                    onChange={e => setCustomUser({ ...customUser, name: e.target.value })}
-                    required
-                  />
-                  <input
-                    type="email"
-                    placeholder="Testing Email Address"
-                    className="g-custom-input"
-                    value={customUser.email}
-                    onChange={e => setCustomUser({ ...customUser, email: e.target.value })}
-                    required
-                  />
-                  <button type="submit" className="btn-primary" style={{ padding: '0.65rem' }}>Select & Sign In</button>
-                  <button type="button" className="nav-link" onClick={() => setShowCustomInput(false)} style={{ border: 'none', background: 'none' }}>Back to list</button>
-                </form>
-              )}
-
-              <div className="g-modal-footer">
-                To continue, Google will share your name, email address, language preference, and profile picture with CakeNKitchen (Simulated Sandbox session).
-              </div>
-            </div>
-          </div>
         )}
 
         <div className="modern-link-row">
           Already have an account? <Link to="/login">Log In</Link>
         </div>
       </div>
+
+      {showChooser && (
+        <div className="g-modal-overlay" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 9999
+        }}>
+          <div className="g-modal-card" style={{
+            background: '#fff',
+            borderRadius: '8px',
+            width: '100%',
+            maxWidth: '380px',
+            padding: '24px',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+            position: 'relative',
+            textAlign: 'center',
+            fontFamily: "'Roboto', sans-serif"
+          }}>
+            <button
+              onClick={() => setShowChooser(false)}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                border: 'none',
+                background: 'none',
+                fontSize: '20px',
+                cursor: 'pointer',
+                color: '#666'
+              }}
+            >&times;</button>
+            <div style={{ marginBottom: '16px' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
+              </svg>
+            </div>
+            <h3 style={{ margin: '0 0 4px 0', fontSize: '20px', fontWeight: 500, color: '#202124' }}>Choose an account</h3>
+            <p style={{ margin: '0 0 24px 0', fontSize: '14px', color: '#5f6368' }}>to continue to CakeNKitchen</p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left', marginBottom: '24px' }}>
+              <button
+                onClick={() => handleGoogleSuccess({ credential: 'mock_google_id_token_123' }, 'Ankit Ghimire', 'ankitghimire2004@gmail.com')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '12px',
+                  border: '1px solid #dadce0',
+                  borderRadius: '4px',
+                  background: '#fff',
+                  cursor: 'pointer',
+                  width: '100%',
+                  transition: 'background 0.2s'
+                }}
+                onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
+                onMouseOut={e => e.currentTarget.style.background = '#fff'}
+              >
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#8c2f39', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>A</div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '14px', fontWeight: 600, color: '#3c4043' }}>Ankit Ghimire</span>
+                  <span style={{ fontSize: '12px', color: '#5f6368' }}>ankitghimire2004@gmail.com</span>
+                </div>
+              </button>
+
+              <button
+                onClick={() => handleGoogleSuccess({ credential: 'mock_google_id_token_123' }, 'John Doe', 'johnuser@gmail.com')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '12px',
+                  border: '1px solid #dadce0',
+                  borderRadius: '4px',
+                  background: '#fff',
+                  cursor: 'pointer',
+                  width: '100%',
+                  transition: 'background 0.2s'
+                }}
+                onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
+                onMouseOut={e => e.currentTarget.style.background = '#fff'}
+              >
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#4285F4', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>J</div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '14px', fontWeight: 600, color: '#3c4043' }}>John Doe</span>
+                  <span style={{ fontSize: '12px', color: '#5f6368' }}>johnuser@gmail.com</span>
+                </div>
+              </button>
+            </div>
+
+            <p style={{ margin: 0, fontSize: '11px', color: '#5f6368', lineHeight: 1.5, textAlign: 'left' }}>
+              To continue, Google will share your name, email address, language preference, and profile picture with CakeNKitchen.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

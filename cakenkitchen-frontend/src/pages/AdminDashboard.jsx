@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { getImageUrl } from '../utils/imageUtils';
 import { fetchCategories, fetchAdminCakes, createCake as apiCreateCake, toggleCakeAvailability, fetchAdminOrders, updateOrderStatus as apiUpdateOrderStatus } from '../services/api';
+import { printInvoice } from '../utils/invoice';
 import '../styles/admin.css';
 
 function AdminDashboard({ user }) {
@@ -250,7 +251,29 @@ function AdminDashboard({ user }) {
                           <option value="Delivered">🟢 Delivered</option>
                           <option value="Cancelled">⚫ Cancelled</option>
                         </select>
-                        <button className="btn-outline" style={{ width: '100%', padding: '0.5rem', fontSize: '0.75rem' }}>Print Invoice</button>
+                        <button
+                          onClick={() => {
+                            const invoiceData = {
+                              order_id: o.order_id,
+                              items: o.items,
+                              total: o.total,
+                              delivery_address: o.delivery_address,
+                              delivery_date: o.delivery_date,
+                              delivery_time: o.delivery_time,
+                              delivery_type: o.delivery_type,
+                              payment_method: o.payment_method || 'cod',
+                              created_at: o.created_at,
+                              customer_name: o.customer_name,
+                              email: o.email,
+                              phone: o.phone
+                            };
+                            printInvoice(invoiceData);
+                          }}
+                          className="btn-outline"
+                          style={{ width: '100%', padding: '0.5rem', fontSize: '0.75rem', cursor: 'pointer' }}
+                        >
+                          Print Invoice
+                        </button>
                       </div>
                     </div>
                   </div>
