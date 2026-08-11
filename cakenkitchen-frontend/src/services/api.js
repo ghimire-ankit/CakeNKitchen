@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3000/api'
+  : (import.meta.env.VITE_API_URL || 'http://localhost:3000/api');
+
+console.log('📡 CakeNKitchen API Routing target:', API_BASE);
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -8,6 +12,20 @@ const api = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
+// Outbound network request authorization headers interceptor
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Register user
 export const registerUser = async (userData) => {
@@ -31,20 +49,24 @@ export const loginUser = async (credentials) => {
   }
 };
 
+// Login/Register with Google
+export const loginGoogle = async (tokenData) => {
+  try {
+    const response = await api.post('/auth/google', tokenData);
+    return response.data;
+  } catch (error) {
+    console.error('Google auth error:', error);
+    throw error;
+  }
+};
+
 export const fetchCategories = async () => {
   try {
     const response = await api.get('/categories');
     return response.data;
   } catch (error) {
-    console.warn('API error fetching categories, using fallback mock data:', error);
-    return {
-      success: true,
-      data: [
-        { cat_id: 1, name: 'Tiered Wedding Cakes', description: 'Multi-layered custom elegant structures for weddings.', image_url: 'https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=500&auto=format&fit=crop&q=60' },
-        { cat_id: 2, name: 'Premium Chocolate Series', description: 'Rich, deep Dutch-process cocoa variants and ganache.', image_url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=60' },
-        { cat_id: 3, name: 'Fresh Fruit Delights', description: 'Light sponge blocks layered with organic seasonal fruits.', image_url: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&auto=format&fit=crop&q=60' }
-      ]
-    };
+    console.error('API error fetching categories:', error);
+    throw error;
   }
 };
 
@@ -54,11 +76,8 @@ export const fetchCakes = async (catId = null) => {
     const response = await api.get(url);
     return response.data;
   } catch (error) {
-    console.warn('API error fetching cakes, using fallback mock data:', error);
-    if (catId) {
-      return { success: false, data: [] };
-    }
-    return { success: false, data: [] };
+    console.error('API error fetching cakes:', error);
+    throw error;
   }
 };
 
@@ -67,8 +86,8 @@ export const fetchCakeById = async (id) => {
     const response = await api.get(`/cakes/${id}`);
     return response.data;
   } catch (error) {
-    console.warn('API error fetching cake by ID:', error);
-    return { success: false, data: null };
+    console.error('API error fetching cake by ID:', error);
+    throw error;
   }
 };
 

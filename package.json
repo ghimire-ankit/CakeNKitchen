@@ -1,0 +1,11 @@
+{
+    "name": "cakenkitchen",
+    "version": "1.0.0",
+    "description": "Cake & Kitchen E-commerce Platform",
+    "scripts": {
+        "install:all": "npm install --prefix cakenkitchen-backend && npm install --prefix cakenkitchen-frontend",
+        "backend": "npm start --prefix cakenkitchen-backend",
+        "frontend": "npm run dev --prefix cakenkitchen-frontend",
+        "dev": "npx -y concurrently -n \"Backend,Frontend\" -c \"blue,green\" \"npm run backend\" \"npm run frontend\""
+    }
+}

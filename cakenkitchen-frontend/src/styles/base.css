@@ -1,57 +1,163 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
-
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
-
+/* ── Design Tokens ──────────────────────────────────────────── */
 :root {
-  --primary: #5c3a38;
-  --accent: #E55B7E;
-  --accent-hover: #D04568;
-  --bg-main: #FFF8F8; 
+  --bg: #FAF7F2;
   --bg-card: #FFFFFF;
-  --bg-footer: #4A2E2C;
-  --bg-light: #FFEDED; 
-  
-  --text-dark: #3E2726;
-  --text-light: #8C7877;
-  --text-white: #ffffff;
-  
-  --border: #F2D5D5;
-  --border-light: #F9E6E6;
-  --success: #4CAF50;
-  --error: #FF5252;
-  
-  --sans: 'Nunito', 'Quicksand', system-ui, sans-serif;
-  --serif: 'Playfair Display', Georgia, serif;
-  
-  --shadow-soft: 0 12px 36px rgba(92, 58, 56, 0.06);
-  --shadow-hover: 0 16px 48px rgba(229, 91, 126, 0.15);
-  --radius-card: 16px;
-  --radius-btn: 30px;
+  --bg-muted: #F5F0E8;
+  --bg-dark: #2C1A0E;
+  --bg-olive: #3D5247;
+
+  --brand: #9C5A3C;
+  /* warm terracotta / espresso */
+  --brand-hover: #7A3E27;
+  --brand-light: #F4E6DE;
+
+  --ink: #1C1108;
+  --ink-2: #4A3728;
+  --muted: #8A7A6E;
+  --border: #E5DDD4;
+
+  --white: #FFFFFF;
+  --success: #4A7C59;
+  --error: #B83B3B;
+
+  --f-display: 'Playfair Display', Georgia, serif;
+  --f-body: 'DM Sans', system-ui, sans-serif;
+
+  --r-sm: 6px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-xl: 32px;
+  --r-full: 999px;
+
+  --sh-sm: 0 2px 8px rgba(28, 17, 8, .06);
+  --sh-md: 0 6px 24px rgba(28, 17, 8, .09);
+  --sh-lg: 0 16px 48px rgba(28, 17, 8, .12);
+
+  --ease: cubic-bezier(.16, 1, .3, 1);
+
+  /* compat */
+  --primary: var(--brand);
+  --primary-hover: var(--brand-hover);
+  --text-dark: var(--ink);
+  --text-light: var(--muted);
+  --text-white: var(--white);
+  --sans: var(--f-body);
+  --serif: var(--f-display);
+  --shadow-soft: var(--sh-sm);
+  --shadow-hover: var(--sh-md);
+  --radius-card: var(--r-lg);
+  --radius-btn: var(--r-full);
+  --bg-main: var(--bg);
+  --bg-footer: var(--bg-dark);
+  --bg-light: var(--bg-muted);
+  --border-light: rgba(229, 221, 212, .5);
+  --tag-accent: var(--brand);
+  --highlight: var(--brand-light);
+  --accent: var(--brand);
+  --dark: var(--ink);
+  --success: #4A7C59;
+  --error: #B83B3B;
 }
 
 html {
   scroll-behavior: smooth;
-  font-size: 14px;
+  font-size: 15px;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: var(--sans);
-  background-color: var(--bg-main);
-  color: var(--text-dark);
-  line-height: 1.6;
-  font-size: 0.9rem;
+  font-family: var(--f-body);
+  background: var(--bg);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-#root {
+/* ── Global layout wrapper ──────────────────────────────────── */
+.deli-app-layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* ── Utility container ──────────────────────────────────────── */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ── Global buttons ─────────────────────────────────────────── */
+.btn-fill {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--brand);
+  color: #fff;
+  padding: .68rem 1.6rem;
+  border: none;
+  border-radius: var(--r-full);
+  font-family: var(--f-body);
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .2s var(--ease), transform .2s var(--ease), box-shadow .2s;
+  box-shadow: 0 4px 12px rgba(156, 90, 60, .2);
+}
+
+.btn-fill:hover {
+  background: var(--brand-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(156, 90, 60, .28);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: transparent;
+  color: var(--ink) !important;
+  padding: .65rem 1.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-full);
+  font-family: var(--f-body);
+  font-size: .9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s var(--ease);
+}
+
+.btn-outline:hover {
+  border-color: var(--brand);
+  color: var(--brand) !important;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 99px;
 }

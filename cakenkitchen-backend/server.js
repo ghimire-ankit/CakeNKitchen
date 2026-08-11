@@ -2,10 +2,32 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+<<<<<<< HEAD
+=======
+// Trust reverse proxy (Render / Vercel rate-limiting support)
+app.set('trust proxy', 1);
+
+// 1. Global Middleware Security & Data Parsing Pipelines
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            connectSrc: ["'self'", "http://localhost:*", "https://*.vercel.app"],
+            imgSrc: ["'self'", "data:", "https://*", "http://localhost:*"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"]
+        }
+    }
+}));
+
+>>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -28,6 +50,26 @@ app.use(cors({
     },
     credentials: true
 }));
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 mins
+    max: 100, // max 100 requests per IP per window
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error: 'Too many authentication attempts, please try again after 15 minutes.' }
+});
+
+const orderLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 mins
+    max: 30, // max 30 order requests per IP per window
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error: 'Too many order requests from this IP, please try again after 15 minutes.' }
+});
+
+app.use('/api/auth', authLimiter);
+app.use('/api/orders', orderLimiter);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -44,6 +86,27 @@ app.get('/', (req, res) => {
     });
 });
 
+<<<<<<< HEAD
+=======
+app.get('/api/health', async (req, res) => {
+    try {
+        const dbPool = require('./src/config/db');
+        const [rows] = await dbPool.query('SELECT 1 + 1 AS solution');
+        res.json({
+            success: true,
+            database: 'Connected successfully',
+            solution: rows[0].solution
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            error: 'Database connection failed: ' + err.message
+        });
+    }
+});
+
+// 4. Global 404 Route Fallback Exception Interceptor
+>>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
 app.use((req, res) => {
     res.status(404).json({
         success: false,
