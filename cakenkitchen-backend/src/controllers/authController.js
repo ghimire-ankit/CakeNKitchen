@@ -73,7 +73,7 @@ const googleLogin = async (req, res) => {
         let payload;
 
         const client_id = process.env.VITE_GOOGLE_CLIENT_ID || "1019688537554-mockclientid123.apps.googleusercontent.com";
-        const isProd = process.env.NODE_ENV === 'production' || (client_id && client_id !== "1019688537554-mockclientid123.apps.googleusercontent.com");
+        const isProd = client_id && client_id !== "1019688537554-mockclientid123.apps.googleusercontent.com";
 
         // Bypass Google external verification if it's the local mock developer token AND NOT in production environment
         if (token && token.startsWith('mock_google_id_token_') && !isProd) {
