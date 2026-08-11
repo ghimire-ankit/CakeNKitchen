@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { getImageUrl } from '../utils/imageUtils';
-import { fetchCategories, fetchAdminCakes, createCake as apiCreateCake, toggleCakeAvailability, fetchAdminOrders, updateOrderStatus as apiUpdateOrderStatus } from '../services/api';
+import { fetchCategories, fetchAdminCakes, createCake as apiCreateCake, toggleCakeAvailability, deleteCakeAPI, updateCakeAPI, fetchAdminOrders, updateOrderStatus as apiUpdateOrderStatus } from '../services/api';
 import '../styles/admin.css';
 
 function AdminDashboard({ user }) {
@@ -21,6 +21,11 @@ function AdminDashboard({ user }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [imagePreview, setImagePreview] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingCake, setEditingCake] = useState(null);
+  const [editForm, setEditForm] = useState({ name: '', description: '', base_price: '', cat_id: 1 });
+  const [editFile, setEditFile] = useState(null);
+  const [editPreview, setEditPreview] = useState('');
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -72,11 +77,9 @@ function AdminDashboard({ user }) {
 
   const handleAddCake = async (e) => {
     e.preventDefault();
-    console.log('🚀 STEP 1 (FRONTEND): Form submitted!');
-    console.log('📝 cakeForm:', cakeForm);
-    console.log('📁 selectedFile:', selectedFile);
-
     if (!cakeForm.name || !cakeForm.base_price) return;
+    setIsSubmitting(true);
+    setFeedback('');
     const formData = new FormData();
     formData.append('name', cakeForm.name);
     formData.append('description', cakeForm.description || '');
@@ -89,17 +92,106 @@ function AdminDashboard({ user }) {
     }
 
     const res = await apiCreateCake(formData);
-    console.log('🏁 STEP 5 (FRONTEND): Response received from server:', res);
+    setIsSubmitting(false);
     if (res.success) {
       fetchAdminCakes().then(r => { if (r.data) setCakes(r.data); });
-      setFeedback('Cake successfully launched to catalog.');
+      setFeedback('✅ Cake successfully launched to catalog!');
       setCakeForm({ name: '', description: '', base_price: '', cat_id: 1, is_available: true });
       setImagePreview('');
       setSelectedFile(null);
       setTimeout(() => setFeedback(''), 3000);
     } else {
-      setFeedback('Error: ' + (res.error || 'Failed to create cake. Check console.'));
+      setFeedback('❌ Error: ' + (res.error || 'Failed to create cake.'));
     }
+  };
+
+  const handleDeleteCake = async (cakeId, cakeName) => {
+    if (!window.confirm(`Are you sure you want to permanently delete "${cakeName}"? This will also remove its image from disk.`)) return;
+    const res = await deleteCakeAPI(cakeId);
+    if (res.success) {
+      setCakes(cakes.filter(c => c.cake_id !== cakeId));
+      setFeedback('🗑️ "' + cakeName + '" has been deleted.');
+      setTimeout(() => setFeedback(''), 3000);
+    } else {
+      setFeedback('❌ Failed to delete cake.');
+    }
+  };
+
+  const openEditModal = (cake) => {
+    setEditingCake(cake);
+    setEditForm({ name: cake.name, description: cake.description || '', base_price: cake.base_price, cat_id: cake.cat_id });
+    setEditFile(null);
+    setEditPreview('');
+  };
+
+  const handleEditImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEditFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setEditPreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleEditCake = async (e) => {
+    e.preventDefault();
+    if (!editingCake) return;
+    setIsSubmitting(true);
+    const formData = new FormData();
+    formData.append('name', editForm.name);
+    formData.append('description', editForm.description);
+    formData.append('base_price', editForm.base_price);
+    formData.append('cat_id', editForm.cat_id);
+    if (editFile) formData.append('image', editFile);
+
+    const res = await updateCakeAPI(editingCake.cake_id, formData);
+    setIsSubmitting(false);
+    if (res.success) {
+      fetchAdminCakes().then(r => { if (r.data) setCakes(r.data); });
+      setEditingCake(null);
+      setFeedback('✏️ "' + editForm.name + '" updated successfully!');
+      setTimeout(() => setFeedback(''), 3000);
+    } else {
+      setFeedback('❌ Error: ' + (res.error || 'Failed to update cake.'));
+    }
+  };
+
+  const handlePrintInvoice = (order) => {
+    const win = window.open('', '_blank', 'width=420,height=600');
+    const itemsHtml = order.items.map(item =>
+      `<tr><td>${item.qty}x ${item.name} (${item.size})</td><td style="text-align:right">NPR ${parseFloat(item.price || 0).toLocaleString()}</td></tr>`
+    ).join('');
+    win.document.write(`
+      <html><head><title>Invoice #${order.order_id}</title>
+      <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 1.5rem; color: #333; }
+        h2 { text-align: center; margin-bottom: 0.2rem; }
+        .sub { text-align: center; color: #888; font-size: 0.8rem; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+        td, th { padding: 0.4rem 0; border-bottom: 1px dashed #ddd; font-size: 0.85rem; }
+        .total { font-size: 1.1rem; font-weight: 800; text-align: right; margin-top: 0.5rem; }
+        .meta { font-size: 0.78rem; color: #555; margin-bottom: 0.3rem; }
+        .footer { text-align: center; margin-top: 2rem; font-size: 0.7rem; color: #aaa; }
+        @media print { button { display: none; } }
+      </style></head><body>
+      <h2>🎂 Cake & Kitchen</h2>
+      <div class="sub">Tax Invoice / Receipt</div>
+      <div class="meta"><strong>Invoice:</strong> #${order.order_id}</div>
+      <div class="meta"><strong>Date:</strong> ${order.created_at ? order.created_at.split('T')[0] : 'N/A'}</div>
+      <div class="meta"><strong>Customer:</strong> ${order.customer_name}</div>
+      <div class="meta"><strong>Phone:</strong> ${order.phone}</div>
+      <div class="meta"><strong>Delivery:</strong> ${order.delivery_date ? order.delivery_date.split('T')[0] : 'N/A'} (${order.delivery_time || 'N/A'})</div>
+      <hr/>
+      <table><thead><tr><th style="text-align:left">Item</th><th style="text-align:right">Price</th></tr></thead>
+      <tbody>${itemsHtml}</tbody></table>
+      <div class="total">Grand Total: NPR ${parseFloat(order.total || 0).toLocaleString()}</div>
+      ${order.notes ? '<div class="meta" style="margin-top:1rem"><strong>Notes:</strong> ' + order.notes + '</div>' : ''}
+      <div class="footer">Thank you for choosing Cake & Kitchen!<br/>This is a computer-generated invoice.</div>
+      <br/><button onclick="window.print()" style="width:100%;padding:0.7rem;font-size:0.9rem;cursor:pointer;background:#8B4513;color:#fff;border:none;border-radius:6px;">🖨️ Print</button>
+      </body></html>
+    `);
+    win.document.close();
   };
 
   const toggleAvailability = async (cakeId) => {
@@ -260,7 +352,7 @@ function AdminDashboard({ user }) {
                           <option value="Delivered">🟢 Delivered</option>
                           <option value="Cancelled">⚫ Cancelled</option>
                         </select>
-                        <button className="btn-outline" style={{ width: '100%', padding: '0.5rem', fontSize: '0.75rem' }}>Print Invoice</button>
+                        <button className="btn-outline" onClick={() => handlePrintInvoice(o)} style={{ width: '100%', padding: '0.5rem', fontSize: '0.75rem' }}>Print Invoice</button>
                       </div>
                     </div>
                   </div>
@@ -303,12 +395,14 @@ function AdminDashboard({ user }) {
                     <label className="form-label">Description</label>
                     <textarea className="form-input" style={{ minHeight: '80px', resize: 'vertical' }} value={cakeForm.description} onChange={e => setCakeForm({ ...cakeForm, description: e.target.value })} />
                   </div>
-                  <button type="submit" className="btn-primary btn-block" style={{ padding: '1rem' }}>Launch Product</button>
+                  <button type="submit" className="btn-primary btn-block" disabled={isSubmitting} style={{ padding: '1rem', opacity: isSubmitting ? 0.6 : 1, position: 'relative' }}>
+                    {isSubmitting ? '⏳ Uploading...' : '🚀 Launch Product'}
+                  </button>
                 </form>
 
                 <div className="admin-table-container">
                   <table className="admin-table">
-                    <thead><tr><th>Product Name</th><th>Price</th><th>Category</th><th>Availability</th></tr></thead>
+                    <thead><tr><th>Product Name</th><th>Price</th><th>Category</th><th>Availability</th><th>Actions</th></tr></thead>
                     <tbody>
                       {cakes.map(cake => (
                         <tr key={cake.cake_id}>
@@ -327,6 +421,26 @@ function AdminDashboard({ user }) {
                             >
                               {cake.is_available ? '✅ In Stock' : '❌ Out of Stock'}
                             </button>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '0.4rem' }}>
+                              <button
+                                onClick={() => openEditModal(cake)}
+                                style={{ padding: '0.4rem 0.8rem', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', borderRadius: '6px', border: '1px solid #1565c0', background: '#fff', color: '#1565c0', transition: 'all 0.2s' }}
+                                onMouseEnter={e => { e.target.style.background = '#1565c0'; e.target.style.color = '#fff'; }}
+                                onMouseLeave={e => { e.target.style.background = '#fff'; e.target.style.color = '#1565c0'; }}
+                              >
+                                ✏️ Edit
+                              </button>
+                              <button
+                                onClick={() => handleDeleteCake(cake.cake_id, cake.name)}
+                                style={{ padding: '0.4rem 0.8rem', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', borderRadius: '6px', border: '1px solid #c62828', background: '#fff', color: '#c62828', transition: 'all 0.2s' }}
+                                onMouseEnter={e => { e.target.style.background = '#c62828'; e.target.style.color = '#fff'; }}
+                                onMouseLeave={e => { e.target.style.background = '#fff'; e.target.style.color = '#c62828'; }}
+                              >
+                                🗑️ Delete
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -363,6 +477,57 @@ function AdminDashboard({ user }) {
 
         </main>
       </div>
+
+      {/* Edit Cake Modal */}
+      {editingCake && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setEditingCake(null)}>
+          <form onSubmit={handleEditCake} onClick={e => e.stopPropagation()} style={{ background: 'var(--bg-card)', borderRadius: '12px', padding: '2rem', width: '420px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h3 style={{ color: 'var(--primary)', margin: 0 }}>✏️ Edit Product</h3>
+              <button type="button" onClick={() => setEditingCake(null)} style={{ background: 'none', border: 'none', fontSize: '1.3rem', cursor: 'pointer', color: 'var(--text-light)' }}>&times;</button>
+            </div>
+
+            <div style={{ marginBottom: '1rem' }}>
+              <label className="form-label">Cake Name</label>
+              <input type="text" className="form-input" required value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} />
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label className="form-label">Base Price (NPR)</label>
+              <input type="number" className="form-input" required value={editForm.base_price} onChange={e => setEditForm({ ...editForm, base_price: e.target.value })} />
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label className="form-label">Category</label>
+              <select className="form-input" value={editForm.cat_id} onChange={e => setEditForm({ ...editForm, cat_id: parseInt(e.target.value) })}>
+                {categories.map(c => <option key={c.cat_id} value={c.cat_id}>{c.name}</option>)}
+              </select>
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label className="form-label">Replace Image (optional)</label>
+              <input type="file" accept="image/*" className="form-input" onChange={handleEditImageChange} style={{ padding: '0.5rem' }} />
+              <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                {editPreview ? (
+                  <img src={editPreview} alt="New" style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '4px', border: '2px solid var(--accent)' }} />
+                ) : (
+                  <img src={getImageUrl(editingCake.image_url)} alt="Current" style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--border)' }} />
+                )}
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-light)' }}>{editPreview ? 'New image selected' : 'Current image'}</span>
+              </div>
+            </div>
+            <div style={{ marginBottom: '1rem' }}>
+              <label className="form-label">Description</label>
+              <textarea className="form-input" style={{ minHeight: '80px', resize: 'vertical' }} value={editForm.description} onChange={e => setEditForm({ ...editForm, description: e.target.value })} />
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.8rem' }}>
+              <button type="button" onClick={() => setEditingCake(null)} className="btn-outline" style={{ flex: 1, padding: '0.8rem' }}>Cancel</button>
+              <button type="submit" className="btn-primary" disabled={isSubmitting} style={{ flex: 1, padding: '0.8rem', opacity: isSubmitting ? 0.6 : 1 }}>
+                {isSubmitting ? '⏳ Saving...' : '💾 Save Changes'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
     </div>
   );
 }

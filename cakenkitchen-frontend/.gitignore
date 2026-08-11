@@ -1,0 +1,7 @@
+public/
+.env.development
+*.png
+*.jpeg
+*.jpg
+.agent/
+*.txt

@@ -85,6 +85,26 @@ class Cake {
         }
     }
 
+    static async update(id, data) {
+        const { name, description, base_price, cat_id, image_url } = data;
+        try {
+            const fields = [];
+            const values = [];
+            if (name !== undefined) { fields.push('name = ?'); values.push(name); }
+            if (description !== undefined) { fields.push('description = ?'); values.push(description); }
+            if (base_price !== undefined) { fields.push('base_price = ?'); values.push(base_price); }
+            if (cat_id !== undefined) { fields.push('cat_id = ?'); values.push(cat_id); }
+            if (image_url !== undefined) { fields.push('image_url = ?'); values.push(image_url); }
+            if (fields.length === 0) return false;
+            values.push(id);
+            const [result] = await pool.query(`UPDATE cakes SET ${fields.join(', ')} WHERE cake_id = ?`, values);
+            return result.affectedRows > 0;
+        } catch (err) {
+            console.error('Error updating cake:', err);
+            throw err;
+        }
+    }
+
     static getMockCakes() {
         return [
             { cake_id: 1, name: 'Classic Rose Anniversary', description: 'Double-tiered red velvet sponge with elegant white buttercream piping.', base_price: 1200.00, cat_id: 1, image_url: 'Anniversary.jpeg', is_available: true },

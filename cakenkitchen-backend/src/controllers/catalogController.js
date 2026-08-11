@@ -38,11 +38,6 @@ const getAdminCakes = async (req, res) => {
 };
 
 const createCake = async (req, res) => {
-    console.log('\n========================================');
-    console.log('📥 STEP 2 (BACKEND): createCake endpoint hit!');
-    console.log('📦 req.body:', req.body);
-    console.log('🖼️ req.file:', req.file ? req.file.filename : 'NO FILE ATTACHED');
-    console.log('========================================\n');
     try {
         const cakeData = { ...req.body };
         if (req.file) {
@@ -52,13 +47,36 @@ const createCake = async (req, res) => {
              cakeData.image_url = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500';
         }
         
-        console.log('💾 STEP 3 (BACKEND): Saving to MySQL database...', cakeData);
         const id = await Cake.create(cakeData);
-        console.log('✅ STEP 4 (BACKEND): Cake saved successfully! ID:', id);
         res.json({ success: true, cake_id: id });
     } catch (err) {
-        console.error('❌ STEP 4 (BACKEND ERROR): Error in createCake controller:', err);
+        console.error('Error creating cake:', err);
         res.status(500).json({ success: false, error: err.message || 'Failed to create cake' });
+    }
+};
+
+const updateCake = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updateData = { ...req.body };
+
+        if (req.file) {
+            // Delete old image from disk if it exists
+            const oldCake = await Cake.getById(id);
+            if (oldCake && oldCake.image_url && !oldCake.image_url.startsWith('http')) {
+                const fs = require('fs');
+                const path = require('path');
+                const oldPath = path.join(__dirname, '../../public/uploads', oldCake.image_url);
+                if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+            }
+            updateData.image_url = req.file.filename;
+        }
+
+        const success = await Cake.update(id, updateData);
+        res.json({ success });
+    } catch (err) {
+        console.error('Error updating cake:', err);
+        res.status(500).json({ success: false, error: err.message || 'Failed to update cake' });
     }
 };
 
@@ -148,5 +166,5 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
-module.exports = { getCategories, getCakes, getAdminCakes, createCake, deleteCake, toggleCake, getCakeById, createOrder, getUserOrders, getAdminOrders, updateOrderStatus };
+module.exports = { getCategories, getCakes, getAdminCakes, createCake, updateCake, deleteCake, toggleCake, getCakeById, createOrder, getUserOrders, getAdminOrders, updateOrderStatus };
 

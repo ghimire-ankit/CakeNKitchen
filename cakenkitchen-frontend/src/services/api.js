@@ -93,13 +93,11 @@ export const fetchAdminCakes = async () => {
 };
 
 export const createCake = async (cakeData) => {
-  console.log('📡 STEP 1.5 (API SERVICE): Sending POST request to /api/cakes...');
   try {
     const response = await api.post('/cakes', cakeData);
-    console.log('📡 STEP 1.6 (API SERVICE): HTTP status 200 response:', response.data);
     return response.data;
   } catch (error) {
-    console.error('❌ STEP 1.6 (API SERVICE ERROR): HTTP error captured:', error);
+    console.error('Error creating cake:', error);
     let errorMsg = 'Failed to create cake';
     if (error.response && error.response.data && error.response.data.error) {
         errorMsg = error.response.data.error;
@@ -127,6 +125,20 @@ export const deleteCakeAPI = async (id) => {
   } catch (error) {
     console.error('Error deleting cake:', error);
     return { success: false, error: 'Failed to delete cake' };
+  }
+};
+
+export const updateCakeAPI = async (id, cakeData) => {
+  try {
+    const response = await api.put(`/cakes/${id}`, cakeData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating cake:', error);
+    let errorMsg = 'Failed to update cake';
+    if (error.response && error.response.data && error.response.data.error) {
+        errorMsg = error.response.data.error;
+    }
+    return { success: false, error: errorMsg };
   }
 };
 
