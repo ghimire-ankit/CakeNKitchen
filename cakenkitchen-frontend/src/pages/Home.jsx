@@ -350,7 +350,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
       <section className="hours-section" id="hours-section">
         <div className="hours-inner wrap">
           <div className="hours-img">
-            <img src={getImageUrl('barbieee.jpg')} alt="Fresh from our kitchen" />
+            <img src={getImageUrl('inaya.jpg')} alt="Fresh from our kitchen" />
           </div>
           <div className="hours-copy">
             <p className="eyebrow light">Come Visit Us</p>
