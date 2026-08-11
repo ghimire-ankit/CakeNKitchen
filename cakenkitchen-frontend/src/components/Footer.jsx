@@ -11,7 +11,7 @@ function Footer() {
         <div className="foot-brand">
           <Link to="/" className="foot-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', textDecoration: 'none' }}>
             <img src="/logo.png" alt="Cake & Kitchen Logo" style={{ height: '48px', objectFit: 'contain' }} />
-            <span style={{ fontSize: '1.25rem', fontFamily: 'var(--f-display)', fontWeight: 800, color: '#ffffff', letterSpacing: '0.5px' }}>Cake & Kitchen</span>
+            <span style={{ fontSize: '1.25rem', fontFamily: 'var(--f-display)', fontWeight: 800, color: '#1a1a1a', letterSpacing: '0.5px' }}>Cake & Kitchen</span>
           </Link>
           <p className="foot-desc">
             Handcrafted cakes and pastries made fresh every morning from organic, locally-sourced ingredients. Your celebration deserves nothing less.
@@ -118,12 +118,21 @@ function Footer() {
 
       <div className="footer-bar">
         <div className="footer-bar-inner wrap">
-          <span>© {new Date().getFullYear()} Cake & Kitchen Patisserie. All rights reserved.</span>
-          <div className="bar-links">
+          <div className="footer-left-links">
+            <span>© {new Date().getFullYear()} Cake & Kitchen Patisserie. All rights reserved.</span>
+            <span className="footer-dot-divider">·</span>
             <Link to="/">Privacy Policy</Link>
-            <span>·</span>
+            <span className="footer-dot-divider">·</span>
             <Link to="/">Terms of Service</Link>
           </div>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="back-to-top-btn"
+          >
+            Back to top
+            <span className="up-arrow-box">↑</span>
+          </button>
         </div>
       </div>
     </footer>
