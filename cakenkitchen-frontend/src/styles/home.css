@@ -202,6 +202,22 @@
   flex-wrap: wrap;
 }
 
+.hero-btns .btn-outline {
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  color: #fff !important;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.hero-btns .btn-outline:hover,
+.hero-btns .btn-outline:focus,
+.hero-btns .btn-outline:active {
+  background: #fff;
+  color: var(--brand) !important;
+  border-color: #fff;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2);
+}
+
 .hero-badges {
   display: flex;
   gap: .6rem;
