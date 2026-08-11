@@ -181,19 +181,28 @@
 .foot-hours-mini {
   display: flex;
   flex-direction: column;
-  gap: .3rem;
-  border-top: 1px solid rgba(255, 255, 255, .06);
-  padding-top: .75rem;
-  margin-top: .4rem;
+  gap: .4rem;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  padding-top: .8rem;
+  margin-top: .8rem;
+  width: 100%;
 }
 
-.foot-hours-mini p {
-  font-size: .8rem;
-  color: rgba(255, 255, 255, .45);
+.foot-hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .78rem;
 }
 
-.foot-hours-mini strong {
-  color: rgba(255, 255, 255, .7);
+.foot-hours-row span {
+  color: rgba(255, 255, 255, .5);
+  font-weight: 500;
+}
+
+.foot-hours-row strong {
+  color: rgba(255, 255, 255, .85);
+  font-weight: 600;
 }
 
 /* Bottom bar */

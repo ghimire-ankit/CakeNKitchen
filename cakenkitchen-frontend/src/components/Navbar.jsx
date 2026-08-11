@@ -38,7 +38,7 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
       {/* Top info bar */}
       <div className="topbar">
         <div className="topbar-inner wrap">
-          <span>📞 980-1234567 &nbsp;|&nbsp; ✉ hello@cakenkitchen.com</span>
+          <span>📞 +977 980-6461461 &nbsp;|&nbsp; ✉ hello@cakenkitchen.com</span>
           <span>🎁 Free delivery on orders above NPR 2,000 &nbsp;·&nbsp; Use code <strong>CAKE10</strong> for 10% off</span>
         </div>
       </div>
