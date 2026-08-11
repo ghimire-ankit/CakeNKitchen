@@ -1,5 +1,5 @@
 const express = require('express');
-const { getCategories, getCakes, getCakeById, getAdminCakes, createCake, toggleCake, createOrder, getAdminOrders, updateOrderStatus } = require('../controllers/catalogController');
+const { getCategories, getCakes, getCakeById, getAdminCakes, createCake, toggleCake, createOrder, getUserOrders, getAdminOrders, updateOrderStatus } = require('../controllers/catalogController');
 const { authenticateToken, isAdmin } = require('../middleware/auth');
 const { validateCake, validateOrder } = require('../middleware/validator');
 
@@ -16,6 +16,7 @@ router.patch('/cakes/:id/toggle', authenticateToken, isAdmin, toggleCake);
 // Orders security routes
 router.post('/orders', validateOrder, createOrder);
 router.get('/orders', authenticateToken, isAdmin, getAdminOrders);
+router.get('/orders/user/:userId', authenticateToken, getUserOrders);
 router.patch('/orders/:id/status', authenticateToken, isAdmin, updateOrderStatus);
 
 module.exports = router;

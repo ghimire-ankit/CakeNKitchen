@@ -1,6 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { placeOrder } from '../services/api';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+});
+
+function LocationPicker({ position, setPosition }) {
+  useMapEvents({
+    click(e) {
+      setPosition([e.latlng.lat, e.latlng.lng]);
+    },
+  });
+  return position ? <Marker position={position} /> : null;
+}
 
 function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
   const navigate = useNavigate();
@@ -13,14 +32,15 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
     deliveryTime: '12:00 PM',
     note: ''
   });
-  
-  // Production Features State
   const [deliveryType, setDeliveryType] = useState('standard');
   const [paymentMethod, setPaymentMethod] = useState('cod');
-  
+  const [mapPosition, setMapPosition] = useState(null);
+  const [gpsLoading, setGpsLoading] = useState(false);
+
   const [completed, setCompleted] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     if (cart.length === 0 && !completed) {
@@ -30,28 +50,44 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
 
   const cartTotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
   const discountAmount = Math.round(cartTotal * (discountPercent / 100));
-  
-  // Dynamic Delivery Logic
   const baseDelivery = (cartTotal > 0 && cartTotal < 5000) ? 150 : 0;
-  const deliveryCharge = deliveryType === 'express' ? 350 : deliveryType === 'pickup' ? 0 : baseDelivery;
-  
+  const deliveryCharge = deliveryType === 'pickup' ? 0 : baseDelivery;
   const grandTotal = cartTotal - discountAmount + deliveryCharge;
+
+  const detectLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    setGpsLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const coords = [pos.coords.latitude, pos.coords.longitude];
+        setMapPosition(coords);
+        if (mapRef.current) {
+          mapRef.current.flyTo(coords, 16);
+        }
+        setGpsLoading(false);
+      },
+      (err) => {
+        alert('Could not detect your location. Please allow GPS permission or select manually on the map.');
+        setGpsLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Advanced Validation
     const cleanedPhone = form.phone.replace(/\D/g, '');
     if (cleanedPhone.length < 10) {
       alert("Please enter a valid phone number (minimum 10 digits).");
       return;
     }
-
     if (deliveryType !== 'pickup' && form.address.trim().length < 10) {
-      alert("Please provide a more detailed delivery address (House No, Street, Ward) so our drivers can find you.");
+      alert("Please provide a more detailed delivery address.");
       return;
     }
-
     setSubmitting(true);
 
     const orderRecord = {
@@ -64,6 +100,8 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
       notes: form.note,
       payment_method: paymentMethod,
       delivery_type: deliveryType,
+      latitude: mapPosition ? mapPosition[0] : null,
+      longitude: mapPosition ? mapPosition[1] : null,
       total: grandTotal,
       items: cart.map(item => ({
         cake_id: item.cake_id,
@@ -102,9 +140,13 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
           <p><strong>Deliver to:</strong> {deliveryType === 'pickup' ? 'Self Pickup at Store' : form.address}</p>
           <p><strong>Scheduled Date:</strong> {form.deliveryDate} at {form.deliveryTime}</p>
           <p><strong>Payment Method:</strong> {paymentMethod === 'cod' ? 'Cash on Delivery' : paymentMethod === 'esewa' ? 'eSewa Digital Wallet' : 'Credit/Debit Card'}</p>
+          {mapPosition && <p><strong>GPS Location:</strong> {mapPosition[0].toFixed(5)}, {mapPosition[1].toFixed(5)}</p>}
           <p><strong>Status:</strong> Our master bakers are reviewing your order details.</p>
         </div>
-        <button onClick={() => navigate('/')} className="btn-primary" style={{marginTop: '1.5rem'}} id="btn-success-home">Browse More Cakes</button>
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'center' }}>
+          <button onClick={() => navigate('/my-orders')} className="btn-primary" id="btn-success-orders">Track My Orders</button>
+          <button onClick={() => navigate('/')} className="btn-secondary" style={{ padding: '0.6rem 1.5rem' }} id="btn-success-home">Browse More Cakes</button>
+        </div>
       </div>
     );
   }
@@ -114,8 +156,7 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
       <h1 className="cart-header">Secure Checkout</h1>
       <div className="checkout-layout">
         <form onSubmit={handleSubmit} className="checkout-form-container" id="checkout-details-form">
-          
-          {/* Section 1: Contact Info */}
+
           <div className="checkout-section">
             <h3 className="section-title"><span>1</span> Contact Information</h3>
             <div className="checkout-grid">
@@ -134,23 +175,14 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
             </div>
           </div>
 
-          {/* Section 2: Delivery Options */}
           <div className="checkout-section">
             <h3 className="section-title"><span>2</span> Delivery Details</h3>
-            
             <div className="delivery-types-container">
               <label className={`delivery-card ${deliveryType === 'standard' ? 'active' : ''}`}>
                 <input type="radio" name="deliveryType" checked={deliveryType === 'standard'} onChange={() => setDeliveryType('standard')} />
                 <div className="del-info">
-                  <strong>Standard Delivery</strong>
+                  <strong>Standard Delivery 🚚</strong>
                   <span>{baseDelivery === 0 ? 'FREE' : `NPR ${baseDelivery}`}</span>
-                </div>
-              </label>
-              <label className={`delivery-card ${deliveryType === 'express' ? 'active' : ''}`}>
-                <input type="radio" name="deliveryType" checked={deliveryType === 'express'} onChange={() => setDeliveryType('express')} />
-                <div className="del-info">
-                  <strong>Express (2-Hour) ⚡</strong>
-                  <span>NPR 350</span>
                 </div>
               </label>
               <label className={`delivery-card ${deliveryType === 'pickup' ? 'active' : ''}`}>
@@ -163,13 +195,45 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
             </div>
 
             {deliveryType !== 'pickup' && (
-              <div className="form-group" style={{marginTop: '1.5rem'}}>
-                <label className="form-label" htmlFor="chk-address">Complete Shipping Address</label>
-                <input id="chk-address" type="text" placeholder="House No, Street, Ward, Area" className="form-input" required={deliveryType !== 'pickup'} value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} />
-              </div>
+              <>
+                <div className="form-group" style={{ marginTop: '1.5rem' }}>
+                  <label className="form-label" htmlFor="chk-address">Complete Shipping Address</label>
+                  <input id="chk-address" type="text" placeholder="House No, Street, Ward, Area" className="form-input" required={deliveryType !== 'pickup'} value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} />
+                </div>
+                <div style={{ marginTop: '1rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+                    <label className="form-label" style={{ margin: 0 }}>📍 Pin Your Delivery Location</label>
+                    <button type="button" onClick={detectLocation} className="btn-secondary" style={{ padding: '0.4rem 1rem', fontSize: '0.75rem' }} disabled={gpsLoading}>
+                      {gpsLoading ? 'Detecting...' : '📡 Auto Detect GPS'}
+                    </button>
+                  </div>
+                  <div style={{ height: '250px', borderRadius: 'var(--radius-card)', overflow: 'hidden', border: '1.5px solid var(--border-light)' }}>
+                    <MapContainer
+                      center={mapPosition || [28.7041, 80.3595]}
+                      zoom={mapPosition ? 16 : 12}
+                      style={{ height: '100%', width: '100%' }}
+                      ref={mapRef}
+                    >
+                      <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      />
+                      <LocationPicker position={mapPosition} setPosition={setMapPosition} />
+                    </MapContainer>
+                  </div>
+                  {mapPosition && (
+                    <small style={{ display: 'block', marginTop: '0.5rem', color: 'var(--text-light)', fontSize: '0.75rem', fontWeight: 700 }}>
+                      📌 Selected: {mapPosition[0].toFixed(5)}, {mapPosition[1].toFixed(5)}
+                    </small>
+                  )}
+                  <small style={{ display: 'block', marginTop: '0.3rem', color: 'var(--text-light)', fontSize: '0.7rem' }}>
+                    Click on the map to set your delivery pin, or use Auto Detect GPS.
+                  </small>
+                </div>
+              </>
             )}
-            
-            <div className="checkout-grid" style={{marginTop: '1.5rem'}}>
+
+            <div className="checkout-grid" style={{ marginTop: '1.5rem' }}>
               <div className="form-group">
                 <label className="form-label" htmlFor="chk-date">Select Delivery Date</label>
                 <input id="chk-date" type="date" className="form-input" required min={new Date().toISOString().split('T')[0]} value={form.deliveryDate} onChange={e => setForm({ ...form, deliveryDate: e.target.value })} />
@@ -184,13 +248,12 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
                 </select>
               </div>
             </div>
-            <div className="form-group" style={{marginTop: '1.5rem'}}>
+            <div className="form-group" style={{ marginTop: '1.5rem' }}>
               <label className="form-label" htmlFor="chk-note">Special Baker Instructions (Optional)</label>
               <textarea id="chk-note" className="form-input" style={{ resize: 'vertical', minHeight: '60px' }} placeholder="E.g., Please ensure minimal sugar..." value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} />
             </div>
           </div>
 
-          {/* Section 3: Payment Method */}
           <div className="checkout-section">
             <h3 className="section-title"><span>3</span> Payment Method</h3>
             <div className="payment-methods-grid">
@@ -201,7 +264,7 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
               </label>
               <label className={`payment-card ${paymentMethod === 'esewa' ? 'active' : ''}`}>
                 <input type="radio" name="payment" checked={paymentMethod === 'esewa'} onChange={() => setPaymentMethod('esewa')} />
-                <span className="pm-icon" style={{color: '#60bb46', fontFamily: 'var(--sans)', fontWeight: 900}}>e</span>
+                <span className="pm-icon" style={{ color: '#60bb46', fontFamily: 'var(--sans)', fontWeight: 900 }}>e</span>
                 <strong>eSewa Wallet</strong>
               </label>
               <label className={`payment-card ${paymentMethod === 'card' ? 'active' : ''}`}>
@@ -210,14 +273,13 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
                 <strong>Credit / Debit Card</strong>
               </label>
             </div>
-            
             {paymentMethod === 'esewa' && (
               <div className="payment-alert">
                 You will be redirected to the eSewa secure portal automatically after clicking "Place Order".
               </div>
             )}
             {paymentMethod === 'card' && (
-              <div className="payment-alert" style={{backgroundColor: '#e3f2fd', color: '#1565c0', borderLeftColor: '#1976d2'}}>
+              <div className="payment-alert" style={{ backgroundColor: '#e3f2fd', color: '#1565c0', borderLeftColor: '#1976d2' }}>
                 You will be securely redirected to our payment gateway.
               </div>
             )}
@@ -242,7 +304,7 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
               <div key={i} className="checkout-item-row">
                 <div className="chk-item-info">
                   <span className="chk-qty">{item.qty}x</span>
-                  <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <strong className="chk-name">{item.name}</strong>
                     <span className="chk-size">{item.size}</span>
                   </div>
@@ -262,8 +324,8 @@ function Checkout({ cart, clearCart, user, discountPercent, couponCode }) {
             </div>
           )}
           <div className="summary-row">
-            <span>Shipping ({deliveryType === 'express' ? 'Express' : deliveryType === 'pickup' ? 'Pickup' : 'Standard'})</span>
-            <span style={{color: deliveryCharge === 0 ? '#2e7d32' : 'inherit', fontWeight: deliveryCharge === 0 ? 800 : 600}}>
+            <span>Shipping ({deliveryType === 'pickup' ? 'Pickup' : 'Standard'})</span>
+            <span style={{ color: deliveryCharge === 0 ? '#2e7d32' : 'inherit', fontWeight: deliveryCharge === 0 ? 800 : 600 }}>
               {deliveryCharge === 0 ? 'FREE' : `NPR ${deliveryCharge}`}
             </span>
           </div>

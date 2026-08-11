@@ -39,11 +39,15 @@ CREATE TABLE IF NOT EXISTS cakes (
 CREATE TABLE IF NOT EXISTS orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL,
-    status ENUM('Pending', 'Preparing', 'Ready', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+    status ENUM('Pending', 'Preparing', 'Ready', 'Out for Delivery', 'Delivered', 'Cancelled') DEFAULT 'Pending',
     total DECIMAL(10, 2) NOT NULL,
     delivery_date DATE NOT NULL,
     delivery_address TEXT NOT NULL,
     delivery_time VARCHAR(50) NOT NULL,
+    delivery_type VARCHAR(20) DEFAULT 'standard',
+    payment_method VARCHAR(20) DEFAULT 'cod',
+    latitude DECIMAL(10, 7) NULL,
+    longitude DECIMAL(10, 7) NULL,
     notes TEXT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE SET NULL
@@ -58,7 +62,7 @@ CREATE TABLE IF NOT EXISTS order_items (
     weight_lbs INT NOT NULL,
     purchase_price DECIMAL(10, 2) NOT NULL,
     subtotal DECIMAL(10, 2) NOT NULL,
-    message VARCHAR(255) NULL,
+    message TEXT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (cake_id) REFERENCES cakes(cake_id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;

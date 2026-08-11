@@ -100,16 +100,26 @@ const initializeDatabaseSchema = async () => {
             CREATE TABLE IF NOT EXISTS orders (
                 order_id INT AUTO_INCREMENT PRIMARY KEY,
                 user_id INT NULL,
-                status ENUM('Pending', 'Preparing', 'Ready', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+                status ENUM('Pending', 'Preparing', 'Ready', 'Out for Delivery', 'Delivered', 'Cancelled') DEFAULT 'Pending',
                 total DECIMAL(10, 2) NOT NULL,
                 delivery_date DATE NOT NULL,
                 delivery_address TEXT NOT NULL,
                 delivery_time VARCHAR(50) NOT NULL,
+                delivery_type VARCHAR(20) DEFAULT 'standard',
+                payment_method VARCHAR(20) DEFAULT 'cod',
+                latitude DECIMAL(10, 7) NULL,
+                longitude DECIMAL(10, 7) NULL,
                 notes TEXT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE SET NULL
             ) ENGINE=InnoDB
         `);
+
+        try { await pool.query("ALTER TABLE orders ADD COLUMN delivery_type VARCHAR(20) DEFAULT 'standard'"); } catch (e) { }
+        try { await pool.query("ALTER TABLE orders ADD COLUMN payment_method VARCHAR(20) DEFAULT 'cod'"); } catch (e) { }
+        try { await pool.query("ALTER TABLE orders ADD COLUMN latitude DECIMAL(10,7) NULL"); } catch (e) { }
+        try { await pool.query("ALTER TABLE orders ADD COLUMN longitude DECIMAL(10,7) NULL"); } catch (e) { }
+        try { await pool.query("ALTER TABLE orders MODIFY COLUMN status ENUM('Pending','Preparing','Ready','Out for Delivery','Delivered','Cancelled') DEFAULT 'Pending'"); } catch (e) { }
 
         // 5. Create Order Items Table
         await pool.query(`
@@ -121,13 +131,12 @@ const initializeDatabaseSchema = async () => {
                 weight_lbs INT NOT NULL,
                 purchase_price DECIMAL(10, 2) NOT NULL,
                 subtotal DECIMAL(10, 2) NOT NULL,
-                message VARCHAR(255) NULL,
+                message TEXT NULL,
                 FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
                 FOREIGN KEY (cake_id) REFERENCES cakes(cake_id) ON DELETE RESTRICT
             ) ENGINE=InnoDB
         `);
-
-        try { await pool.query('ALTER TABLE order_items ADD COLUMN message VARCHAR(255) NULL'); } catch (e) { }
+        try { await pool.query('ALTER TABLE order_items MODIFY COLUMN message TEXT NULL'); } catch (e) { }
 
         console.log('✅ Database tables verified and created successfully!');
 

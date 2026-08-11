@@ -10,6 +10,8 @@ import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
+import CustomCake from './pages/CustomCake';
+import MyOrders from './pages/MyOrders';
 
 
 function App() {
@@ -26,7 +28,6 @@ function App() {
   const [couponCode, setCouponCode] = useState('');
   const [toast, setToast] = useState({ visible: false, message: '', link: '' });
 
-  // Update local storage whenever cart changes
   const saveCart = (newCart) => {
     setCart(newCart);
     localStorage.setItem('cart', JSON.stringify(newCart));
@@ -54,14 +55,7 @@ function App() {
     );
 
     let updatedCart = [...cart];
-    // Calculate price based on weight/size or use override
-    let itemPrice;
-    if (customPrice !== null) {
-      itemPrice = customPrice;
-    } else {
-      const sizeMultiplier = size === '2 lbs' ? 1.8 : size === '3 lbs' ? 2.6 : 1.0;
-      itemPrice = Math.round(Number(cake.base_price) * sizeMultiplier);
-    }
+    const itemPrice = customPrice !== null ? customPrice : Math.round(Number(cake.base_price) * (size === '2 lbs' ? 1.8 : size === '3 lbs' ? 2.6 : 1.0));
 
     if (existingIndex > -1) {
       updatedCart[existingIndex].qty += qty;
@@ -79,7 +73,6 @@ function App() {
     }
     saveCart(updatedCart);
 
-    // Trigger toast notification
     setToast({
       visible: true,
       message: `${cake.name} (${size}) added to Cart`,
@@ -144,78 +137,81 @@ function App() {
 
   return (
     <Router>
-      <div className="deli-app-layout">
-        <Navbar
-          user={user}
-          logout={handleLogout}
-          cartCount={cartCount}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          selectedCat={selectedCat}
-          setSelectedCat={setSelectedCat}
+  <div className="deli-app-layout">
+    <Navbar
+      user={user}
+      logout={handleLogout}
+      cartCount={cartCount}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
+      selectedCat={selectedCat}
+      setSelectedCat={setSelectedCat}
+    />
+
+    <main className="main-content">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              addToCart={addToCart}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedCat={selectedCat}
+              setSelectedCat={setSelectedCat}
+            />
+          }
         />
-
-        <main className="main-content">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Home
-                  addToCart={addToCart}
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                  selectedCat={selectedCat}
-                  setSelectedCat={setSelectedCat}
-                />
-              }
+        <Route path="/cake/:id" element={<CakeDetail addToCart={addToCart} />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              cart={cart}
+              updateCartQty={updateCartQty}
+              removeFromCart={removeFromCart}
+              discountPercent={discountPercent}
+              couponCode={couponCode}
+              applyCoupon={applyCoupon}
+              removeCoupon={removeCoupon}
             />
-            <Route path="/cake/:id" element={<CakeDetail addToCart={addToCart} />} />
-            <Route
-              path="/cart"
-              element={
-                <Cart
-                  cart={cart}
-                  updateCartQty={updateCartQty}
-                  removeFromCart={removeFromCart}
-                  discountPercent={discountPercent}
-                  couponCode={couponCode}
-                  applyCoupon={applyCoupon}
-                  removeCoupon={removeCoupon}
-                />
-              }
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <Checkout
+              cart={cart}
+              clearCart={clearCart}
+              user={user}
+              discountPercent={discountPercent}
+              couponCode={couponCode}
             />
-            <Route
-              path="/checkout"
-              element={
-                <Checkout
-                  cart={cart}
-                  clearCart={clearCart}
-                  user={user}
-                  discountPercent={discountPercent}
-                  couponCode={couponCode}
-                />
-              }
-            />
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/register" element={<Register onLogin={handleLogin} />} />
-            <Route path="/admin" element={<AdminDashboard user={user} />} />
-          </Routes>
-        </main>
+          }
+        />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/register" element={<Register onLogin={handleLogin} />} />
+        <Route path="/admin" element={<AdminDashboard user={user} />} />
+            <Route path="/custom-cake" element={<CustomCake addToCart={addToCart} />} />
+            <Route path="/my-orders" element={<MyOrders user={user} />} />
+      </Routes>
+    </main>
 
-        <Footer />
-      </div>
+    <Footer />
+  </div>
 
-      {/* Floating Toast Notification */}
-      {toast.visible && (
-        <div className="toast-success-banner" id="toast-notify">
-          <span className="toast-message">{toast.message}</span>
-          <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
-            <Link to="/cart" className="toast-link" onClick={() => setToast(prev => ({ ...prev, visible: false }))}>View Cart</Link>
-            <button className="toast-close-btn" onClick={() => setToast(prev => ({ ...prev, visible: false }))}>✕</button>
-          </div>
+  {
+    toast.visible && (
+      <div className="toast-success-banner" id="toast-notify">
+        <span className="toast-message">{toast.message}</span>
+        <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+          <Link to="/cart" className="toast-link" onClick={() => setToast(prev => ({ ...prev, visible: false }))}>View Cart</Link>
+          <button className="toast-close-btn" onClick={() => setToast(prev => ({ ...prev, visible: false }))}>✕</button>
         </div>
-      )}
-    </Router>
+      </div>
+    )
+  }
+    </Router >
   );
 }
 

@@ -70,14 +70,11 @@ app.use('/api/orders', orderLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static uploads for cake image assets
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-// 2. Main API Routing Modules
 app.use('/api/auth', require('./src/routes/authRoutes'));
 app.use('/api', require('./src/routes/catalogRoutes'));
 
-// 3. Operational System Baseline Health Check Route
 app.get('/', (req, res) => {
     res.json({
         success: true,
@@ -85,7 +82,6 @@ app.get('/', (req, res) => {
         version: '1.0.0'
     });
 });
-
 app.get('/api/health', async (req, res) => {
     try {
         const dbPool = require('./src/config/db');
@@ -111,7 +107,6 @@ app.use((req, res) => {
     });
 });
 
-// 5. Centralized System Error Pipeline (Catches all unexpected runtime faults)
 app.use((err, req, res, next) => {
     console.error('❌ System Fault Captured:', err.stack);
     res.status(err.status || 500).json({
@@ -120,7 +115,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 6. Launch Application Network Server
 app.listen(PORT, () => {
     console.log(`========================================`);
     console.log(`🚀 CakeNKitchen Server Active On Port: ${PORT}`);

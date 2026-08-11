@@ -58,6 +58,8 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
             <button className="nav-link" onClick={() => scrollTo('about-section')}>About</button>
             <button className="nav-link" onClick={() => scrollTo('shop-menu')}>Menu</button>
             <button className="nav-link" onClick={() => goMenu(3)}>Weddings</button>
+            <Link to="/custom-cake" className="nav-link" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Build Cake</Link>
+            {user && <Link to="/my-orders" className="nav-link" id="nav-my-orders">My Orders</Link>}
             <button className="nav-link" onClick={() => scrollTo('hours-section')}>Visit Us</button>
             {user?.role === 'admin' && <Link to="/admin" className="nav-link" id="nav-admin">Admin</Link>}
           </nav>
@@ -118,6 +120,8 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
             <button className="mobile-link" onClick={() => scrollTo('about-section')}>About</button>
             <button className="mobile-link" onClick={() => scrollTo('shop-menu')}>Menu</button>
             <button className="mobile-link" onClick={() => goMenu(3)}>Weddings</button>
+            <Link to="/custom-cake" className="mobile-link" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Build Cake</Link>
+            {user && <Link to="/my-orders" className="mobile-link">My Orders</Link>}
             <button className="mobile-link" onClick={() => scrollTo('hours-section')}>Visit Us</button>
             {user ? (
               <button className="mobile-link" onClick={() => { logout(); navigate('/'); }}>Sign out</button>

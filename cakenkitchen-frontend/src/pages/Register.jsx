@@ -72,10 +72,16 @@ function Register({ onLogin }) {
     setMsg({ text: '', type: '' });
     setLoading(true);
     try {
-      await registerUser(form);
-      setMsg({ text: 'Account registered successfully. Proceeding to login...', type: 'success' });
+      const res = await registerUser(form);
+      setMsg({ text: 'Account registered successfully. Logging you in...', type: 'success' });
+      
+      // Auto login the user
+      if (onLogin && res.data) {
+        onLogin(res.data);
+      }
+      
       setForm({ name: '', email: '', phone: '', password: '' });
-      setTimeout(() => navigate('/login'), 1500);
+      setTimeout(() => navigate('/'), 1500);
     } catch (err) {
       const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' || err.message === 'Network Error' ? 'Backend server is offline. Please run the server to register.' : err.message) || 'Registration failed.';
       setMsg({
