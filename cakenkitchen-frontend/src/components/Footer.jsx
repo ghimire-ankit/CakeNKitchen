@@ -9,8 +9,9 @@ function Footer() {
 
         {/* Brand Column */}
         <div className="foot-brand">
-          <Link to="/" className="foot-logo" style={{ display: 'inline-block', margin: '0' }}>
-            <img src={getImageUrl('logo.png')} alt="Cake & Kitchen Logo" style={{ height: '56px', objectFit: 'contain', filter: 'brightness(0) invert(1) opacity(0.85)' }} />
+          <Link to="/" className="foot-logo" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', textDecoration: 'none' }}>
+            <img src="/logo.png" alt="Cake & Kitchen Logo" style={{ height: '48px', objectFit: 'contain' }} />
+            <span style={{ fontSize: '1.25rem', fontFamily: 'var(--f-display)', fontWeight: 800, color: 'var(--white)', letterSpacing: '0.5px' }}>Cake & Kitchen</span>
           </Link>
           <p className="foot-desc">
             Handcrafted cakes and pastries made fresh every morning from organic, locally-sourced ingredients. Your celebration deserves nothing less.
