@@ -72,3 +72,36 @@ footer.footer-container::before {
   letter-spacing: 0.5px;
   color: #A68B8B;
 }
+
+.footer-social-container {
+  margin-top: 1.2rem;
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #a3a19d;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.footer-social-link svg {
+  fill: #a3a19d;
+  transition: fill 0.2s;
+}
+
+.footer-social-link:hover {
+  color: #ffffff;
+}
+
+.footer-social-link:hover svg {
+  fill: #ffffff;
+}
