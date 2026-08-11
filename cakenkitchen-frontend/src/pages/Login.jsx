@@ -57,15 +57,23 @@ function Login({ onLogin }) {
     setMsg({ text: '', type: '' });
     setLoading(true);
     try {
+      console.log('📍 Google auth attempt:', { token: response.credential?.slice(0, 30) + '...', mockName, mockEmail });
       const res = await loginGoogle({
         token: response.credential,
         mockName,
         mockEmail
       });
-      setMsg({ text: 'Logged in with Google successfully!', type: 'success' });
-      onLogin(res.data);
-      setTimeout(() => navigate('/'), 1200);
+      console.log('✅ Google auth response:', res);
+      if (res.success && res.data) {
+        setMsg({ text: 'Logged in with Google successfully!', type: 'success' });
+        onLogin(res.data);
+        setTimeout(() => navigate('/'), 1200);
+      } else {
+        setMsg({ text: res.error || res.message || 'Unknown error from server', type: 'error' });
+      }
     } catch (err) {
+      console.error('❌ Google auth error:', err);
+      console.error('❌ Response data:', err.response?.data);
       const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' || err.message === 'Network Error' ? 'Backend server is offline. Please run the server to login.' : err.message) || 'Google Login failed.';
       setMsg({ text: errorText, type: 'error' });
     } finally {
