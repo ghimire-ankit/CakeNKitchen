@@ -16,8 +16,10 @@ function OrderChat({ orderId, currentUser }) {
   };
 
   useEffect(() => {
+    // Load messages immediately to show correct initial count
+    loadMessages();
+
     if (isOpen) {
-      loadMessages();
       const interval = setInterval(loadMessages, 5000);
       return () => clearInterval(interval);
     }

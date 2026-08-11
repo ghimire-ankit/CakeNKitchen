@@ -6,7 +6,22 @@ function Navbar({ user, logout, cartCount }) {
   const [logoFailed, setLogoFailed] = useState(false);
 
   return (
-    <header className="navbar-container">
+    <>
+      <div className="top-announcement-bar">
+        <div className="top-bar-content">
+          <div className="top-bar-left">
+            <span>📞 +977 980-6461461</span>
+            <span className="divider">|</span>
+            <span>✉ hello@cakenkitchen.com</span>
+          </div>
+          <div className="top-bar-right">
+            <span>🎁 Free delivery on orders above NPR 2,000</span>
+            <span className="divider">·</span>
+            <span>Use code <strong>CAKE10</strong> for 10% off</span>
+          </div>
+        </div>
+      </div>
+      <header className="navbar-container">
       <div className="navbar-content">
         <Link to="/" className="brand-logo" id="nav-brand" style={{ display: 'flex', alignItems: 'center' }}>
           {!logoFailed && (
@@ -34,7 +49,7 @@ function Navbar({ user, logout, cartCount }) {
           {user ? (
             <>
               <Link to="/my-orders" className="nav-link" id="nav-my-orders">My Orders</Link>
-              <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Hi, <strong>{user.name}</strong></span>
+              <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#4a3c31' }}>Hi, <strong>{user.name}</strong></span>
               <button
                 onClick={() => { logout(); navigate('/'); }}
                 className="btn-secondary"
@@ -52,7 +67,8 @@ function Navbar({ user, logout, cartCount }) {
           )}
         </nav>
       </div>
-    </header>
+      </header>
+    </>
   );
 }
 

@@ -4,20 +4,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 
 :root {
-  --primary: #5c3a38;
-  --accent: #E55B7E;
-  --accent-hover: #D04568;
-  --bg-main: #FFF8F8; 
+  --primary: #5a3d31;
+  --accent: #9c5b40;
+  --accent-hover: #824b33;
+  --bg-main: #eef2f5; 
   --bg-card: #FFFFFF;
   --bg-footer: #4A2E2C;
-  --bg-light: #FFEDED; 
+  --bg-light: #fdfbf7; 
   
-  --text-dark: #3E2726;
+  --text-dark: #333333;
   --text-light: #8C7877;
   --text-white: #ffffff;
   
-  --border: #F2D5D5;
-  --border-light: #F9E6E6;
+  --border: #e0e0e0;
+  --border-light: #f0f0f0;
   --success: #4CAF50;
   --error: #FF5252;
   
@@ -33,6 +33,7 @@
 html {
   scroll-behavior: smooth;
   font-size: 14px;
+  overflow-x: clip;
 }
 
 * {
@@ -48,6 +49,7 @@ body {
   line-height: 1.6;
   font-size: 0.9rem;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 #root {

@@ -12,14 +12,7 @@
   position: relative;
 }
 .category-title-section h2::after {
-  content: '';
-  position: absolute;
-  width: 60%;
-  height: 4px;
-  background: var(--accent);
-  bottom: -10px;
-  left: 20%;
-  border-radius: 4px;
+  display: none;
 }
 
 .category-grid {
@@ -31,40 +24,109 @@
 }
 
 .category-card {
-  background-color: var(--bg-card);
-  padding: 1.2rem 2rem;
-  border-radius: 50px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  border: 2px solid transparent;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  border: none;
 }
 .category-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(92, 58, 56, 0.08);
+  transform: translateY(-2px);
+  box-shadow: none;
 }
 .category-card.active {
-  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  background: transparent;
 }
-.category-card.active h3, .category-card.active p { color: var(--text-white); }
+.category-card.active h3 { color: var(--accent); }
 
 .category-card img {
-  width: 45px;
-  height: 45px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  border: 2px solid var(--text-white);
+  box-shadow: none;
+  border: 1px solid var(--border);
+  padding: 4px;
+  background: var(--bg-card);
+  transition: border-color 0.3s ease;
+}
+.category-card.active img {
+  border: 2px solid var(--accent);
 }
 
 .category-card-text { display: flex; flex-direction: column; }
 .category-card h3 {
   font-family: var(--sans);
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-light);
 }
 .category-card p { display: none; } /* Hide descriptions on categories to make it clean pills */
+
+/* Circular Categories */
+.circular-category-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+.circular-cat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  transition: all 0.3s ease;
+}
+.icon-circle svg {
+  width: 24px;
+  height: 24px;
+}
+.circular-cat-item span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #888;
+  transition: all 0.3s ease;
+}
+.circular-cat-item:hover .icon-circle,
+.circular-cat-item.active .icon-circle {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.circular-cat-item:hover span,
+.circular-cat-item.active span {
+  color: var(--primary);
+}
+
+.search-bar-full {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+}
+.search-bar-full svg {
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+}

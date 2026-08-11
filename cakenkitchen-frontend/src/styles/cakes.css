@@ -4,8 +4,6 @@
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 2rem;
-  border-bottom: 2px dashed var(--border);
-  padding-bottom: 0.8rem;
 }
 
 .cakes-section-header h2 {
@@ -25,19 +23,19 @@
 .cake-card {
   background-color: var(--bg-card);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.3s ease;
   overflow: visible;
   position: relative;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-light);
 }
 
 .cake-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--border-light);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border-color: var(--border);
 }
 
 .cake-image-container {
@@ -58,31 +56,22 @@
   transform: scale(1.08);
 }
 
-/* Beautiful ribbon badge */
+/* Beautiful pill badge */
 .cake-badge {
   position: absolute;
-  top: 12px;
-  left: -8px;
-  background-color: var(--accent);
-  color: var(--text-white);
-  font-size: 0.65rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px 10px 10px 4px;
-  box-shadow: 0 4px 10px rgba(229, 91, 126, 0.4);
+  bottom: 8px;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Ribbon tail */
 .cake-badge::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  border-width: 3px 4px;
-  border-style: solid;
-  border-color: var(--accent-hover) var(--accent-hover) transparent transparent;
+  display: none;
 }
 
 .cake-card-body {
@@ -94,10 +83,10 @@
 
 .cake-title {
   font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-size: 1.15rem;
+  font-weight: 600;
   color: var(--primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   line-height: 1.2;
 }
 
@@ -114,13 +103,158 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  border-top: 2px dotted var(--border-light);
+  border-top: 1px solid var(--border-light);
   padding-top: 1rem;
 }
 
 .cake-price {
   font-family: var(--sans);
-  font-size: 1.15rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* Pill Filters */
+.pill-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.pill-filters button {
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.pill-filters button.active,
+.pill-filters button:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* New Cake Card */
+.cake-card-new {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.cake-card-new:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+.cake-img-wrapper {
+  position: relative;
+  height: 220px;
+  width: 100%;
+}
+.cake-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.top-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #c25f44;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 2;
+}
+.bottom-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.95);
+  color: var(--primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  z-index: 2;
+}
+.cake-info {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.cake-info h3 {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  margin: 0 0 0.4rem 0;
+  color: #333;
+}
+.cake-rating {
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+.cake-rating .stars {
+  color: #e6a822;
+  letter-spacing: 2px;
+}
+.cake-rating .reviews {
+  color: #999;
+}
+.cake-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+.cake-bottom-row .price {
   font-weight: 800;
-  color: var(--accent);
+  color: #222;
+  font-size: 0.95rem;
+}
+.cake-bottom-row .actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.add-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #a97b64;
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-btn:hover {
+  background: var(--primary);
+}
+.view-btn {
+  border: 1px solid #ddd;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s;
+}
+.view-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }

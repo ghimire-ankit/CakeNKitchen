@@ -31,9 +31,11 @@ function Footer() {
         <div className="footer-section">
           <h3>Quick Links</h3>
           <ul>
-            <li><Link to="/">Browse Shop</Link></li>
-            <li><Link to="/cart">My Cart</Link></li>
-            <li><Link to="/login">Account Login</Link></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/">About Us</Link></li>
+            <li><Link to="/">Explore Menu</Link></li>
+            <li><Link to="/custom-cake">Build Custom Cake</Link></li>
+            <li><Link to="/">Weddings</Link></li>
           </ul>
         </div>
         
