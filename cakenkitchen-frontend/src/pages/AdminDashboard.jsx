@@ -16,9 +16,9 @@ function AdminDashboard({ user }) {
     description: '',
     base_price: '',
     cat_id: 1,
-    image_url: '',
     is_available: true
   });
+  const [selectedFile, setSelectedFile] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [imagePreview, setImagePreview] = useState('');
 
@@ -28,7 +28,7 @@ function AdminDashboard({ user }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
-        setCakeForm(prev => ({ ...prev, image_url: reader.result }));
+        setSelectedFile(file);
       };
       reader.readAsDataURL(file);
     }
@@ -72,23 +72,33 @@ function AdminDashboard({ user }) {
 
   const handleAddCake = async (e) => {
     e.preventDefault();
-    if (!cakeForm.name || !cakeForm.base_price) return;
-    const newCake = {
-      name: cakeForm.name,
-      description: cakeForm.description,
-      base_price: parseFloat(cakeForm.base_price),
-      cat_id: parseInt(cakeForm.cat_id),
-      image_url: cakeForm.image_url || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500',
-      is_available: cakeForm.is_available
-    };
+    console.log('🚀 STEP 1 (FRONTEND): Form submitted!');
+    console.log('📝 cakeForm:', cakeForm);
+    console.log('📁 selectedFile:', selectedFile);
 
-    const res = await apiCreateCake(newCake);
+    if (!cakeForm.name || !cakeForm.base_price) return;
+    const formData = new FormData();
+    formData.append('name', cakeForm.name);
+    formData.append('description', cakeForm.description || '');
+    formData.append('base_price', cakeForm.base_price);
+    formData.append('cat_id', cakeForm.cat_id);
+    formData.append('is_available', cakeForm.is_available);
+    
+    if (selectedFile) {
+      formData.append('image', selectedFile);
+    }
+
+    const res = await apiCreateCake(formData);
+    console.log('🏁 STEP 5 (FRONTEND): Response received from server:', res);
     if (res.success) {
       fetchAdminCakes().then(r => { if (r.data) setCakes(r.data); });
       setFeedback('Cake successfully launched to catalog.');
-      setCakeForm({ name: '', description: '', base_price: '', cat_id: 1, image_url: '', is_available: true });
+      setCakeForm({ name: '', description: '', base_price: '', cat_id: 1, is_available: true });
       setImagePreview('');
+      setSelectedFile(null);
       setTimeout(() => setFeedback(''), 3000);
+    } else {
+      setFeedback('Error: ' + (res.error || 'Failed to create cake. Check console.'));
     }
   };
 

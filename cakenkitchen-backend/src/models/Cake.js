@@ -52,10 +52,11 @@ class Cake {
 
     static async create(cake) {
         const { name, description, base_price, cat_id, image_url, is_available } = cake;
+        const availableInt = (is_available === true || is_available === 'true' || is_available === 1) ? 1 : 0;
         try {
             const [result] = await pool.query(
                 'INSERT INTO cakes (name, description, base_price, cat_id, image_url, is_available) VALUES (?, ?, ?, ?, ?, ?)',
-                [name, description, base_price, cat_id, image_url, is_available ? 1 : 0]
+                [name, description, base_price, cat_id, image_url, availableInt]
             );
             return result.insertId;
         } catch (err) {
@@ -70,6 +71,16 @@ class Cake {
             return result.affectedRows > 0;
         } catch (err) {
             console.error('Error toggling availability:', err);
+            throw err;
+        }
+    }
+
+    static async delete(id) {
+        try {
+            const [result] = await pool.query('DELETE FROM cakes WHERE cake_id = ?', [id]);
+            return result.affectedRows > 0;
+        } catch (err) {
+            console.error('Error deleting cake:', err);
             throw err;
         }
     }

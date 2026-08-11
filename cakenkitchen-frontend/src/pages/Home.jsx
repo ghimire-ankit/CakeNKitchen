@@ -136,7 +136,7 @@ function Home() {
               if (index === 2) badge = 'Chef Special ⭐';
               
               return (
-              <div className="cake-card" key={cake.cake_id} id={`cake-card-${cake.cake_id}`}>
+              <Link className="cake-card" key={cake.cake_id} id={`cake-card-${cake.cake_id}`} to={`/cake/${cake.cake_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="cake-image-container">
                   <img src={getImageUrl(cake.image_url)} alt={cake.name} />
                   <span className={`cake-badge ${badge.includes('Bestseller') ? 'badge-hot' : ''}`}>{badge}</span>
@@ -146,12 +146,12 @@ function Home() {
                   <p className="cake-desc">{cake.description}</p>
                   <div className="cake-footer">
                     <span className="cake-price">NPR {cake.base_price}</span>
-                    <Link to={`/cake/${cake.cake_id}`} className="btn-primary" style={{ padding: '0.6rem 1.4rem', fontSize: '0.75rem' }} id={`btn-view-${cake.cake_id}`}>
+                    <span className="btn-primary" style={{ padding: '0.6rem 1.4rem', fontSize: '0.75rem', display: 'inline-block' }} id={`btn-view-${cake.cake_id}`}>
                       Customize
-                    </Link>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             )})}
           </div>
         )}

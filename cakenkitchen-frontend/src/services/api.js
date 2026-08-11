@@ -3,10 +3,19 @@ import axios from 'axios';
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const api = axios.create({
-  baseURL: API_BASE,
-  headers: {
-    'Content-Type': 'application/json'
+  baseURL: API_BASE
+});
+
+// Interceptor to strip default Content-Type header if sending FormData,
+// allowing the browser to set multipart/form-data with the correct boundary hash.
+api.interceptors.request.use((config) => {
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type'];
+    delete config.headers['content-type'];
+  } else {
+    config.headers['Content-Type'] = 'application/json';
   }
+  return config;
 });
 
 // Register user
@@ -84,12 +93,20 @@ export const fetchAdminCakes = async () => {
 };
 
 export const createCake = async (cakeData) => {
+  console.log('📡 STEP 1.5 (API SERVICE): Sending POST request to /api/cakes...');
   try {
     const response = await api.post('/cakes', cakeData);
+    console.log('📡 STEP 1.6 (API SERVICE): HTTP status 200 response:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error creating cake:', error);
-    return { success: false, error: 'Failed to create cake' };
+    console.error('❌ STEP 1.6 (API SERVICE ERROR): HTTP error captured:', error);
+    let errorMsg = 'Failed to create cake';
+    if (error.response && error.response.data && error.response.data.error) {
+        errorMsg = error.response.data.error;
+    } else if (error.message) {
+        errorMsg = error.message;
+    }
+    return { success: false, error: errorMsg };
   }
 };
 
@@ -100,6 +117,16 @@ export const toggleCakeAvailability = async (id) => {
   } catch (error) {
     console.error('Error toggling cake:', error);
     return { success: false };
+  }
+};
+
+export const deleteCakeAPI = async (id) => {
+  try {
+    const response = await api.delete(`/cakes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting cake:', error);
+    return { success: false, error: 'Failed to delete cake' };
   }
 };
 
