@@ -145,7 +145,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
             </div>
           </div>
           <div className="hero-visual">
-            <img src={getImageUrl('miral.jpg')} alt="Artisan cake presentation" className="hero-img" />
+            <img src={getImageUrl('hands_holdingcake.jpg')} alt="Artisan cake presentation" className="hero-img" />
             <div className="hero-float top-right">
               <span className="float-val">4.9★</span>
               <span className="float-lbl">Avg Rating</span>
