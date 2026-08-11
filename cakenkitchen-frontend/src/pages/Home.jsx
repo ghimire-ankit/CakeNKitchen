@@ -64,10 +64,10 @@ const CATS = [
 ];
 
 const FEATURES = [
-  { icon: '🌿', title: 'Natural Ingredients', text: 'Locally-sourced organic produce, zero artificial colours' },
-  { icon: '👨‍🍳', title: 'Master Bakers', text: 'Crafted by trained confectioners with 10+ years experience' },
-  { icon: '🚀', title: 'Same-Day Delivery', text: 'Order before 11 AM for afternoon delivery in Dhangadhi' },
-  { icon: '📞', title: 'Custom Orders', text: 'Bespoke tiers, corporate gifting, wedding commissions' },
+  { icon: '🌿', title: 'Real Ingredients', text: 'We bake with fresh, local produce and no artificial dyes.' },
+  { icon: '👨‍🍳', title: 'Baked from Scratch', text: 'Every recipe is made by hand in our kitchen, daily.' },
+  { icon: '🚀', title: 'Same-Day Delivery', text: 'Order by 11:00 AM for fresh delivery in Dhangadhi.' },
+  { icon: '📞', title: 'Custom Cakes', text: 'Need a custom design? Just call us to discuss your ideas.' },
 ];
 
 const FALLBACK = [
@@ -119,16 +119,16 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
   return (
     <div className="home">
 
-      {/* ── HERO ────────────────────────────────────────────── */}
+      {/* Hero */}
       <section className="hero">
         <div className="hero-inner wrap">
           <div className="hero-copy">
-            <p className="eyebrow">Artisan Bakery · Dhangadhi, Nepal</p>
+            <p className="eyebrow">Fresh Daily · Dhangadhi</p>
             <h1 className="hero-title">
-              Sweet Moments<br /><em>Start Here.</em>
+              Fresh cakes,<br /><em>baked daily.</em>
             </h1>
             <p className="hero-body">
-              Handcrafted cakes made fresh every morning from the finest organic ingredients. Designed to celebrate your most precious moments.
+              We make everything from scratch every morning in Dhangadhi, using real ingredients you can recognize.
             </p>
             <div className="hero-btns">
               <button className="btn-fill" onClick={() => document.getElementById('shop-menu')?.scrollIntoView({ behavior: 'smooth' })}>
@@ -139,9 +139,9 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
               </Link>
             </div>
             <div className="hero-badges">
-              <span className="badge">1,200+ reviews</span>
-              <span className="badge">Locally sourced</span>
-              <span className="badge">Same-day delivery</span>
+              <span className="badge">5★ Reviews</span>
+              <span className="badge">Local Ingredients</span>
+              <span className="badge">Same-Day Delivery</span>
             </div>
           </div>
           <div className="hero-visual">
@@ -158,7 +158,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
         </div>
       </section>
 
-      {/* ── FEATURES ROW ────────────────────────────────────── */}
+      {/* Features */}
       <section className="features-row">
         <div className="wrap features-grid">
           {FEATURES.map(f => (
@@ -173,7 +173,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
         </div>
       </section>
 
-      {/* ── ABOUT ───────────────────────────────────────────── */}
+      {/* About */}
       <section className="about-section" id="about-section">
         <div className="about-inner wrap">
           <div className="about-img-col">
@@ -201,7 +201,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
         </div>
       </section>
 
-      {/* ── MENU HIGHLIGHTS (Image Cards) ───────────────────── */}
+      {/* Highlights */}
       <section className="highlights-section">
         <div className="wrap">
           <div className="section-head">
@@ -234,7 +234,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
         </div>
       </section>
 
-      {/* ── CATALOG ─────────────────────────────────────────── */}
+      {/* Catalog */}
       <section className="catalog-section" id="shop-menu">
         <div className="wrap">
           <div className="section-head">
@@ -346,7 +346,7 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
         </div>
       </section>
 
-      {/* ── HOURS / VISIT ────────────────────────────────────── */}
+      {/* Hours and Visit Details */}
       <section className="hours-section" id="hours-section">
         <div className="hours-inner wrap">
           <div className="hours-img">
@@ -406,12 +406,12 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
         </div>
       </section>
 
-      {/* ── CTA BANNER ──────────────────────────────────────── */}
+      {/* Call to Action */}
       <section className="cta-banner">
         <div className="wrap cta-inner">
           <div>
-            <h2 className="cta-title">Taste the Best, Order Now</h2>
-            <p className="cta-sub">Custom wedding tiers, birthday surprises or everyday pastries — we bake for every story.</p>
+            <h2 className="cta-title">Taste the difference</h2>
+            <p className="cta-sub">Wedding tiers, birthdays or cupcakes. We bake for every story.</p>
           </div>
           <button className="btn-fill-outlined" onClick={() => document.getElementById('shop-menu')?.scrollIntoView({ behavior: 'smooth' })}>
             Order Online

@@ -1,4 +1,4 @@
-/* ── Top announcement bar ─────────────────────────────────── */
+/* Top announcement bar */
 .topbar {
   background: var(--ink);
   color: rgba(255, 255, 255, .72);
@@ -25,7 +25,7 @@
   }
 }
 
-/* ── Primary navbar ───────────────────────────────────────── */
+/* Primary navbar */
 .navbar {
   position: sticky;
   top: 0;

@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Epilogue:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-/* ── Design Tokens ──────────────────────────────────────────── */
+/* Design Tokens */
 :root {
   --bg: #FAF7F2;
   --bg-card: #FFFFFF;
@@ -23,7 +23,7 @@
   --error: #B83B3B;
 
   --f-display: 'Playfair Display', Georgia, serif;
-  --f-body: 'DM Sans', system-ui, sans-serif;
+  --f-body: 'Epilogue', 'DM Sans', system-ui, sans-serif;
 
   --r-sm: 6px;
   --r-md: 14px;
@@ -83,7 +83,7 @@ body {
   min-height: 100vh;
 }
 
-/* ── Global layout wrapper ──────────────────────────────────── */
+/* Global layout wrapper */
 .deli-app-layout {
   display: flex;
   flex-direction: column;
@@ -94,14 +94,14 @@ body {
   flex: 1;
 }
 
-/* ── Utility container ──────────────────────────────────────── */
+/* Utility container */
 .wrap {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-/* ── Global buttons ─────────────────────────────────────────── */
+/* Global buttons */
 .btn-fill {
   display: inline-flex;
   align-items: center;
@@ -148,7 +148,7 @@ body {
   color: var(--brand) !important;
 }
 
-/* ── Scrollbar ─────────────────────────────────────────────── */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
 }
