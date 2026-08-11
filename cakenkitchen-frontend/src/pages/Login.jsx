@@ -18,10 +18,7 @@ function Login({ onLogin }) {
   const [mockAccountsList, setMockAccountsList] = useState(() => {
     const saved = localStorage.getItem('mock_google_accounts');
     if (saved) return JSON.parse(saved);
-    return [
-      { name: 'Ankit Ghimire', email: 'ankitghimire2004@gmail.com' },
-      { name: 'John Doe', email: 'johnuser@gmail.com' }
-    ];
+    return [];
   });
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
