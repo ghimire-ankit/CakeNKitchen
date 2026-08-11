@@ -12,13 +12,20 @@ function Login({ onLogin }) {
 
   // Mock Google Login States
   const [showMockGoogle, setShowMockGoogle] = useState(false);
-  const [mockStep, setMockStep] = useState('list'); // 'list', 'email', 'name'
+  const [mockStep, setMockStep] = useState('list'); // 'list', 'email'
   const [mockEmailInput, setMockEmailInput] = useState('');
-  const [mockNameInput, setMockNameInput] = useState('');
   const [mockAccountsList, setMockAccountsList] = useState(() => {
     const saved = localStorage.getItem('mock_google_accounts');
-    if (saved) return JSON.parse(saved);
-    return [];
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) return parsed;
+      } catch (e) { }
+    }
+    return [
+      { name: 'Ankit Ghimire', email: 'ankit@cakenkitchen.com' },
+      { name: 'Demo Customer', email: 'demo.cust@gmail.com' }
+    ];
   });
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -74,17 +81,14 @@ function Login({ onLogin }) {
   const handleMockGoogleSubmit = (e) => {
     e.preventDefault();
     if (!mockEmailInput) return;
-    if (mockStep === 'email') {
-      setMockStep('name');
-    } else if (mockStep === 'name') {
-      if (!mockNameInput) return;
-      const newAcc = { name: mockNameInput, email: mockEmailInput };
-      const updated = [newAcc, ...mockAccountsList.filter(a => a.email !== mockEmailInput)];
-      setMockAccountsList(updated);
-      localStorage.setItem('mock_google_accounts', JSON.stringify(updated));
-      handleGoogleSuccess({ credential: 'mock_google_id_token_' + Date.now() }, mockNameInput, mockEmailInput);
-      setShowMockGoogle(false);
-    }
+    const parts = mockEmailInput.split('@')[0].split(/[\._\-]/);
+    const mockName = parts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ') || 'Google User';
+    const newAcc = { name: mockName, email: mockEmailInput };
+    const updated = [newAcc, ...mockAccountsList.filter(a => a.email !== mockEmailInput)];
+    setMockAccountsList(updated);
+    localStorage.setItem('mock_google_accounts', JSON.stringify(updated));
+    handleGoogleSuccess({ credential: 'mock_google_id_token_' + Date.now() }, mockName, mockEmailInput);
+    setShowMockGoogle(false);
   };
 
   const handleSubmit = async (e) => {
@@ -343,117 +347,62 @@ function Login({ onLogin }) {
               </>
             )}
 
-            {(mockStep === 'email' || mockStep === 'name') && (
+            {mockStep === 'email' && (
               <form onSubmit={handleMockGoogleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                {mockStep === 'email' ? (
-                  <>
-                    <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Sign in</h3>
-                    <p style={{ fontSize: '16px', color: '#5f6368', margin: '0 0 24px 0' }}>to continue to CakeNKitchen</p>
+                <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Sign in</h3>
+                <p style={{ fontSize: '16px', color: '#5f6368', margin: '0 0 24px 0' }}>to continue to CakeNKitchen</p>
 
-                    <div style={{ position: 'relative', marginBottom: '24px', width: '100%' }}>
-                      <input
-                        type="email"
-                        id="gd-email-mock"
-                        value={mockEmailInput}
-                        onChange={e => setMockEmailInput(e.target.value)}
-                        placeholder="Email or phone"
-                        required
-                        style={{
-                          width: '100%',
-                          padding: '16px 14px',
-                          border: '1px solid #dadce0',
-                          borderRadius: '4px',
-                          fontSize: '16px',
-                          outline: 'none',
-                          boxSizing: 'border-box'
-                        }}
-                      />
-                    </div>
+                <div style={{ position: 'relative', marginBottom: '24px', width: '100%' }}>
+                  <input
+                    type="email"
+                    id="gd-email-mock"
+                    value={mockEmailInput}
+                    onChange={e => setMockEmailInput(e.target.value)}
+                    placeholder="Email or phone"
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '16px 14px',
+                      border: '1px solid #dadce0',
+                      borderRadius: '4px',
+                      fontSize: '16px',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                </div>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (mockAccountsList.length > 0) {
-                            setMockStep('list');
-                          }
-                        }}
-                        disabled={mockAccountsList.length === 0}
-                        style={{
-                          background: 'none', border: 'none', color: '#1a73e8',
-                          fontSize: '14px', fontWeight: 500, cursor: 'pointer',
-                          opacity: mockAccountsList.length === 0 ? 0.5 : 1
-                        }}
-                      >
-                        Back
-                      </button>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (mockAccountsList.length > 0) {
+                        setMockStep('list');
+                      }
+                    }}
+                    disabled={mockAccountsList.length === 0}
+                    style={{
+                      background: 'none', border: 'none', color: '#1a73e8',
+                      fontSize: '14px', fontWeight: 500, cursor: 'pointer',
+                      opacity: mockAccountsList.length === 0 ? 0.5 : 1
+                    }}
+                  >
+                    Back
+                  </button>
 
-                      <button
-                        type="submit"
-                        style={{
-                          background: '#1a73e8', border: 'none', color: '#fff',
-                          padding: '10px 24px', borderRadius: '4px', fontSize: '14px',
-                          fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s'
-                        }}
-                        onMouseOver={e => e.currentTarget.style.background = '#1557b0'}
-                        onMouseOut={e => e.currentTarget.style.background = '#1a73e8'}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Welcome</h3>
-                    <p style={{ fontSize: '15px', color: '#5f6368', margin: '0 0 24px 0' }}>Enter your full name to set up your Google profile</p>
-
-                    <div style={{ position: 'relative', marginBottom: '24px', width: '100%' }}>
-                      <input
-                        type="text"
-                        id="gd-name-mock"
-                        value={mockNameInput}
-                        onChange={e => setMockNameInput(e.target.value)}
-                        placeholder="First and last name"
-                        required
-                        style={{
-                          width: '100%',
-                          padding: '16px 14px',
-                          border: '1px solid #dadce0',
-                          borderRadius: '4px',
-                          fontSize: '16px',
-                          outline: 'none',
-                          boxSizing: 'border-box'
-                        }}
-                      />
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                      <button
-                        type="button"
-                        onClick={() => setMockStep('email')}
-                        style={{
-                          background: 'none', border: 'none', color: '#1a73e8',
-                          fontSize: '14px', fontWeight: 500, cursor: 'pointer'
-                        }}
-                      >
-                        Back
-                      </button>
-
-                      <button
-                        type="submit"
-                        style={{
-                          background: '#1a73e8', border: 'none', color: '#fff',
-                          padding: '10px 24px', borderRadius: '4px', fontSize: '14px',
-                          fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s'
-                        }}
-                        onMouseOver={e => e.currentTarget.style.background = '#1557b0'}
-                        onMouseOut={e => e.currentTarget.style.background = '#1a73e8'}
-                      >
-                        Get Started
-                      </button>
-                    </div>
-                  </>
-                )}
+                  <button
+                    type="submit"
+                    style={{
+                      background: '#1a73e8', border: 'none', color: '#fff',
+                      padding: '10px 24px', borderRadius: '4px', fontSize: '14px',
+                      fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s'
+                    }}
+                    onMouseOver={e => e.currentTarget.style.background = '#1557b0'}
+                    onMouseOut={e => e.currentTarget.style.background = '#1a73e8'}
+                  >
+                    Sign In
+                  </button>
+                </div>
               </form>
             )}
           </div>
