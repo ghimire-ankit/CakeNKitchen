@@ -225,11 +225,14 @@
 
 .hero-img {
   width: 100%;
+  max-width: 460px;
   height: 460px;
   object-fit: cover;
-  border-radius: var(--r-xl);
+  border-radius: 50%;
+  /* oval/circle mask */
   box-shadow: var(--sh-lg);
   display: block;
+  margin: 0 auto;
 }
 
 .hero-float {
