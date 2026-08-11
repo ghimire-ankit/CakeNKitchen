@@ -137,11 +137,7 @@ const initializeDatabaseSchema = async () => {
             ) ENGINE=InnoDB
         `);
 
-<<<<<<< HEAD
         try { await pool.query('ALTER TABLE order_items MODIFY COLUMN message TEXT NULL'); } catch (e) { }
-=======
-        try { await pool.query('ALTER TABLE order_items ADD COLUMN message VARCHAR(255) NULL'); } catch (e) { }
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
 
         console.log('✅ Database tables verified and created successfully!');
 

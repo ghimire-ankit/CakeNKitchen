@@ -8,8 +8,6 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-<<<<<<< HEAD
-=======
 // Trust reverse proxy (Render / Vercel rate-limiting support)
 app.set('trust proxy', 1);
 
@@ -26,8 +24,6 @@ app.use(helmet({
         }
     }
 }));
-
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -86,8 +82,6 @@ app.get('/', (req, res) => {
     });
 });
 
-<<<<<<< HEAD
-=======
 app.get('/api/health', async (req, res) => {
     try {
         const dbPool = require('./src/config/db');
@@ -106,7 +100,6 @@ app.get('/api/health', async (req, res) => {
 });
 
 // 4. Global 404 Route Fallback Exception Interceptor
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
 app.use((req, res) => {
     res.status(404).json({
         success: false,

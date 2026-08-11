@@ -8,21 +8,15 @@ function CakeDetail({ addToCart }) {
   const navigate = useNavigate();
   const [cake, setCake] = useState(null);
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-=======
 
   // Customization State
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState('1 lb');
   const [message, setMessage] = useState('');
   const [flavor, setFlavor] = useState('Black Forest');
   const [eggless, setEggless] = useState(false);
-<<<<<<< HEAD
-=======
 
   // Feature State
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
   const [activeTab, setActiveTab] = useState('desc');
   const [pincode, setPincode] = useState('');
   const [pincodeStatus, setPincodeStatus] = useState(null);
@@ -87,11 +81,8 @@ function CakeDetail({ addToCart }) {
           {eggless && <div className="veg-badge">🌱 100% Eggless</div>}
           <img src={getImageUrl(cake.image_url)} alt={cake.name} className="cake-preview-image" />
         </div>
-<<<<<<< HEAD
-=======
 
         {/* Quality Badges */}
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
         <div className="quality-badges-row">
           <span className="q-badge">✨ Freshly Baked</span>
           <span className="q-badge">🚚 Same Day Delivery</span>
@@ -101,17 +92,6 @@ function CakeDetail({ addToCart }) {
 
       <div className="detail-info">
         <div className="detail-header-row">
-<<<<<<< HEAD
-           <span className="detail-category">Artisanal Choice</span>
-           <label className="eggless-toggle">
-              <input type="checkbox" checked={eggless} onChange={(e) => setEggless(e.target.checked)} />
-              <span className="slider round"></span>
-              <span className="toggle-label">Make it Eggless (+NPR 100)</span>
-           </label>
-        </div>
-        <h1 className="detail-title">{cake.name}</h1>
-        <div className="detail-price">NPR {currentPrice}</div>
-=======
           <span className="detail-category">Artisanal Choice</span>
           {/* Simple toggle for eggless */}
           <label className="eggless-toggle">
@@ -125,7 +105,6 @@ function CakeDetail({ addToCart }) {
         <div className="detail-price">NPR {currentPrice}</div>
 
         {/* Detail Tabs */}
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
         <div className="detail-tabs">
           <button className={`tab-btn ${activeTab === 'desc' ? 'active' : ''}`} onClick={() => setActiveTab('desc')}>Description</button>
           <button className={`tab-btn ${activeTab === 'ingredients' ? 'active' : ''}`} onClick={() => setActiveTab('ingredients')}>Ingredients</button>

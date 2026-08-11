@@ -34,53 +34,6 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
   };
 
   return (
-<<<<<<< HEAD
-    <header className="navbar-container">
-      <div className="navbar-content">
-        <Link to="/" className="brand-logo" id="nav-brand" style={{ display: 'flex', alignItems: 'center' }}>
-          {!logoFailed && (
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="brand-logo-img"
-              onError={() => setLogoFailed(true)}
-            />
-          )}
-          <span>Cake And Kitchen</span>
-        </Link>
-        <nav className="nav-links">
-          <Link to="/" className="nav-link" id="nav-home">Home</Link>
-          <Link to="/custom-cake" className="nav-link" id="nav-custom-cake" style={{ color: 'var(--accent)', fontWeight: 800 }}>✨ Build Your Cake</Link>
-          {user && user.role === 'admin' && (
-            <Link to="/admin" className="nav-link" id="nav-admin">Admin Portal</Link>
-          )}
-          <Link to="/cart" className="nav-link" id="nav-cart">
-            <span className="cart-icon-wrapper">
-              Cart
-              {cartCount > 0 && <span className="cart-badge" id="cart-counter">{cartCount}</span>}
-            </span>
-          </Link>
-          {user ? (
-            <>
-              <Link to="/my-orders" className="nav-link" id="nav-my-orders">My Orders</Link>
-              <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Hi, <strong>{user.name}</strong></span>
-              <button
-                onClick={() => { logout(); navigate('/'); }}
-                className="btn-secondary"
-                style={{ padding: '0.4rem 1rem', fontSize: '0.75rem', fontWeight: 800 }}
-                id="btn-logout"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="nav-link" id="nav-login">Login</Link>
-              <Link to="/register" className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.75rem' }} id="nav-signup">Sign Up</Link>
-            </>
-          )}
-        </nav>
-=======
     <>
       {/* Top info bar */}
       <div className="topbar">
@@ -88,7 +41,6 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
           <span>📞 980-1234567 &nbsp;|&nbsp; ✉ hello@cakenkitchen.com</span>
           <span>🎁 Free delivery on orders above NPR 2,000 &nbsp;·&nbsp; Use code <strong>CAKE10</strong> for 10% off</span>
         </div>
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
       </div>
 
       {/* Primary Nav */}
@@ -103,11 +55,13 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
           {/* Desktop links */}
           <nav className="nav-links" aria-label="Primary">
             <Link to="/" className="nav-link">Home</Link>
+            <Link to="/custom-cake" className="nav-link" style={{ color: 'var(--accent)', fontWeight: 800 }}>Build Cake</Link>
             <button className="nav-link" onClick={() => scrollTo('about-section')}>About</button>
             <button className="nav-link" onClick={() => scrollTo('shop-menu')}>Menu</button>
             <button className="nav-link" onClick={() => goMenu(3)}>Weddings</button>
             <button className="nav-link" onClick={() => scrollTo('hours-section')}>Visit Us</button>
             {user?.role === 'admin' && <Link to="/admin" className="nav-link" id="nav-admin">Admin</Link>}
+            {user && <Link to="/my-orders" className="nav-link">My Orders</Link>}
           </nav>
 
           {/* Right side */}
@@ -163,10 +117,17 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
         {menuOpen && (
           <div className="mobile-menu">
             <Link to="/" className="mobile-link">Home</Link>
+            <Link to="/custom-cake" className="mobile-link" style={{ color: 'var(--accent)', fontWeight: 800 }}>Build Cake</Link>
             <button className="mobile-link" onClick={() => scrollTo('about-section')}>About</button>
             <button className="mobile-link" onClick={() => scrollTo('shop-menu')}>Menu</button>
             <button className="mobile-link" onClick={() => goMenu(3)}>Weddings</button>
             <button className="mobile-link" onClick={() => scrollTo('hours-section')}>Visit Us</button>
+            {user && (
+              <Link to="/my-orders" className="mobile-link">My Orders</Link>
+            )}
+            {user?.role === 'admin' && (
+              <Link to="/admin" className="mobile-link">Admin Portal</Link>
+            )}
             {user ? (
               <button className="mobile-link" onClick={() => { logout(); navigate('/'); }}>Sign out</button>
             ) : (

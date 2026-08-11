@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getImageUrl } from '../utils/imageUtils';
-import { fetchCategories, fetchCakes } from '../services/api';
+import { fetchCakes } from '../services/api';
 import '../styles/home.css';
 
 const CATS = [
@@ -51,41 +51,13 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
     })();
   }, []);
 
-<<<<<<< HEAD
-  const getCategoryName = (catId) => {
-    const cat = categories.find(c => c.cat_id === catId);
-    return cat ? cat.name : 'Delicious Cakes';
-  };
-
-  const filteredCakes = useMemo(() => {
-    let result = cakes;
-    if (selectedCat !== null) {
-      result = result.filter(cake => cake.cat_id === selectedCat);
-    }
-    if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(cake => cake.name.toLowerCase().includes(q) || cake.description.toLowerCase().includes(q));
-    }
-    return result;
-  }, [cakes, selectedCat, searchQuery]);
-
-  return (
-    <div>
-      <div className="promo-banner">
-        <span>🎉 Special Offer: Use code <strong>CAKE10</strong> for 10% off your entire order!</span>
-      </div>
-      <section className="hero-section">
-        <div className="hero-text">
-          <h1>Freshly Baked for Your <span>Best Days</span></h1>
-          <p>From grand milestones to unforgettable midnight surprises. We bake happiness for your happiest moments in Nepal.</p>
-          <div style={{display: 'flex', gap: '1rem'}}>
-            <a href="#shop-menu" className="btn-primary" id="hero-cta-btn">View Menu</a>
-            <a href="#shop-menu" className="btn-outline">Order Eggless</a>
-=======
   const visible = useMemo(() => {
     let r = cakes;
     if (selectedCat !== null) r = r.filter(c => c.cat_id === Number(selectedCat));
-    if (searchQuery?.trim()) { const q = searchQuery.toLowerCase(); r = r.filter(c => c.name.toLowerCase().includes(q) || c.description?.toLowerCase().includes(q)); }
+    if (searchQuery?.trim()) {
+      const q = searchQuery.toLowerCase();
+      r = r.filter(c => c.name.toLowerCase().includes(q) || c.description?.toLowerCase().includes(q));
+    }
     return r;
   }, [cakes, selectedCat, searchQuery]);
 
@@ -115,9 +87,9 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
               <button className="btn-fill" onClick={() => document.getElementById('shop-menu')?.scrollIntoView({ behavior: 'smooth' })}>
                 Order Now
               </button>
-              <Link to="#about-section" className="btn-outline" onClick={e => { e.preventDefault(); document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' }); }}>
+              <button className="btn-outline" onClick={() => document.getElementById('shop-menu')?.scrollIntoView({ behavior: 'smooth' })}>
                 Browse Menu
-              </Link>
+              </button>
             </div>
             <div className="hero-badges">
               <span className="badge">1,200+ reviews</span>
@@ -135,55 +107,9 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
               <span className="float-val">2000+</span>
               <span className="float-lbl">Cakes Delivered</span>
             </div>
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
           </div>
         </div>
       </section>
-<<<<<<< HEAD
-      <div className="value-props-strip">
-        <div className="prop-item">🚚 <span>Same Day Delivery in KTM</span></div>
-        <div className="prop-item">🌱 <span>100% Eggless Options</span></div>
-        <div className="prop-item">✨ <span>Premium Ingredients</span></div>
-        <div className="prop-item">🎂 <span>Customized Designs</span></div>
-      </div>
-      <section className="catalog-toolbar-panel" id="shop-menu">
-        <div className="category-title-section" style={{marginBottom: 0, textAlign: 'left'}}>
-          <h2 style={{fontSize: '1.8rem'}}>Explore Menu</h2>
-        </div>
-        <div className="search-input-box">
-          <svg className="search-icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          <input 
-            type="text" 
-            className="search-field" 
-            placeholder="Search for Chocolate, Red Velvet, etc..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </section>
-      <section style={{ marginBottom: '3.5rem' }}>
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>Loading menu...</div>
-        ) : (
-          <div className="category-grid">
-            <div
-              className={`category-card ${selectedCat === null ? 'active' : ''}`}
-              onClick={() => setSelectedCat(null)}
-              id="cat-filter-all"
-            >
-              <img src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=150&auto=format&fit=crop&q=60" alt="All categories" />
-              <h3>All Flavors</h3>
-            </div>
-            {categories.map((cat) => (
-              <div
-                key={cat.cat_id}
-                className={`category-card ${selectedCat === cat.cat_id ? 'active' : ''}`}
-                onClick={() => setSelectedCat(cat.cat_id)}
-                id={`cat-filter-${cat.cat_id}`}
-              >
-                <img src={getImageUrl(cat.image_url)} alt={cat.name} />
-                <h3>{cat.name}</h3>
-=======
 
       {/* ── FEATURES ROW ────────────────────────────────────── */}
       <section className="features-row">
@@ -194,7 +120,6 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
               <div>
                 <h3 className="feature-title">{f.title}</h3>
                 <p className="feature-text">{f.text}</p>
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
               </div>
             </div>
           ))}
@@ -283,16 +208,6 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
               </button>
             ))}
           </div>
-<<<<<<< HEAD
-        )}
-      </section>
-      <section>
-        <div className="cakes-section-header">
-          <h2>{searchQuery ? `Search Results for "${searchQuery}"` : selectedCat === null ? 'Featured Collection' : getCategoryName(selectedCat)}</h2>
-          <span style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            {filteredCakes.length} cakes available
-          </span>
-=======
 
           {/* Popular cakes title + tab-style filter */}
           <div className="popular-head">
@@ -381,7 +296,6 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
               })}
             </div>
           )}
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
         </div>
       </section>
 
@@ -442,19 +356,6 @@ export default function Home({ addToCart, searchQuery, setSearchQuery, selectedC
             </div>
             <a href="tel:+977980123456" className="btn-fill-light">Call to Order</a>
           </div>
-        </div>
-      </section>
-
-      {/* ── CTA BANNER ──────────────────────────────────────── */}
-      <section className="cta-banner">
-        <div className="wrap cta-inner">
-          <div>
-            <h2 className="cta-title">Taste the Best, Order Now</h2>
-            <p className="cta-sub">Custom wedding tiers, birthday surprises or everyday pastries — we bake for every story.</p>
-          </div>
-          <button className="btn-fill-outlined" onClick={() => document.getElementById('shop-menu')?.scrollIntoView({ behavior: 'smooth' })}>
-            Order Online
-          </button>
         </div>
       </section>
 

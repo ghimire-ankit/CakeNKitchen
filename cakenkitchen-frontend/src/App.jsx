@@ -129,58 +129,13 @@ function App() {
     setCouponCode('');
   };
 
-<<<<<<< HEAD
-=======
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCat, setSelectedCat] = useState(null);
 
-  // Cart total items helper
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
   const cartCount = cart.reduce((acc, item) => acc + item.qty, 0);
 
   return (
     <Router>
-<<<<<<< HEAD
-      <Navbar user={user} logout={handleLogout} cartCount={cartCount} />
-      <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cake/:id" element={<CakeDetail addToCart={addToCart} />} />
-          <Route
-            path="/cart"
-            element={
-              <Cart
-                cart={cart}
-                updateCartQty={updateCartQty}
-                removeFromCart={removeFromCart}
-                discountPercent={discountPercent}
-                couponCode={couponCode}
-                applyCoupon={applyCoupon}
-                removeCoupon={removeCoupon}
-              />
-            }
-          />
-          <Route
-            path="/checkout"
-            element={
-              <Checkout
-                cart={cart}
-                clearCart={clearCart}
-                user={user}
-                discountPercent={discountPercent}
-                couponCode={couponCode}
-              />
-            }
-          />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/register" element={<Register onLogin={handleLogin} />} />
-          <Route path="/custom-cake" element={<CustomCake addToCart={addToCart} />} />
-          <Route path="/my-orders" element={<MyOrders user={user} />} />
-          <Route path="/admin" element={<AdminDashboard user={user} />} />
-        </Routes>
-      </main>
-      <Footer />
-=======
       <div className="deli-app-layout">
         <Navbar
           user={user}
@@ -235,13 +190,14 @@ function App() {
             />
             <Route path="/login" element={<Login onLogin={handleLogin} />} />
             <Route path="/register" element={<Register onLogin={handleLogin} />} />
+            <Route path="/custom-cake" element={<CustomCake addToCart={addToCart} />} />
+            <Route path="/my-orders" element={<MyOrders user={user} />} />
             <Route path="/admin" element={<AdminDashboard user={user} />} />
           </Routes>
         </main>
 
         <Footer />
       </div>
->>>>>>> 7b971a6ba803c5617d55fb6750a4b55fd2eeec6d
 
       {toast.visible && (
         <div className="toast-success-banner" id="toast-notify">
