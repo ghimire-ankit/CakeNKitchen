@@ -9,23 +9,11 @@ function Register({ onLogin }) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Mock Google Register States
-  const [showMockGoogle, setShowMockGoogle] = useState(false);
-  const [mockStep, setMockStep] = useState('list'); // 'list', 'email'
-  const [mockEmailInput, setMockEmailInput] = useState('');
-  const [mockAccountsList, setMockAccountsList] = useState(() => {
-    const saved = localStorage.getItem('mock_google_accounts');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.length > 0) return parsed;
-      } catch (e) { }
-    }
-    return [
-      { name: 'Ankit Ghimire', email: 'ankit@cakenkitchen.com' },
-      { name: 'Demo Customer', email: 'demo.cust@gmail.com' }
-    ];
-  });
+  // Google Sign-Up States
+  const [showGooglePopup, setShowGooglePopup] = useState(false);
+  const [googleEmail, setGoogleEmail] = useState('');
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [googleError, setGoogleError] = useState('');
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   const isGoogleConfigured = googleClientId && !googleClientId.includes('mock') && googleClientId !== '';
@@ -38,7 +26,7 @@ function Register({ onLogin }) {
       if (window.google?.accounts?.id) {
         window.google.accounts.id.initialize({
           client_id: googleClientId,
-          callback: handleGoogleSuccess,
+          callback: handleRealGoogleSuccess,
         });
         window.google.accounts.id.renderButton(
           document.getElementById("google-signup-btn"),
@@ -52,59 +40,79 @@ function Register({ onLogin }) {
     return () => { active = false; };
   }, [isGoogleConfigured, googleClientId]);
 
-  const handleGoogleSuccess = async (response, mockName, mockEmail) => {
+  // Real Google OAuth callback
+  const handleRealGoogleSuccess = async (response) => {
     setMsg({ text: '', type: '' });
     setLoading(true);
     try {
-      const res = await loginGoogle({
-        token: response.credential,
-        mockName,
-        mockEmail
-      });
-      setMsg({ text: 'Registered and logged in with Google successfully!', type: 'success' });
-      if (onLogin) {
-        onLogin(res.data);
+      const res = await loginGoogle({ token: response.credential });
+      if (res.success && res.data) {
+        setMsg({ text: 'Registered with Google successfully!', type: 'success' });
+        if (onLogin) onLogin(res.data);
+        setTimeout(() => navigate('/'), 1200);
+      } else {
+        setMsg({ text: res.error || 'Google Sign-Up failed.', type: 'error' });
       }
-      setTimeout(() => navigate('/'), 1200);
     } catch (err) {
-      const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' || err.message === 'Network Error' ? 'Backend server is offline. Please run the server to register.' : err.message) || 'Google SignUp failed.';
+      const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' ? 'Backend server is offline.' : err.message) || 'Google Sign-Up failed.';
       setMsg({ text: errorText, type: 'error' });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSelectMockAccount = (acc) => {
-    handleGoogleSuccess({ credential: 'mock_google_id_token_' + Date.now() }, acc.name, acc.email);
-    setShowMockGoogle(false);
-  };
-
-  const handleMockGoogleSubmit = (e) => {
+  // Mock Google Sign-Up (email-only flow)
+  const handleGoogleEmailSubmit = async (e) => {
     e.preventDefault();
-    if (!mockEmailInput) return;
-    const parts = mockEmailInput.split('@')[0].split(/[\._\-]/);
-    const mockName = parts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ') || 'Google User';
-    const newAcc = { name: mockName, email: mockEmailInput };
-    const updated = [newAcc, ...mockAccountsList.filter(a => a.email !== mockEmailInput)];
-    setMockAccountsList(updated);
-    localStorage.setItem('mock_google_accounts', JSON.stringify(updated));
-    handleGoogleSuccess({ credential: 'mock_google_id_token_' + Date.now() }, mockName, mockEmailInput);
-    setShowMockGoogle(false);
+    if (!googleEmail) return;
+    setGoogleLoading(true);
+    setGoogleError('');
+    try {
+      const parts = googleEmail.split('@')[0].split(/[._\-]/);
+      const autoName = parts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ') || 'Google User';
+      const res = await loginGoogle({
+        token: 'mock_google_id_token_' + Date.now(),
+        mockName: autoName,
+        mockEmail: googleEmail
+      });
+      if (res.success && res.data) {
+        setShowGooglePopup(false);
+        setMsg({ text: 'Registered and logged in with Google successfully!', type: 'success' });
+        if (onLogin) onLogin(res.data);
+        setTimeout(() => navigate('/'), 1200);
+      } else {
+        setGoogleError(res.error || 'Sign-Up failed. Please try again.');
+      }
+    } catch (err) {
+      const errorText = err.response?.data?.error || (err.code === 'ERR_NETWORK' ? 'Backend server is offline.' : err.message) || 'Google Sign-Up failed.';
+      setGoogleError(errorText);
+    } finally {
+      setGoogleLoading(false);
+    }
   };
 
+  // Standard registration
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg({ text: '', type: '' });
+
+    // Password validation: must contain letter, number, symbol, min 8 chars
+    const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+    if (!pwdRegex.test(form.password)) {
+      setMsg({
+        text: 'Password must be at least 8 characters with a letter, number, and symbol (!@#$%...)',
+        type: 'error'
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await registerUser(form);
       setMsg({ text: 'Account registered successfully. Logging you in...', type: 'success' });
-
-      // Auto login the user
       if (onLogin && res.data) {
         onLogin(res.data);
       }
-
       setForm({ name: '', email: '', phone: '', password: '' });
       setTimeout(() => navigate('/'), 1500);
     } catch (err) {
@@ -121,7 +129,7 @@ function Register({ onLogin }) {
   return (
     <div className="modern-auth-container">
       <div className="modern-auth-card" id="signup-form-view">
-        <h2 className="modern-auth-title">Sign up</h2>
+        <h2 className="modern-auth-title">Create Account</h2>
 
         {msg.text && (
           <div className={`form-message ${msg.type}`} id="signup-feedback">
@@ -141,7 +149,7 @@ function Register({ onLogin }) {
               onChange={e => setForm({ ...form, name: e.target.value })}
               required
             />
-            <label className="modern-label" htmlFor="reg-name">Name</label>
+            <label className="modern-label" htmlFor="reg-name">Full Name</label>
           </div>
 
           <div className="modern-input-group">
@@ -155,7 +163,7 @@ function Register({ onLogin }) {
               onChange={e => setForm({ ...form, email: e.target.value })}
               required
             />
-            <label className="modern-label" htmlFor="reg-email">Email</label>
+            <label className="modern-label" htmlFor="reg-email">Email Address</label>
           </div>
 
           <div className="modern-input-group">
@@ -182,6 +190,7 @@ function Register({ onLogin }) {
               value={form.password}
               onChange={e => setForm({ ...form, password: e.target.value })}
               required
+              minLength={8}
             />
             <label className="modern-label" htmlFor="reg-password">Password</label>
             <button
@@ -203,6 +212,9 @@ function Register({ onLogin }) {
               )}
             </button>
           </div>
+          <p style={{ fontSize: '11px', color: '#888', margin: '-0.3rem 0 0.8rem 0.2rem' }}>
+            Min 8 chars: letters + numbers + symbols (!@#$...)
+          </p>
 
           <button
             type="submit"
@@ -210,15 +222,16 @@ function Register({ onLogin }) {
             disabled={loading}
             id="btn-register-submit"
           >
-            {loading ? 'Creating...' : 'Sign Up'}
+            {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
 
-        {/* Google Configuration Area */}
+        {/* Divider */}
         <div className="modern-auth-divider">
-          <span>or sign up with google</span>
+          <span>or sign up with</span>
         </div>
 
+        {/* Google Button */}
         {isGoogleConfigured ? (
           <div id="google-signup-btn" style={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '0.8rem', minHeight: '44px' }}></div>
         ) : (
@@ -226,13 +239,9 @@ function Register({ onLogin }) {
             type="button"
             className="modern-google-btn"
             onClick={() => {
-              if (mockAccountsList.length === 0) {
-                setMockStep('email');
-              } else {
-                setMockStep('list');
-              }
-              setMockEmailInput('');
-              setShowMockGoogle(true);
+              setGoogleEmail('');
+              setGoogleError('');
+              setShowGooglePopup(true);
             }}
             id="google-signup-btn-mock"
             style={{
@@ -257,13 +266,8 @@ function Register({ onLogin }) {
             onMouseOut={e => e.currentTarget.style.background = '#4285F4'}
           >
             <div style={{
-              background: '#fff',
-              borderRadius: '50%',
-              width: '24px',
-              height: '24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              background: '#fff', borderRadius: '50%', width: '24px', height: '24px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 1px 2px rgba(0,0,0,0.1)'
             }}>
               <svg width="14" height="14" viewBox="0 0 24 24">
@@ -278,39 +282,29 @@ function Register({ onLogin }) {
         )}
 
         <div className="modern-link-row">
-          Already have an account? <Link to="/login">Log In</Link>
+          Already have an account? <Link to="/login">Sign In</Link>
         </div>
       </div>
 
-      {showMockGoogle && (
+      {/* Google Sign-Up Popup — Clean email-only flow */}
+      {showGooglePopup && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
           background: 'rgba(0, 0, 0, 0.6)',
           backdropFilter: 'blur(3px)',
           display: 'flex', justifyContent: 'center', alignItems: 'center',
-          zIndex: 9999, fontFamily: 'Roboto, Arial, sans-serif'
+          zIndex: 9999, fontFamily: "'Google Sans', Roboto, Arial, sans-serif"
         }}>
-          {/* Simulated Google Popup Browser Window */}
           <div style={{
-            width: '440px',
-            background: '#ffffff',
-            borderRadius: '8px',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column'
+            width: '440px', background: '#fff', borderRadius: '8px',
+            boxShadow: '0 8px 30px rgba(0,0,0,0.3)', overflow: 'hidden',
+            display: 'flex', flexDirection: 'column'
           }}>
-            {/* Window title bar */}
+            {/* Title Bar */}
             <div style={{
-              background: '#f1f3f4',
-              padding: '8px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              fontSize: '12px',
-              color: '#3c4043',
-              borderBottom: '1px solid #dadce0',
-              userSelect: 'none'
+              background: '#f1f3f4', padding: '8px 16px',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              fontSize: '12px', color: '#3c4043', borderBottom: '1px solid #dadce0', userSelect: 'none'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <svg width="12" height="12" viewBox="0 0 24 24">
@@ -321,45 +315,32 @@ function Register({ onLogin }) {
                 </svg>
                 <span>Sign in - Google Accounts</span>
               </div>
-              <div style={{ display: 'flex', gap: '12px', fontSize: '13px', fontWeight: 'bold' }}>
-                <span style={{ cursor: 'pointer', opacity: 0.7 }} onClick={() => setShowMockGoogle(false)}>&times;</span>
-              </div>
+              <span style={{ cursor: 'pointer', opacity: 0.7, fontWeight: 'bold', fontSize: '14px' }} onClick={() => setShowGooglePopup(false)}>&times;</span>
             </div>
 
             {/* Address Bar */}
             <div style={{
-              background: '#f8f9fa',
-              padding: '6px 12px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
+              background: '#f8f9fa', padding: '6px 12px',
+              display: 'flex', alignItems: 'center', gap: '8px',
               borderBottom: '1px solid #e8eaed'
             }}>
               <div style={{ display: 'flex', gap: '10px', color: '#5f6368', fontSize: '11px' }}>
                 <span>←</span><span>→</span><span>↻</span>
               </div>
               <div style={{
-                background: '#fff',
-                fontSize: '11px',
-                color: '#5f6368',
-                padding: '3px 10px',
-                borderRadius: '12px',
-                border: '1px solid #dadce0',
-                flex: 1,
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px'
+                background: '#fff', fontSize: '11px', color: '#5f6368',
+                padding: '3px 10px', borderRadius: '12px', border: '1px solid #dadce0',
+                flex: 1, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis',
+                display: 'flex', alignItems: 'center', gap: '4px'
               }}>
-                <span style={{ color: '#1a73e8' }}>🔒</span> accounts.google.com/o/oauth2/v2/auth?client_id=1019688537554-mockclientid123...
+                <span style={{ color: '#1a73e8' }}>🔒</span> accounts.google.com/o/oauth2/v2/auth?client_id=...
               </div>
             </div>
 
-            {/* Google OAuth Page Content */}
-            <div style={{ padding: '36px', display: 'flex', flexDirection: 'column', minHeight: '380px' }}>
-              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            {/* Sign-Up Content */}
+            <form onSubmit={handleGoogleEmailSubmit} style={{ padding: '40px 36px', display: 'flex', flexDirection: 'column', minHeight: '380px' }}>
+              {/* Google Logo */}
+              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
                 <span style={{ fontSize: '24px', fontWeight: '500', letterSpacing: '-0.5px' }}>
                   <span style={{ color: '#4285F4' }}>G</span>
                   <span style={{ color: '#EA4335' }}>o</span>
@@ -370,144 +351,74 @@ function Register({ onLogin }) {
                 </span>
               </div>
 
-              {mockStep === 'list' && (
-                <>
-                  <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Choose an account</h3>
-                  <p style={{ fontSize: '16px', color: '#5f6368', margin: '0 0 24px 0' }}>to continue to CakeNKitchen</p>
+              <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Sign in</h3>
+              <p style={{ fontSize: '16px', color: '#5f6368', margin: '0 0 28px 0' }}>to continue to CakeNKitchen</p>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '24px' }}>
-                    {mockAccountsList.map((acc, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => handleSelectMockAccount(acc)}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '14px',
-                          padding: '12px 4px',
-                          border: 'none',
-                          borderBottom: '1px solid #e8eaed',
-                          background: 'transparent',
-                          width: '100%',
-                          textAlign: 'left',
-                          cursor: 'pointer',
-                          transition: 'background 0.2s'
-                        }}
-                        onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
-                        onMouseOut={e => e.currentTarget.style.background = 'transparent'}
-                      >
-                        <div style={{
-                          width: '32px', height: '32px', borderRadius: '50%',
-                          background: '#1a73e8', color: '#fff', display: 'flex',
-                          alignItems: 'center', justifyContent: 'center', fontWeight: '500', fontSize: '14px'
-                        }}>
-                          {acc.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                          <span style={{ fontSize: '14px', fontWeight: 500, color: '#3c4043' }}>{acc.name}</span>
-                          <span style={{ fontSize: '12px', color: '#5f6368' }}>{acc.email}</span>
-                        </div>
-                      </button>
-                    ))}
-
-                    <button
-                      type="button"
-                      onClick={() => { setMockStep('email'); }}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '14px',
-                        padding: '16px 4px',
-                        border: 'none',
-                        borderBottom: '1px solid #e8eaed',
-                        background: 'transparent',
-                        width: '100%',
-                        textAlign: 'left',
-                        cursor: 'pointer',
-                        color: '#1a73e8',
-                        fontSize: '14px',
-                        fontWeight: 500
-                      }}
-                      onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
-                      onMouseOut={e => e.currentTarget.style.background = 'transparent'}
-                    >
-                      <div style={{
-                        width: '32px', height: '32px', borderRadius: '50%',
-                        border: '1px solid #dadce0', display: 'flex',
-                        alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#5f6368'
-                      }}>
-                        +
-                      </div>
-                      Use another account
-                    </button>
-                  </div>
-
-                  <p style={{ marginTop: 'auto', fontSize: '12px', color: '#5f6368', lineHeight: 1.5 }}>
-                    To continue, Google will share your name, email address, language preference, and profile picture with CakeNKitchen.
-                  </p>
-                </>
+              {/* Error Message */}
+              {googleError && (
+                <div style={{
+                  background: '#fce8e6', border: '1px solid #f5c6cb', borderRadius: '4px',
+                  padding: '10px 14px', fontSize: '13px', color: '#c5221f', marginBottom: '16px'
+                }}>
+                  {googleError}
+                </div>
               )}
 
-              {mockStep === 'email' && (
-                <form onSubmit={handleMockGoogleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Sign in</h3>
-                  <p style={{ fontSize: '16px', color: '#5f6368', margin: '0 0 24px 0' }}>to continue to CakeNKitchen</p>
+              {/* Email Input */}
+              <div style={{ position: 'relative', marginBottom: '10px', width: '100%' }}>
+                <input
+                  type="email"
+                  id="gd-email-register"
+                  value={googleEmail}
+                  onChange={e => setGoogleEmail(e.target.value)}
+                  placeholder="Email or phone"
+                  required
+                  autoFocus
+                  style={{
+                    width: '100%', padding: '16px 14px',
+                    border: '1px solid #dadce0', borderRadius: '4px',
+                    fontSize: '16px', outline: 'none', boxSizing: 'border-box',
+                    color: '#202124'
+                  }}
+                  onFocus={e => e.target.style.borderColor = '#1a73e8'}
+                  onBlur={e => e.target.style.borderColor = '#dadce0'}
+                />
+              </div>
 
-                  <div style={{ position: 'relative', marginBottom: '24px', width: '100%' }}>
-                    <input
-                      type="email"
-                      id="gd-email-mock"
-                      value={mockEmailInput}
-                      onChange={e => setMockEmailInput(e.target.value)}
-                      placeholder="Email or phone"
-                      required
-                      style={{
-                        width: '100%',
-                        padding: '16px 14px',
-                        border: '1px solid #dadce0',
-                        borderRadius: '4px',
-                        fontSize: '16px',
-                        outline: 'none',
-                        boxSizing: 'border-box'
-                      }}
-                    />
-                  </div>
+              <p style={{ fontSize: '13px', color: '#5f6368', margin: '0 0 24px 0', lineHeight: 1.5 }}>
+                If you don't have an account, we'll create one for you automatically.
+              </p>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (mockAccountsList.length > 0) {
-                          setMockStep('list');
-                        }
-                      }}
-                      disabled={mockAccountsList.length === 0}
-                      style={{
-                        background: 'none', border: 'none', color: '#1a73e8',
-                        fontSize: '14px', fontWeight: 500, cursor: 'pointer',
-                        opacity: mockAccountsList.length === 0 ? 0.5 : 1
-                      }}
-                    >
-                      Back
-                    </button>
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                <Link
+                  to="/login"
+                  style={{
+                    background: 'none', border: 'none', color: '#1a73e8',
+                    fontSize: '14px', fontWeight: 500, cursor: 'pointer',
+                    textDecoration: 'none'
+                  }}
+                  onClick={() => setShowGooglePopup(false)}
+                >
+                  Sign in instead
+                </Link>
 
-                    <button
-                      type="submit"
-                      style={{
-                        background: '#1a73e8', border: 'none', color: '#fff',
-                        padding: '10px 24px', borderRadius: '4px', fontSize: '14px',
-                        fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s'
-                      }}
-                      onMouseOver={e => e.currentTarget.style.background = '#1557b0'}
-                      onMouseOut={e => e.currentTarget.style.background = '#1a73e8'}
-                    >
-                      Sign In
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
+                <button
+                  type="submit"
+                  disabled={googleLoading}
+                  style={{
+                    background: '#1a73e8', border: 'none', color: '#fff',
+                    padding: '10px 24px', borderRadius: '4px', fontSize: '14px',
+                    fontWeight: 500, cursor: googleLoading ? 'wait' : 'pointer',
+                    transition: 'background 0.2s', opacity: googleLoading ? 0.7 : 1
+                  }}
+                  onMouseOver={e => { if (!googleLoading) e.currentTarget.style.background = '#1557b0'; }}
+                  onMouseOut={e => e.currentTarget.style.background = '#1a73e8'}
+                >
+                  {googleLoading ? 'Processing...' : 'Next'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
