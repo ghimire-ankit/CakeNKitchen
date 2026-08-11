@@ -10,6 +10,20 @@ function Login({ onLogin }) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // Mock Google Login States
+  const [showMockGoogle, setShowMockGoogle] = useState(false);
+  const [mockStep, setMockStep] = useState('list'); // 'list', 'email', 'name'
+  const [mockEmailInput, setMockEmailInput] = useState('');
+  const [mockNameInput, setMockNameInput] = useState('');
+  const [mockAccountsList, setMockAccountsList] = useState(() => {
+    const saved = localStorage.getItem('mock_google_accounts');
+    if (saved) return JSON.parse(saved);
+    return [
+      { name: 'Ankit Ghimire', email: 'ankitghimire2004@gmail.com' },
+      { name: 'John Doe', email: 'johnuser@gmail.com' }
+    ];
+  });
+
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   const isGoogleConfigured = googleClientId && !googleClientId.includes('mock') && googleClientId !== '';
 
@@ -52,6 +66,27 @@ function Login({ onLogin }) {
       setMsg({ text: errorText, type: 'error' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSelectMockAccount = (acc) => {
+    handleGoogleSuccess({ credential: 'mock_google_id_token_' + Date.now() }, acc.name, acc.email);
+    setShowMockGoogle(false);
+  };
+
+  const handleMockGoogleSubmit = (e) => {
+    e.preventDefault();
+    if (!mockEmailInput) return;
+    if (mockStep === 'email') {
+      setMockStep('name');
+    } else if (mockStep === 'name') {
+      if (!mockNameInput) return;
+      const newAcc = { name: mockNameInput, email: mockEmailInput };
+      const updated = [newAcc, ...mockAccountsList.filter(a => a.email !== mockEmailInput)];
+      setMockAccountsList(updated);
+      localStorage.setItem('mock_google_accounts', JSON.stringify(updated));
+      handleGoogleSuccess({ credential: 'mock_google_id_token_' + Date.now() }, mockNameInput, mockEmailInput);
+      setShowMockGoogle(false);
     }
   };
 
@@ -152,7 +187,16 @@ function Login({ onLogin }) {
           <button
             type="button"
             className="modern-google-btn"
-            onClick={() => handleGoogleSuccess({ credential: 'mock_google_id_token_123' }, 'Ankit Ghimire', 'ankitghimire2004@gmail.com')}
+            onClick={() => {
+              if (mockAccountsList.length === 0) {
+                setMockStep('email');
+              } else {
+                setMockStep('list');
+              }
+              setMockEmailInput('');
+              setMockNameInput('');
+              setShowMockGoogle(true);
+            }}
             id="google-signin-btn-mock"
             style={{
               width: '100%',
@@ -186,6 +230,238 @@ function Login({ onLogin }) {
           Don't have an account? <Link to="/register">Create Account</Link>
         </div>
       </div>
+
+      {showMockGoogle && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(255, 255, 255, 0.98)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+          zIndex: 9999, fontFamily: 'Roboto, Arial, sans-serif', color: '#202124'
+        }}>
+          <div style={{
+            width: '100%', maxWidth: '440px', minHeight: '480px',
+            padding: '40px', border: '1px solid #dadce0', borderRadius: '8px',
+            boxSizing: 'border-box', display: 'flex', flexDirection: 'column',
+            position: 'relative', background: '#fff', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+          }}>
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setShowMockGoogle(false)}
+              style={{
+                position: 'absolute', top: '15px', right: '15px',
+                border: 'none', background: 'none', fontSize: '24px',
+                cursor: 'pointer', color: '#5f6368'
+              }}
+            >&times;</button>
+
+            {/* Google Colorful Wordmark */}
+            <div style={{ textAlign: 'left', marginBottom: '24px' }}>
+              <span style={{ fontSize: '24px', fontWeight: '500', letterSpacing: '-0.5px' }}>
+                <span style={{ color: '#4285F4' }}>G</span>
+                <span style={{ color: '#EA4335' }}>o</span>
+                <span style={{ color: '#FBBC05' }}>o</span>
+                <span style={{ color: '#4285F4' }}>g</span>
+                <span style={{ color: '#34A853' }}>l</span>
+                <span style={{ color: '#EA4335' }}>e</span>
+              </span>
+            </div>
+
+            {mockStep === 'list' && (
+              <>
+                <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Choose an account</h3>
+                <p style={{ fontSize: '16px', color: '#5f6368', margin: '0 0 24px 0' }}>to continue to CakeNKitchen</p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '24px' }}>
+                  {mockAccountsList.map((acc, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleSelectMockAccount(acc)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '14px',
+                        padding: '12px 4px',
+                        border: 'none',
+                        borderBottom: '1px solid #e8eaed',
+                        background: 'transparent',
+                        width: '100%',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        transition: 'background 0.2s'
+                      }}
+                      onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
+                      onMouseOut={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <div style={{
+                        width: '32px', height: '32px', borderRadius: '50%',
+                        background: '#1a73e8', color: '#fff', display: 'flex',
+                        alignItems: 'center', justifyContent: 'center', fontWeight: '500', fontSize: '14px'
+                      }}>
+                        {acc.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontSize: '14px', fontWeight: 500, color: '#3c4043' }}>{acc.name}</span>
+                        <span style={{ fontSize: '12px', color: '#5f6368' }}>{acc.email}</span>
+                      </div>
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => { setMockStep('email'); }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '14px',
+                      padding: '16px 4px',
+                      border: 'none',
+                      borderBottom: '1px solid #e8eaed',
+                      background: 'transparent',
+                      width: '100%',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      color: '#1a73e8',
+                      fontSize: '14px',
+                      fontWeight: 500
+                    }}
+                    onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
+                    onMouseOut={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <div style={{
+                      width: '32px', height: '32px', borderRadius: '50%',
+                      border: '1px solid #dadce0', display: 'flex',
+                      alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#5f6368'
+                    }}>
+                      +
+                    </div>
+                    Use another account
+                  </button>
+                </div>
+
+                <p style={{ marginTop: 'auto', fontSize: '12px', color: '#5f6368', lineHeight: 1.5 }}>
+                  To continue, Google will share your name, email address, language preference, and profile picture with CakeNKitchen.
+                </p>
+              </>
+            )}
+
+            {(mockStep === 'email' || mockStep === 'name') && (
+              <form onSubmit={handleMockGoogleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                {mockStep === 'email' ? (
+                  <>
+                    <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Sign in</h3>
+                    <p style={{ fontSize: '16px', color: '#5f6368', margin: '0 0 24px 0' }}>to continue to CakeNKitchen</p>
+
+                    <div style={{ position: 'relative', marginBottom: '24px', width: '100%' }}>
+                      <input
+                        type="email"
+                        id="gd-email-mock"
+                        value={mockEmailInput}
+                        onChange={e => setMockEmailInput(e.target.value)}
+                        placeholder="Email or phone"
+                        required
+                        style={{
+                          width: '100%',
+                          padding: '16px 14px',
+                          border: '1px solid #dadce0',
+                          borderRadius: '4px',
+                          fontSize: '16px',
+                          outline: 'none',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (mockAccountsList.length > 0) {
+                            setMockStep('list');
+                          }
+                        }}
+                        disabled={mockAccountsList.length === 0}
+                        style={{
+                          background: 'none', border: 'none', color: '#1a73e8',
+                          fontSize: '14px', fontWeight: 500, cursor: 'pointer',
+                          opacity: mockAccountsList.length === 0 ? 0.5 : 1
+                        }}
+                      >
+                        Back
+                      </button>
+
+                      <button
+                        type="submit"
+                        style={{
+                          background: '#1a73e8', border: 'none', color: '#fff',
+                          padding: '10px 24px', borderRadius: '4px', fontSize: '14px',
+                          fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s'
+                        }}
+                        onMouseOver={e => e.currentTarget.style.background = '#1557b0'}
+                        onMouseOut={e => e.currentTarget.style.background = '#1a73e8'}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h3 style={{ fontSize: '24px', fontWeight: 400, margin: '0 0 8px 0', color: '#202124' }}>Welcome</h3>
+                    <p style={{ fontSize: '15px', color: '#5f6368', margin: '0 0 24px 0' }}>Enter your full name to set up your Google profile</p>
+
+                    <div style={{ position: 'relative', marginBottom: '24px', width: '100%' }}>
+                      <input
+                        type="text"
+                        id="gd-name-mock"
+                        value={mockNameInput}
+                        onChange={e => setMockNameInput(e.target.value)}
+                        placeholder="First and last name"
+                        required
+                        style={{
+                          width: '100%',
+                          padding: '16px 14px',
+                          border: '1px solid #dadce0',
+                          borderRadius: '4px',
+                          fontSize: '16px',
+                          outline: 'none',
+                          boxSizing: 'border-box'
+                        }}
+                      />
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                      <button
+                        type="button"
+                        onClick={() => setMockStep('email')}
+                        style={{
+                          background: 'none', border: 'none', color: '#1a73e8',
+                          fontSize: '14px', fontWeight: 500, cursor: 'pointer'
+                        }}
+                      >
+                        Back
+                      </button>
+
+                      <button
+                        type="submit"
+                        style={{
+                          background: '#1a73e8', border: 'none', color: '#fff',
+                          padding: '10px 24px', borderRadius: '4px', fontSize: '14px',
+                          fontWeight: 500, cursor: 'pointer', transition: 'background 0.2s'
+                        }}
+                        onMouseOver={e => e.currentTarget.style.background = '#1557b0'}
+                        onMouseOut={e => e.currentTarget.style.background = '#1a73e8'}
+                      >
+                        Get Started
+                      </button>
+                    </div>
+                  </>
+                )}
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
