@@ -842,12 +842,18 @@
   overflow: hidden;
   height: 420px;
   box-shadow: var(--sh-lg);
+  background-color: #ffffff;
+  /* soft background to blend image edges */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hours-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  /* preserves the full body of the cake */
 }
 
 .hours-copy {
