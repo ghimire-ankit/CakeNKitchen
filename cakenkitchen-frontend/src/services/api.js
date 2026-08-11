@@ -183,4 +183,60 @@ export const fetchUserOrders = async (userId) => {
   }
 };
 
+// --- Notifications API ---
+export const fetchNotifications = async (userId, role) => {
+  try {
+    const response = await api.get('/notifications', { params: { userId, role } });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    return { success: false, data: [] };
+  }
+};
+
+export const markNotificationAsRead = async (id) => {
+  try {
+    const response = await api.patch(`/notifications/${id}/read`);
+    return response.data;
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
+    return { success: false };
+  }
+};
+
+export const markAllNotificationsAsRead = async (userId, role) => {
+  try {
+    const response = await api.post('/notifications/read-all', { userId, role });
+    return response.data;
+  } catch (error) {
+    console.error('Error marking all notifications as read:', error);
+    return { success: false };
+  }
+};
+
+// --- Order Messaging API ---
+export const fetchOrderMessages = async (orderId) => {
+  try {
+    const response = await api.get(`/messages/${orderId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching messages for order ${orderId}:`, error);
+    return { success: false, data: [] };
+  }
+};
+
+export const sendOrderMessage = async (orderId, senderRole, senderName, message) => {
+  try {
+    const response = await api.post(`/messages/${orderId}`, {
+      sender_role: senderRole,
+      sender_name: senderName,
+      message
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error sending message for order ${orderId}:`, error);
+    return { success: false };
+  }
+};
+
 export default api;

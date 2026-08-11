@@ -120,6 +120,32 @@ const initializeDatabaseSchema = async () => {
 
         try { await pool.query('ALTER TABLE order_items MODIFY COLUMN message TEXT NULL'); } catch (e) { }
 
+        // 6. Create Notifications Table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS notifications (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NULL,
+                title VARCHAR(100) NOT NULL,
+                message TEXT NOT NULL,
+                is_read BOOLEAN DEFAULT FALSE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+            ) ENGINE=InnoDB
+        `);
+
+        // 7. Create Order Messages Table
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS order_messages (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                order_id INT NOT NULL,
+                sender_role ENUM('customer', 'admin') NOT NULL,
+                sender_name VARCHAR(100) NOT NULL,
+                message TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE
+            ) ENGINE=InnoDB
+        `);
+
         console.log('✅ Database tables verified and created successfully!');
 
         // 6. Seed Default Admin User if missing

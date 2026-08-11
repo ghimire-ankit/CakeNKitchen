@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchUserOrders, updateOrderStatus } from '../services/api';
+import OrderChat from '../components/OrderChat';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -257,6 +258,8 @@ function MyOrders({ user }) {
                         <strong>Notes:</strong> {order.notes}
                       </div>
                     )}
+
+                    <OrderChat orderId={order.order_id} currentUser={user} />
                   </div>
                 )}
               </div>

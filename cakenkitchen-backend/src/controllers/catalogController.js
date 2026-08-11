@@ -1,6 +1,8 @@
 const Category = require('../models/Category');
 const Cake = require('../models/Cake');
 const Order = require('../models/Order');
+const Notification = require('../models/Notification');
+const pool = require('../config/db');
 
 const getCategories = async (req, res) => {
     try {
@@ -129,6 +131,16 @@ const getCakeById = async (req, res) => {
 const createOrder = async (req, res) => {
     try {
         const order = await Order.create(req.body);
+        
+        // Notify admin about new order
+        if (order && order.order_id) {
+            await Notification.create({
+                user_id: null, // admin
+                title: 'New Order Received',
+                message: `Order #${order.order_id} has been placed for Rs ${order.total}.`
+            });
+        }
+
         res.json({ success: true, data: order });
     } catch (err) {
         console.error('Error creating order:', err);
@@ -160,8 +172,23 @@ const getAdminOrders = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
     try {
         const success = await Order.updateStatus(req.params.id, req.body.status);
+        
+        if (success) {
+            // Get user_id for this order
+            const [rows] = await pool.query('SELECT user_id FROM orders WHERE order_id = ?', [req.params.id]);
+            if (rows.length > 0 && rows[0].user_id) {
+                // Notify user about status change
+                await Notification.create({
+                    user_id: rows[0].user_id,
+                    title: 'Order Update',
+                    message: `Your Order #${req.params.id} is now: ${req.body.status}`
+                });
+            }
+        }
+        
         res.json({ success });
     } catch (err) {
+        console.error('Error updating status:', err);
         res.status(500).json({ success: false, error: 'Failed to update order status' });
     }
 };

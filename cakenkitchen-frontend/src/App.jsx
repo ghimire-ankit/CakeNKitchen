@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import CustomCake from './pages/CustomCake';
 import MyOrders from './pages/MyOrders';
+import { fetchNotifications, markNotificationAsRead } from './services/api';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -26,6 +27,32 @@ function App() {
   const [discountPercent, setDiscountPercent] = useState(0);
   const [couponCode, setCouponCode] = useState('');
   const [toast, setToast] = useState({ visible: false, message: '', link: '' });
+  const [activeNotification, setActiveNotification] = useState(null);
+
+  // Poll for notifications
+  useEffect(() => {
+    let interval;
+    const checkNotifications = async () => {
+      if (user) {
+        const res = await fetchNotifications(user.user_id || user.id, user.role);
+        if (res.success && res.data) {
+          const unread = res.data.find(n => !n.is_read || n.is_read === 0);
+          if (unread && (!activeNotification || activeNotification.id !== unread.id)) {
+            setActiveNotification(unread);
+          }
+        }
+      }
+    };
+    
+    checkNotifications();
+    interval = setInterval(checkNotifications, 4000);
+    return () => clearInterval(interval);
+  }, [user, activeNotification]);
+
+  const closeNotification = async (id) => {
+    await markNotificationAsRead(id);
+    setActiveNotification(null);
+  };
 
   const saveCart = (newCart) => {
     setCart(newCart);
@@ -178,6 +205,31 @@ function App() {
           <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
             <Link to="/cart" className="toast-link" onClick={() => setToast(prev => ({ ...prev, visible: false }))}>View Cart</Link>
             <button className="toast-close-btn" onClick={() => setToast(prev => ({ ...prev, visible: false }))}>✕</button>
+          </div>
+        </div>
+      )}
+
+      {activeNotification && (
+        <div className="notification-popup" style={{
+          position: 'fixed', bottom: '24px', right: '24px', 
+          backgroundColor: '#ffffff', borderLeft: '6px solid var(--accent)',
+          padding: '1.2rem 1.4rem', borderRadius: '12px', 
+          boxShadow: '0 10px 35px rgba(0, 0, 0, 0.18), 0 2px 10px rgba(0,0,0,0.08)',
+          zIndex: 99999, minWidth: '300px', maxWidth: '380px',
+          fontFamily: 'inherit'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '1.2rem' }}>🔔</span>
+              <h4 style={{ margin: 0, color: 'var(--text-dark)', fontSize: '1rem', fontWeight: 700 }}>{activeNotification.title}</h4>
+            </div>
+            <button onClick={() => closeNotification(activeNotification.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', fontSize: '1.3rem', fontWeight: 'bold', lineHeight: 1 }}>&times;</button>
+          </div>
+          <p style={{ margin: 0, color: '#555', fontSize: '0.88rem', lineHeight: 1.4 }}>{activeNotification.message}</p>
+          <div style={{ marginTop: '1rem', textAlign: 'right' }}>
+            <button onClick={() => closeNotification(activeNotification.id)} className="btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.78rem', borderRadius: '6px' }}>
+              Dismiss / Mark Read
+            </button>
           </div>
         </div>
       )}

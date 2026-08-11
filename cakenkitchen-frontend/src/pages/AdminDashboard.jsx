@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { getImageUrl } from '../utils/imageUtils';
 import { fetchCategories, fetchAdminCakes, createCake as apiCreateCake, toggleCakeAvailability, deleteCakeAPI, updateCakeAPI, fetchAdminOrders, updateOrderStatus as apiUpdateOrderStatus } from '../services/api';
+import OrderChat from '../components/OrderChat';
 import '../styles/admin.css';
 
 function AdminDashboard({ user }) {
@@ -354,6 +355,10 @@ function AdminDashboard({ user }) {
                         </select>
                         <button className="btn-outline" onClick={() => handlePrintInvoice(o)} style={{ width: '100%', padding: '0.5rem', fontSize: '0.75rem' }}>Print Invoice</button>
                       </div>
+                    </div>
+
+                    <div style={{ padding: '0 1rem 0.5rem' }}>
+                      <OrderChat orderId={o.order_id} currentUser={user} />
                     </div>
                   </div>
                 ))}

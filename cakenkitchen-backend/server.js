@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Server initialization
 
 const allowedOrigins = [
     'http://localhost:5173',
@@ -34,6 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 app.use('/api/auth', require('./src/routes/authRoutes'));
+app.use('/api/notifications', require('./src/routes/notificationRoutes'));
+app.use('/api/messages', require('./src/routes/messageRoutes'));
 app.use('/api', require('./src/routes/catalogRoutes'));
 
 app.get('/', (req, res) => {
