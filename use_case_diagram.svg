@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 750" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .system-box { fill: #ffffff; stroke: #000000; stroke-width: 2; stroke-dasharray: 6,4; rx: 12; }
+      .title { font-family: 'Times New Roman', Times, serif; font-size: 22px; font-weight: bold; fill: #000000; }
+      .actor-head { fill: #ffffff; stroke: #000000; stroke-width: 2.2; }
+      .actor-body { stroke: #000000; stroke-width: 2.2; stroke-linecap: round; }
+      .actor-text { font-family: 'Times New Roman', Times, serif; font-size: 15px; font-weight: bold; fill: #000000; text-anchor: middle; }
+      .usecase { fill: #ffffff; stroke: #000000; stroke-width: 1.6; rx: 25; ry: 20; }
+      .usecase-bold { fill: #ffffff; stroke: #000000; stroke-width: 2.4; rx: 25; ry: 20; }
+      .usecase-text { font-family: 'Times New Roman', Times, serif; font-size: 13px; font-weight: normal; fill: #000000; text-anchor: middle; dominant-baseline: middle; }
+      .usecase-text-bold { font-family: 'Times New Roman', Times, serif; font-size: 13px; font-weight: bold; fill: #000000; text-anchor: middle; dominant-baseline: middle; }
+      .line { stroke: #000000; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="750" class="bg"/>
+
+  <!-- System Boundary -->
+  <rect x="220" y="40" width="560" height="670" class="system-box"/>
+  <text x="500" y="80" class="title" text-anchor="middle">CakeNKitchen System Boundary</text>
+
+  <!-- Customer Actor (Left) -->
+  <g transform="translate(100, 320)">
+    <circle cx="0" cy="-35" r="18" class="actor-head"/>
+    <line x1="0" y1="-17" x2="0" y2="25" class="actor-body"/>
+    <line x1="-25" y1="0" x2="25" y2="0" class="actor-body"/>
+    <line x1="0" y1="25" x2="-20" y2="65" class="actor-body"/>
+    <line x1="0" y1="25" x2="20" y2="65" class="actor-body"/>
+    <text x="0" y="92" class="actor-text">Customer / User</text>
+  </g>
+
+  <!-- Admin Actor (Right) -->
+  <g transform="translate(900, 320)">
+    <circle cx="0" cy="-35" r="18" class="actor-head"/>
+    <line x1="0" y1="-17" x2="0" y2="25" class="actor-body"/>
+    <line x1="-25" y1="0" x2="25" y2="0" class="actor-body"/>
+    <line x1="0" y1="25" x2="-20" y2="65" class="actor-body"/>
+    <line x1="0" y1="25" x2="20" y2="65" class="actor-body"/>
+    <text x="0" y="92" class="actor-text">Bakery Administrator</text>
+  </g>
+
+  <!-- Customer Use Cases -->
+  <!-- UC1: Browse Catalog -->
+  <g transform="translate(360, 140)">
+    <rect x="-100" y="-20" width="200" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">Browse Cake Catalog</text>
+  </g>
+
+  <!-- UC2: Build Custom Cake -->
+  <g transform="translate(360, 210)">
+    <rect x="-110" y="-20" width="220" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">Customize Cake &amp; Dynamic Price</text>
+  </g>
+
+  <!-- UC3: Pin GPS Delivery Location -->
+  <g transform="translate(360, 280)">
+    <rect x="-115" y="-20" width="230" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">Checkout &amp; Pin Location (GIS Map)</text>
+  </g>
+
+  <!-- UC4: Track Order Status -->
+  <g transform="translate(360, 350)">
+    <rect x="-100" y="-20" width="200" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">Track Order Status</text>
+  </g>
+
+  <!-- Shared / Communication Use Cases -->
+  <!-- UC5: Order Discussion / Chat -->
+  <g transform="translate(500, 430)">
+    <rect x="-120" y="-22" width="240" height="44" class="usecase-bold"/>
+    <text x="0" y="0" class="usecase-text-bold">Order Discussion / Chat</text>
+  </g>
+
+  <!-- UC6: Real-time Notifications -->
+  <g transform="translate(500, 510)">
+    <rect x="-125" y="-22" width="250" height="44" class="usecase-bold"/>
+    <text x="0" y="0" class="usecase-text-bold">Receive Real-Time Alerts</text>
+  </g>
+
+  <!-- Admin Use Cases -->
+  <!-- UC7: Manage Products CRUD -->
+  <g transform="translate(640, 140)">
+    <rect x="-105" y="-20" width="210" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">Manage Catalog (CRUD)</text>
+  </g>
+
+  <!-- UC8: Manage Orders & Fulfillment -->
+  <g transform="translate(640, 210)">
+    <rect x="-115" y="-20" width="230" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">Update Fulfillment Status</text>
+  </g>
+
+  <!-- UC9: Print Invoice -->
+  <g transform="translate(640, 280)">
+    <rect x="-100" y="-20" width="200" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">Print Tax Invoice / Receipt</text>
+  </g>
+
+  <!-- UC10: Revenue Analytics -->
+  <g transform="translate(640, 350)">
+    <rect x="-105" y="-20" width="210" height="40" class="usecase"/>
+    <text x="0" y="0" class="usecase-text">View Revenue Analytics</text>
+  </g>
+
+  <!-- Connections: Customer to Use Cases -->
+  <line x1="125" y1="310" x2="260" y2="140" class="line"/>
+  <line x1="125" y1="315" x2="250" y2="210" class="line"/>
+  <line x1="125" y1="320" x2="245" y2="280" class="line"/>
+  <line x1="125" y1="325" x2="260" y2="350" class="line"/>
+  <line x1="125" y1="335" x2="380" y2="430" class="line"/>
+  <line x1="125" y1="345" x2="375" y2="510" class="line"/>
+
+  <!-- Connections: Admin to Use Cases -->
+  <line x1="875" y1="310" x2="745" y2="140" class="line"/>
+  <line x1="875" y1="315" x2="755" y2="210" class="line"/>
+  <line x1="875" y1="320" x2="740" y2="280" class="line"/>
+  <line x1="875" y1="325" x2="745" y2="350" class="line"/>
+  <line x1="875" y1="335" x2="620" y2="430" class="line"/>
+  <line x1="875" y1="345" x2="625" y2="510" class="line"/>
+
+</svg>
