@@ -194,6 +194,11 @@ function Login({ onLogin }) {
               <h3 className="g-modal-title">Sign in with Google</h3>
               <p className="g-modal-subtitle">to continue to CakeNKitchen Sandbox</p>
 
+              <div className="g-modal-sandbox-warning">
+                <strong>Simulated Testing Sandbox</strong>
+                Real Google credentials ID is not set in your local .env configuration. These testing profiles are simulated for development layout preview only.
+              </div>
+
               {!showCustomInput ? (
                 <div className="g-accounts-list">
                   <button

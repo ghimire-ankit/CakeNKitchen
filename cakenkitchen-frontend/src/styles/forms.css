@@ -277,6 +277,24 @@
   color: #5f6368;
 }
 
+.g-modal-sandbox-warning {
+  background: #fef7e0;
+  border: 1px solid #ffe082;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 1.2rem;
+  font-size: 0.8rem;
+  color: #b06000;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.g-modal-sandbox-warning strong {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
