@@ -1,17 +1,25 @@
-/* ── Site footer ─────────────────────────────────────────── */
+/* Site footer - ClosetNow Inspired Minimalist Sage Teal Theme */
 .site-footer {
-  background: var(--ink);
+  background: #84a8ab;
+  /* Soft Sage Green / Teal */
+  color: #1a1a1a;
+  /* High-contrast dark charcoal text */
   font-family: var(--f-body);
-  color: rgba(255, 255, 255, .7);
+  margin: 3rem 2rem 2rem 2rem;
+  /* Floating card layout */
+  border-radius: 24px;
+  /* Curved card borders */
+  padding: 4rem 4rem 2rem 4rem;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .footer-main {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1.25fr;
   gap: 3rem;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  padding-bottom: 3.5rem;
   align-items: start;
 }
 
@@ -29,91 +37,54 @@
   text-decoration: none;
 }
 
-.foot-logo-icon {
-  width: 38px;
-  height: 38px;
-  background: var(--brand);
-  color: #fff;
-  border-radius: var(--r-sm);
-  font-family: var(--f-display);
-  font-size: .95rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.foot-logo-icon span {
-  font-style: italic;
-  font-weight: 400;
-}
-
-.foot-logo-name {
-  font-family: var(--f-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #fff;
-  display: block;
-}
-
-.foot-logo-tag {
-  font-size: .65rem;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .45);
-  display: block;
-  margin-top: .15rem;
-}
-
 .foot-desc {
-  font-size: .85rem;
-  line-height: 1.7;
-  max-width: 290px;
-  color: rgba(255, 255, 255, .6);
+  font-size: .88rem;
+  line-height: 1.6;
+  max-width: 300px;
+  color: #1a1a1a;
+  opacity: 0.85;
 }
 
 .foot-socials {
   display: flex;
-  gap: .5rem;
+  gap: .6rem;
+  margin-top: 0.4rem;
 }
 
 .foot-social {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, .15);
-  color: rgba(255, 255, 255, .6);
+  border: 1.5px solid rgba(26, 26, 26, 0.2);
+  color: #1a1a1a;
+  background: transparent;
   text-decoration: none;
-  transition: all .2s;
+  transition: all 0.2s ease;
 }
 
 .foot-social:hover {
-  background: var(--brand);
-  border-color: var(--brand);
-  color: #fff;
+  background: #1a1a1a;
+  color: #84a8ab;
+  border-color: #1a1a1a;
+  transform: translateY(-2px);
 }
 
 /* Link columns */
 .foot-col {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
-/* Pull the column header down slightly (11px) to align its text baseline perfectly with the main logo brand name */
 .foot-col h4 {
   font-family: var(--f-body);
-  font-size: .73rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, .95);
-  margin-top: 11px;
+  color: #1a1a1a;
+  margin-bottom: 0.2rem;
 }
 
 .foot-col nav {
@@ -123,14 +94,19 @@
 }
 
 .foot-col nav a {
-  font-size: .85rem;
-  color: rgba(255, 255, 255, .55);
+  font-size: .92rem;
+  color: #1a1a1a;
+  opacity: 0.8;
   text-decoration: none;
-  transition: color .18s;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .foot-col nav a:hover {
-  color: #fff;
+  opacity: 1;
+  color: #1a1a1a;
+  text-decoration: underline;
+  padding-left: 2px;
 }
 
 /* Contact List and Icons Grid */
@@ -138,15 +114,15 @@
   display: flex;
   flex-direction: column;
   gap: .75rem;
-  margin-bottom: .4rem;
 }
 
 .foot-contact-item {
   display: flex;
   align-items: center;
   gap: .65rem;
-  font-size: .83rem;
-  color: rgba(255, 255, 255, .55);
+  font-size: .92rem;
+  color: #1a1a1a;
+  opacity: 0.85;
   line-height: 1.5;
 }
 
@@ -155,23 +131,23 @@
 }
 
 .foot-contact-item.align-top .foot-contact-icon {
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .foot-contact-item a {
-  color: rgba(255, 255, 255, .65);
+  color: #1a1a1a;
   text-decoration: none;
-  transition: color .18s;
+  transition: color 0.18s;
 }
 
 .foot-contact-item a:hover {
-  color: #fff;
+  text-decoration: underline;
 }
 
 .foot-contact-icon {
-  width: 18px;
-  height: 18px;
-  color: var(--brand);
+  width: 16px;
+  height: 16px;
+  color: #1a1a1a;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -181,76 +157,149 @@
 .foot-hours-mini {
   display: flex;
   flex-direction: column;
-  gap: .3rem;
-  border-top: 1px solid rgba(255, 255, 255, .06);
-  padding-top: .75rem;
-  margin-top: .4rem;
+  gap: .4rem;
+  border-top: 1px solid rgba(26, 26, 26, 0.15);
+  padding-top: 1rem;
+  margin-top: 1rem;
+  width: 100%;
 }
 
-.foot-hours-mini p {
+.foot-hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: .8rem;
-  color: rgba(255, 255, 255, .45);
 }
 
-.foot-hours-mini strong {
-  color: rgba(255, 255, 255, .7);
+.foot-hours-row span {
+  color: #1a1a1a;
+  opacity: 0.75;
 }
 
-/* Bottom bar */
+.foot-hours-row strong {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+/* Bottom bar section - clean line separator and copyright banner */
 .footer-bar {
-  padding: 1.5rem 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.15);
+  padding-top: 1.8rem;
 }
 
 .footer-bar-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: .78rem;
-  color: rgba(255, 255, 255, .35);
-  gap: 1rem;
+  font-size: .88rem;
+  color: #1a1a1a;
 }
 
-.bar-links {
+.footer-left-links {
   display: flex;
   align-items: center;
-  gap: .55rem;
+  flex-wrap: wrap;
+  gap: .8rem;
 }
 
-.bar-links a {
-  color: rgba(255, 255, 255, .35);
+.footer-left-links span {
+  opacity: 0.85;
+}
+
+.footer-left-links a {
+  color: #1a1a1a;
   text-decoration: none;
-  transition: color .18s;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
 }
 
-.bar-links a:hover {
-  color: rgba(255, 255, 255, .7);
+.footer-left-links a:hover {
+  text-decoration: underline;
+  opacity: 1;
 }
 
-.bar-links span {
-  opacity: .4;
+.footer-dot-divider {
+  opacity: 0.4 !important;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
+/* Back to top button styling */
+.back-to-top-btn {
+  background: none;
+  border: none;
+  color: #1a1a1a;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-body);
+  font-size: .88rem;
+  font-weight: 500;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.back-to-top-btn:hover {
+  opacity: 0.8;
+}
+
+.up-arrow-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid #1a1a1a;
+  border-radius: 4px;
+  font-size: .8rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: #1a1a1a;
+}
+
+.back-to-top-btn:hover .up-arrow-box {
+  background: #1a1a1a;
+  color: #84a8ab;
+}
+
+/* Responsive configuration matches ClosetNow layout */
+@media (max-width: 992px) {
+  .site-footer {
+    margin: 2rem 1.5rem;
+    padding: 3rem 3rem 1.8rem 3rem;
+  }
+
   .footer-main {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     gap: 2.5rem;
   }
-
-  .foot-col h4 {
-    margin-top: 0;
-    /* reset alignment on stacked grids */
-  }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 768px) {
+  .site-footer {
+    margin: 1rem;
+    padding: 2.5rem 2rem 1.5rem 2rem;
+    border-radius: 16px;
+  }
+
   .footer-main {
     grid-template-columns: 1fr;
-    gap: 2.2rem;
+    gap: 2rem;
   }
 
   .footer-bar-inner {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .footer-left-links {
     flex-direction: column;
-    text-align: center;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .footer-dot-divider {
+    display: none;
   }
 }

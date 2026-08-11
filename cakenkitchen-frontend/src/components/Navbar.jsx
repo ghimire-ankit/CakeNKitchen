@@ -38,7 +38,7 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
       {/* Top info bar */}
       <div className="topbar">
         <div className="topbar-inner wrap">
-          <span>📞 980-1234567 &nbsp;|&nbsp; ✉ hello@cakenkitchen.com</span>
+          <span>📞 +977 980-6461461 &nbsp;|&nbsp; ✉ hello@cakenkitchen.com</span>
           <span>🎁 Free delivery on orders above NPR 2,000 &nbsp;·&nbsp; Use code <strong>CAKE10</strong> for 10% off</span>
         </div>
       </div>
@@ -55,13 +55,13 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
           {/* Desktop links */}
           <nav className="nav-links" aria-label="Primary">
             <Link to="/" className="nav-link">Home</Link>
-            <Link to="/custom-cake" className="nav-link" style={{ color: 'var(--accent)', fontWeight: 800 }}>Build Cake</Link>
             <button className="nav-link" onClick={() => scrollTo('about-section')}>About</button>
             <button className="nav-link" onClick={() => scrollTo('shop-menu')}>Menu</button>
             <button className="nav-link" onClick={() => goMenu(3)}>Weddings</button>
+            <Link to="/custom-cake" className="nav-link" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Build Cake</Link>
+            {user && <Link to="/my-orders" className="nav-link" id="nav-my-orders">My Orders</Link>}
             <button className="nav-link" onClick={() => scrollTo('hours-section')}>Visit Us</button>
             {user?.role === 'admin' && <Link to="/admin" className="nav-link" id="nav-admin">Admin</Link>}
-            {user && <Link to="/my-orders" className="nav-link">My Orders</Link>}
           </nav>
 
           {/* Right side */}
@@ -117,17 +117,12 @@ function Navbar({ user, logout, cartCount, searchQuery, setSearchQuery, selected
         {menuOpen && (
           <div className="mobile-menu">
             <Link to="/" className="mobile-link">Home</Link>
-            <Link to="/custom-cake" className="mobile-link" style={{ color: 'var(--accent)', fontWeight: 800 }}>Build Cake</Link>
             <button className="mobile-link" onClick={() => scrollTo('about-section')}>About</button>
             <button className="mobile-link" onClick={() => scrollTo('shop-menu')}>Menu</button>
             <button className="mobile-link" onClick={() => goMenu(3)}>Weddings</button>
+            <Link to="/custom-cake" className="mobile-link" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Build Cake</Link>
+            {user && <Link to="/my-orders" className="mobile-link">My Orders</Link>}
             <button className="mobile-link" onClick={() => scrollTo('hours-section')}>Visit Us</button>
-            {user && (
-              <Link to="/my-orders" className="mobile-link">My Orders</Link>
-            )}
-            {user?.role === 'admin' && (
-              <Link to="/admin" className="mobile-link">Admin Portal</Link>
-            )}
             {user ? (
               <button className="mobile-link" onClick={() => { logout(); navigate('/'); }}>Sign out</button>
             ) : (

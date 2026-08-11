@@ -13,10 +13,10 @@ router.get('/cakes/admin', authenticateToken, isAdmin, getAdminCakes);
 router.post('/cakes', authenticateToken, isAdmin, validateCake, createCake);
 router.patch('/cakes/:id/toggle', authenticateToken, isAdmin, toggleCake);
 
-// Orders routes
+// Orders security routes
 router.post('/orders', validateOrder, createOrder);
 router.get('/orders', authenticateToken, isAdmin, getAdminOrders);
 router.get('/orders/user/:userId', authenticateToken, getUserOrders);
-router.patch('/orders/:id/status', authenticateToken, updateOrderStatus); // Temporarily removed isAdmin so users can cancel orders. Needs controller-level ownership check.
+router.patch('/orders/:id/status', authenticateToken, isAdmin, updateOrderStatus);
 
 module.exports = router;

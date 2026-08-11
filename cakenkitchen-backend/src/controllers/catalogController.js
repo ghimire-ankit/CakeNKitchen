@@ -82,6 +82,12 @@ const createOrder = async (req, res) => {
 const getUserOrders = async (req, res) => {
     try {
         const { userId } = req.params;
+
+        // Zero-Trust IDOR check: Enforce authorization checks in order history query parameters
+        if (req.user.user_id !== Number(userId) && req.user.role !== 'admin') {
+            return res.status(403).json({ success: false, error: 'Access Denied: Cannot view other user\'s orders' });
+        }
+
         const orders = await Order.getByUserId(userId);
         res.json({ success: true, data: orders });
     } catch (err) {

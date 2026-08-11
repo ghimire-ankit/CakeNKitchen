@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchUserOrders, updateOrderStatus } from '../services/api';
+import { printInvoice } from '../utils/invoice';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -134,7 +135,7 @@ function MyOrders({ user }) {
                       </div>
                       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', alignItems: 'center', marginTop: '0.4rem' }}>
                         {order.status === 'Pending' && (
-                          <button 
+                          <button
                             onClick={(e) => handleCancelOrder(e, order.order_id)}
                             style={{
                               background: 'none',
@@ -188,8 +189,42 @@ function MyOrders({ user }) {
 
                 {isExpanded && (
                   <div style={{ padding: '0 2rem 2rem', borderTop: '1px solid var(--border-light)' }}>
-                    <div style={{ paddingTop: '1.5rem' }}>
-                      <h4 style={{ marginBottom: '1rem', color: 'var(--primary)', fontSize: '1rem' }}>Items Ordered</h4>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1.5rem', marginBottom: '1rem' }}>
+                        <h4 style={{ margin: 0, color: 'var(--primary)', fontSize: '1rem' }}>Items Ordered</h4>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const invoiceData = {
+                              order_id: order.order_id,
+                              items: order.items,
+                              total: order.total,
+                              delivery_address: order.delivery_address,
+                              delivery_date: order.delivery_date,
+                              delivery_time: order.delivery_time,
+                              delivery_type: order.delivery_type,
+                              payment_method: order.payment_method || 'cod',
+                              created_at: order.created_at,
+                              customer_name: user?.name,
+                              email: user?.email,
+                              phone: user?.phone
+                            };
+                            printInvoice(invoiceData);
+                          }}
+                          className="btn-secondary"
+                          style={{
+                            padding: '0.4rem 1rem',
+                            fontSize: '0.75rem',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.4rem',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          🧾 Print Invoice / Receipt
+                        </button>
+                      </div>
                       {order.items?.map((item, idx) => (
                         <div key={idx} style={{
                           display: 'flex',

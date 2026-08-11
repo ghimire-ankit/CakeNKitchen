@@ -24,6 +24,7 @@ app.use(helmet({
         }
     }
 }));
+
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -66,8 +67,8 @@ const orderLimiter = rateLimit({
 app.use('/api/auth', authLimiter);
 app.use('/api/orders', orderLimiter);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
@@ -81,7 +82,6 @@ app.get('/', (req, res) => {
         version: '1.0.0'
     });
 });
-
 app.get('/api/health', async (req, res) => {
     try {
         const dbPool = require('./src/config/db');

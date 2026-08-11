@@ -136,7 +136,6 @@ const initializeDatabaseSchema = async () => {
                 FOREIGN KEY (cake_id) REFERENCES cakes(cake_id) ON DELETE RESTRICT
             ) ENGINE=InnoDB
         `);
-
         try { await pool.query('ALTER TABLE order_items MODIFY COLUMN message TEXT NULL'); } catch (e) { }
 
         console.log('✅ Database tables verified and created successfully!');
