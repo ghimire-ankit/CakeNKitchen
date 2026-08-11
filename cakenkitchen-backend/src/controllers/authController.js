@@ -72,14 +72,21 @@ const googleLogin = async (req, res) => {
         const { token } = req.body;
         let payload;
 
-        // Bypass Google external verification if it's the local mock developer token
-        if (token && token.startsWith('mock_google_id_token_')) {
+        const client_id = process.env.VITE_GOOGLE_CLIENT_ID || "1019688537554-mockclientid123.apps.googleusercontent.com";
+        const isProd = process.env.NODE_ENV === 'production' || (client_id && client_id !== "1019688537554-mockclientid123.apps.googleusercontent.com");
+
+        // Bypass Google external verification if it's the local mock developer token AND NOT in production environment
+        if (token && token.startsWith('mock_google_id_token_') && !isProd) {
             payload = {
                 email: req.body.mockEmail || 'mock_google_user@gmail.com',
                 name: req.body.mockName || 'Mock Google Explorer',
-                sub: req.body.mockSub || '1019688537554mocksub123'
+                sub: req.body.mockSub || '1019688537554mocksub123',
+                email_verified: true
             };
         } else {
+            if (!token) {
+                return res.status(400).json({ success: false, error: 'No token provided' });
+            }
             // Verify key integrity using Google's cloud auth profile API
             const verifyRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${token}`);
             if (!verifyRes.ok) {
@@ -88,13 +95,14 @@ const googleLogin = async (req, res) => {
             payload = await verifyRes.json();
 
             // Verify client aud payload matches config
-            const client_id = process.env.VITE_GOOGLE_CLIENT_ID || "1019688537554-mockclientid123.apps.googleusercontent.com";
             if (payload.aud !== client_id) {
                 console.warn('Google client ID mismatch. Expected:', client_id, 'Received:', payload.aud);
-                // Allow mock token bypass locally for developer sandbox runs, but restrict strictly if custom ID present
-                if (client_id !== "1019688537554-mockclientid123.apps.googleusercontent.com") {
-                    return res.status(401).json({ success: false, error: 'Issuer or client ID mismatched' });
-                }
+                return res.status(401).json({ success: false, error: 'Issuer or client ID mismatched' });
+            }
+
+            // Verify email is verified by Google
+            if (payload.email_verified !== 'true' && payload.email_verified !== true) {
+                return res.status(401).json({ success: false, error: 'Email not verified by Google' });
             }
         }
 
