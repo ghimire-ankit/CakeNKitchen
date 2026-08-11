@@ -232,7 +232,6 @@ function Register({ onLogin }) {
                 setMockStep('list');
               }
               setMockEmailInput('');
-              setMockNameInput('');
               setShowMockGoogle(true);
             }}
             id="google-signup-btn-mock"

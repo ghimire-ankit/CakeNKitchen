@@ -195,7 +195,6 @@ function Login({ onLogin }) {
                 setMockStep('list');
               }
               setMockEmailInput('');
-              setMockNameInput('');
               setShowMockGoogle(true);
             }}
             id="google-signin-btn-mock"
